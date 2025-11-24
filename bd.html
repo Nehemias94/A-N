@@ -225,13 +225,14 @@
       return;
     }
 
-    const { error } = await db
-      .from("invitados")
-      .update({
-        confirmado: true,
-        fecha_confirmacion: new Date().toISOString().split("T")[0]
-      })
-      .eq("codigo", invitadoID);
+  const { error } = await db
+    .from("invitados")
+    .update({
+      confirmado: true,
+      fecha_confirmacion: new Date().toISOString().split("T")[0], // solo fecha
+      hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }) // hora HH:MM:SS
+    })
+    .eq("codigo", invitadoID);
 
     if (error) {
       contenedorMensaje.innerHTML = "No se pudo guardar la confirmación.";
@@ -327,3 +328,4 @@
   </div>
 </body>
 </html>
+
