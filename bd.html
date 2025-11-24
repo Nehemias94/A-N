@@ -261,13 +261,13 @@
     }
 
     // Guardar confirmación
-    const { error } = await db
-      .from("invitados")
-      .update({
-        confirmado: true,
-        fecha_confirmacion: new Date().toISOString()
-      })
-      .eq("codigo", invitadoID);
+  const { error } = await db
+  .from("invitados")
+  .update({
+    confirmado: true,
+    fecha_confirmacion: new Date().toISOString().split("T")[0]
+  })
+  .eq("codigo", invitadoID);
 
     if (error) {
       console.error("ERROR Supabase:", error);
@@ -365,6 +365,7 @@
   </div>
 </body>
 </html>
+
 
 
 
