@@ -148,107 +148,78 @@
   </style>
 </head>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script type="module">
+    // --- CONFIGURACIÓN SUPABASE ---
+    import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-<script>
-  const { createClient } = supabase;
+    const supabaseUrl = "https://xapdvqeexykowetnlhge.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg";
 
-  const db = createClient(
-    "https://xapdvqeexykowetnlhge.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg"
-  );
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // Obtener ID del invitado desde la URL
-  const params = new URLSearchParams(window.location.search);
-  const invitadoID = params.get("id");
+    // --- OBTENER ID DEL URL ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const invitadoID = urlParams.get("id");
+    document.getElementById("invitadoID").textContent = invitadoID ?? "No ID";
 
-  async function confirmarAsistencia() {
-
-    if (!invitadoID) {
-      alert("No se encontró el ID del invitado en la URL.");
-      return;
+    // --- FECHA Y HORA ACTUAL ---
+    function obtenerFechaActual() {
+        const hoy = new Date();
+        const soloFecha = hoy.toISOString().split("T")[0]; // YYYY-MM-DD
+        return soloFecha;
     }
 
-    // 1️⃣ Verificar si ya está confirmado
-    const { data: existente, error: errExiste } = await db
-      .from("invitados")
-      .select("confirmado")
-      .eq("codigo", invitadoID)
-      .single();
-
-    if (errExiste) {
-      alert("Error buscando invitado.");
-      return;
+    function obtenerHoraActual() {
+        const ahora = new Date();
+        const hora = ahora.toTimeString().split(" ")[0]; // HH:MM:SS
+        return hora;
     }
 
-    if (existente && existente.confirmado === true) {
-      alert("Ya has confirmado tu asistencia anteriormente. Gracias 🤎");
-      return;
-    }
+    // --- CONFIRMAR INVITADO ---
+    document.getElementById("btnConfirmar").addEventListener("click", async () => {
+        if (!invitadoID) {
+            alert("No se encontró el ID del invitado.");
+            return;
+        }
 
-    // 2️⃣ FECHA solo tipo DATE
-    const hoy = new Date();
-    const fechaSolo = hoy.toISOString().split("T")[0]; // YYYY-MM-DD
+        // 1️⃣ Revisar si ya confirmó
+        const { data: invitadoExistente, error: errorBuscar } = await supabase
+            .from("invitados")
+            .select("confirmado")
+            .eq("id_invitado", invitadoID)
+            .single();
 
-    // 3️⃣ HORA solo HH:mm:ss
-    const horaSolo = hoy.toTimeString().split(" ")[0];
+        if (errorBuscar) {
+            alert("Error buscando invitado.");
+            console.error(errorBuscar);
+            return;
+        }
 
-    // 4️⃣ Guardar confirmación
-    const { data, error } = await db
-      .from("invitados")
-      .update({
-        confirmado: true,
-        fecha_confirmacion: fechaSolo,  // campo tipo DATE
-        hora_confirmacion: horaSolo     // campo tipo TIME
-      })
-      .eq("codigo", invitadoID);
+        if (invitadoExistente.confirmado === true) {
+            alert("Este invitado YA confirmó y no puede confirmar otra vez.");
+            return;
+        }
 
-    if (error) {
-      console.error(error);
-      alert("No se pudo guardar la confirmación.");
-      return;
-    }
+        // 2️⃣ Guardar confirmación
+        const fecha = obtenerFechaActual();
+        const hora = obtenerHoraActual();
 
-    alert("¡Gracias por confirmar tu asistencia! 🤎");
-  }
-</script>
+        const { data, error } = await supabase
+            .from("invitados")
+            .update({
+                confirmado: true,
+                fecha_confirmacion: fecha,        // solo DATE
+                hora_confirmacion: hora           // solo TIME
+            })
+            .eq("id_invitado", invitadoID);
 
-
-  <script>
-  async function confirmarAsistencia() {
-
-    const contenedorMensaje = document.getElementById("mensajeConfirmacion");
-
-    if (!invitadoID) {
-      contenedorMensaje.innerHTML = "No se encontró tu número de invitación.";
-      contenedorMensaje.style.color = "red";
-      return;
-    }
-
-    const { data, error } = await db
-      .from("invitados")
-      .update({
-        confirmado: true,
-        fecha_confirmacion: new Date().toISOString()
-      })
-      .eq("codigo", invitadoID);
-
-    if (error) {
-      console.error("ERROR:", error);
-      contenedorMensaje.innerHTML = "Hubo un error al guardar tu confirmación.";
-      contenedorMensaje.style.color = "red";
-      return;
-    }
-
-    // ⭐ MENSAJE BONITO EN PANTALLA
-    contenedorMensaje.innerHTML = `
-      <span style="color: var(--cafe-dark); font-weight:600;">
-        ¡Gracias! Tu asistencia ha sido confirmada 🤎
-      </span>
-    `;
-
-    contenedorMensaje.style.color = "var(--cafe-dark)";
-  }
+        if (error) {
+            alert("Error guardando confirmación.");
+            console.error(error);
+        } else {
+            alert("¡Confirmación enviada con éxito!");
+        }
+    });
 </script>
   
 <body>
@@ -333,6 +304,7 @@
   </div>
 </body>
 </html>
+
 
 
 
