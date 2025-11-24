@@ -193,6 +193,11 @@
 
     if (data) {
       document.getElementById("nombreInvitado").innerText = data.nombre;
+
+      // 👉 OCULTAR INPUT SI SOLO TIENE 1 INVITADO
+      if (data.numero_invitados === 1) {
+        document.getElementById("inputInvitados").style.display = "none";
+      }
     }
 
     if (data && data.confirmado === true) {
@@ -217,16 +222,39 @@
       return;
     }
 
-    const { data: existente } = await db
+    const { data: invitado } = await db
       .from("invitados")
-      .select("confirmado, nombre")
+      .select("confirmado, nombre, numero_invitados")
       .eq("codigo", invitadoID)
       .single();
 
-    if (existente && existente.confirmado === true) {
+    if (!invitado) return;
+
+    // SI YA CONFIRMÓ
+    if (invitado.confirmado === true) {
       contenedorMensaje.innerHTML = "Ya habías confirmado antes 🤎";
       contenedorMensaje.style.display = "block";
       return;
+    }
+
+    let cantidadConfirmada = 1; // valor por defecto
+
+    // 👉 Si el límite es mayor que 1, leer del input
+    if (invitado.numero_invitados > 1) {
+      cantidadConfirmada = parseInt(document.getElementById("inputInvitados").value);
+
+      if (!cantidadConfirmada || cantidadConfirmada < 1) {
+        contenedorMensaje.innerHTML = "Ingresa cuántos asistirán.";
+        contenedorMensaje.style.display = "block";
+        return;
+      }
+
+      if (cantidadConfirmada > invitado.numero_invitados) {
+        contenedorMensaje.innerHTML =
+          `Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`;
+        contenedorMensaje.style.display = "block";
+        return;
+      }
     }
 
     // GUARDAR CONFIRMACIÓN
@@ -234,8 +262,9 @@
       .from("invitados")
       .update({
         confirmado: true,
-        fecha_confirmacion: new Date().toISOString().split("T")[0], // YYYY-MM-DD
-        hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }) // HH:MM:SS
+        fecha_confirmacion: new Date().toISOString().split("T")[0],
+        hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }),
+        numero_invitados_confirmados: cantidadConfirmada
       })
       .eq("codigo", invitadoID);
 
@@ -251,7 +280,10 @@
     btn.style.pointerEvents = "none";
 
     // MENSAJE PERSONALIZADO
-    contenedorMensaje.innerHTML = `Hola ${existente.nombre}, gracias por confirmar 🤎`;
+    contenedorMensaje.innerHTML = `
+      Hola ${invitado.nombre}, gracias por confirmar 🤎<br>
+      ${cantidadConfirmada === 1 ? "Asistirá 1 invitado." : `Has confirmado ${cantidadConfirmada} invitados.`}
+    `;
     contenedorMensaje.style.display = "block";
   }
 </script>
@@ -303,6 +335,8 @@
 
       <p class="note">Con la bendición de Dios y nuestras familias, te invitamos a compartir este día tan especial con nosotros.</p>
 
+      <input id="inputInvitados" type="number" placeholder="¿Cuántos asistirán?" min="1">
+
       <a id="btnConfirmar" class="rsvp" href="#" onclick="confirmarAsistencia()">Confirmar asistencia</a>
 
       <div id="mensajeConfirmacion"></div>
@@ -337,6 +371,7 @@
   </div>
 </body>
 </html>
+
 
 
 
