@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Boda Ana & Nehemías</title>
 
-  <!-- NUEVAS FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
@@ -23,7 +22,6 @@
         radial-gradient(circle at 90% 90%, rgba(200,169,126,0.05), transparent 12%),
         linear-gradient(180deg, #fff 0%, #fffaf6 100%);
       color:var(--text);
-      -webkit-font-smoothing:antialiased;
       padding:28px;
       display:flex;
       align-items:center;
@@ -33,7 +31,6 @@
     .page {
       width:100%;
       max-width:760px;
-      position:relative;
       padding:48px;
       border-radius:18px;
       background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
@@ -41,77 +38,19 @@
       border: 1.6px solid rgba(200,169,126,0.25);
       overflow:hidden;
     }
-    .page::before{
-      content:"";
-      position:absolute;
-      inset:12px;
-      border-radius:12px;
-      pointer-events:none;
-      box-shadow: inset 0 0 120px rgba(200,169,126,0.08);
-      z-index:0;
-    }
-    .floral-top, .floral-bottom{
-      width:100%;
-      height:auto;
-      display:block;
-      margin:0 auto;
-      z-index:0;
-      pointer-events:none;
-      opacity:0.95;
-    }
+
     .content{
       position:relative;
       z-index:2;
       text-align:center;
       padding:18px 8px;
     }
-    h1{
-      font-family: "Playfair Display", serif;
-      color:var(--cafe-dark);
-      font-size:56px;
-      line-height:0.9;
-      margin-top:6px;
-      font-weight:600;
-      letter-spacing: 0.5px;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }
-    h2{
-      font-family: "Playfair Display", serif;
-      color:var(--cafe);
-      font-size:26px;
-      margin-top:6px;
-      margin-bottom:6px;
-      font-weight:500;
-      letter-spacing: 0.4px;
-      text-shadow: 1px 1px 1px rgba(0,0,0,0.15);
-    }
-    .divider{
-      width:96px;height:2px;background:var(--cafe);margin:18px auto;border-radius:2px;
-    }
 
-    /* Texto normal */
-    .info{
-      font-family: "Cormorant Garamond", serif;
-      font-size:18px;
-      line-height:1.9;
-      letter-spacing: 0.3px;
-    }
-
-    .info a{ 
-      color:var(--cafe-dark); 
-      text-decoration:none; 
-      font-weight:600; 
-    }
-
-    /* ⭐ NOTA / ESTILO ELEGANTE */
     .note{
       font-style:italic;
       color:#444;
-      font-family: "Cormorant Garamond", serif;
-      letter-spacing:0.4px;
       font-size:20px;
       font-weight:500;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.18);
     }
 
     .rsvp{
@@ -123,194 +62,120 @@
       border-radius:28px;
       text-decoration:none;
       font-weight:700;
-      box-shadow: 0 8px 18px rgba(168,130,86,0.25);
-      transition: transform .15s ease, box-shadow .15s ease;
-      font-family: "Cormorant Garamond", serif;
       font-size:18px;
-      letter-spacing:0.4px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
-    .rsvp:hover{ transform: translateY(-3px); box-shadow: 0 12px 26px rgba(168,130,86,0.32); }
+    .rsvp:hover{
+      transform: translateY(-3px);
+    }
 
     footer{
       margin-top:26px;
       color:#777;
       font-size:14px;
-      font-family:"Cormorant Garamond", serif;
-    }
-
-    @media (max-width:600px){
-      .page{ padding:28px; border-radius:14px; }
-      h1{ font-size:36px; }
-      h2{ font-size:20px; }
-      .floral-top, .floral-bottom{ transform: scale(0.9); }
     }
   </style>
 </head>
 
 <script type="module">
-    // --- CONFIGURACIÓN SUPABASE ---
-    import { createClient } from "https://esm.sh/@supabase/supabase-js";
+  import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-    const supabaseUrl = "https://xapdvqeexykowetnlhge.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg";
+  const supabaseUrl = "https://xapdvqeexykowetnlhge.supabase.co";
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg";
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // --- OBTENER ID DEL URL ---
-    const urlParams = new URLSearchParams(window.location.search);
-    const invitadoID = urlParams.get("id");
-    document.getElementById("invitadoID").textContent = invitadoID ?? "No ID";
+  // Obtener ID del URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const invitadoID = urlParams.get("id");
 
-    // --- FECHA Y HORA ACTUAL ---
-    function obtenerFechaActual() {
-        const hoy = new Date();
-        const soloFecha = hoy.toISOString().split("T")[0]; // YYYY-MM-DD
-        return soloFecha;
-    }
+  console.log("ID detectado:", invitadoID);
 
-    function obtenerHoraActual() {
-        const ahora = new Date();
-        const hora = ahora.toTimeString().split(" ")[0]; // HH:MM:SS
-        return hora;
-    }
+  function obtenerFechaActual() {
+    const hoy = new Date();
+    return hoy.toISOString().split("T")[0]; // YYYY-MM-DD
+  }
 
-    // --- CONFIRMAR INVITADO ---
-    document.getElementById("btnConfirmar").addEventListener("click", async () => {
-        if (!invitadoID) {
-            alert("No se encontró el ID del invitado.");
-            return;
-        }
+  function obtenerHoraActual() {
+    const ahora = new Date();
+    return ahora.toTimeString().split(" ")[0]; // HH:MM:SS
+  }
 
-        // 1️⃣ Revisar si ya confirmó
-        const { data: invitadoExistente, error: errorBuscar } = await supabase
-            .from("invitados")
-            .select("confirmado")
-            .eq("id_invitado", invitadoID)
-            .single();
+  // --- Evento Confirmar ---
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("btnConfirmar");
 
-        if (errorBuscar) {
-            alert("Error buscando invitado.");
-            console.error(errorBuscar);
-            return;
-        }
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
 
-        if (invitadoExistente.confirmado === true) {
-            alert("Este invitado YA confirmó y no puede confirmar otra vez.");
-            return;
-        }
+      if (!invitadoID) {
+        alert("No se encontró ID en el enlace 👀");
+        return;
+      }
 
-        // 2️⃣ Guardar confirmación
-        const fecha = obtenerFechaActual();
-        const hora = obtenerHoraActual();
+      console.log("Consultando invitado...");
 
-        const { data, error } = await supabase
-            .from("invitados")
-            .update({
-                confirmado: true,
-                fecha_confirmacion: fecha,        // solo DATE
-                hora_confirmacion: hora           // solo TIME
-            })
-            .eq("id_invitado", invitadoID);
+      // Revisar si ya confirmó
+      const { data: invitado, error: errorBuscar } = await supabase
+        .from("invitados")
+        .select("confirmado")
+        .eq("id_invitado", invitadoID)
+        .single();
 
-        if (error) {
-            alert("Error guardando confirmación.");
-            console.error(error);
-        } else {
-            alert("¡Confirmación enviada con éxito!");
-        }
+      console.log("Resultado buscar:", invitado, errorBuscar);
+
+      if (errorBuscar) {
+        alert("Error buscando invitado.");
+        console.error(errorBuscar);
+        return;
+      }
+
+      if (invitado?.confirmado === true) {
+        alert("Ya confirmaste antes ✔");
+        return;
+      }
+
+      const fecha = obtenerFechaActual();
+      const hora = obtenerHoraActual();
+
+      console.log("Guardando:", fecha, hora);
+
+      const { data, error } = await supabase
+        .from("invitados")
+        .update({
+          confirmado: true,
+          fecha_confirmacion: fecha,
+          hora_confirmacion: hora
+        })
+        .eq("id_invitado", invitadoID);
+
+      console.log("Resultado update:", data, error);
+
+      if (error) {
+        alert("Error guardando confirmación.");
+        console.error(error);
+      } else {
+        alert("¡Confirmación enviada con éxito!");
+      }
     });
+  });
 </script>
-  
+
 <body>
   <div class="page">
 
-    <!-- Flores arriba -->
-    <svg class="floral-top" viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="g1" x1="0" x2="1">
-          <stop offset="0" stop-color="#f8f0e6"/>
-          <stop offset="1" stop-color="#efe3d3"/>
-        </linearGradient>
-        <linearGradient id="gold" x1="0" x2="1">
-          <stop offset="0" stop-color="#d8c1a2"/>
-          <stop offset="1" stop-color="#c8a97e"/>
-        </linearGradient>
-        <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="14" result="b"/>
-        </filter>
-      </defs>
-      <g transform="translate(600,140) scale(1)">
-        <ellipse cx="-180" cy="-10" rx="420" ry="110" fill="url(#g1)" opacity="0.85" filter="url(#blur)"/>
-        <ellipse cx="160" cy="-20" rx="420" ry="120" fill="#fff7ea" opacity="0.72" filter="url(#blur)"/>
-      </g>
-      <g transform="translate(600,140)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.95">
-        <path d="M-220,20 C-200,0 -140,-30 -80,-20 C-40,-14 10,-4 60,-30" stroke="url(#gold)" stroke-width="10" opacity="0.95"/>
-        <path d="M240,10 C200,0 150,-30 90,-20 C40,-10 -10,0 -60,-2" stroke="url(#gold)" stroke-width="10" opacity="0.95"/>
-      </g>
-    </svg>
-
     <div class="content">
-
-      <div class="divider"></div>
-
-      <!-- ⭐ TEXTO CON ESTILO DE NOTA APLICADO -->
-      <div class="info note">
-        <p><strong>Fecha:</strong> 28 de marzo de 2026</p>
-        <p><strong>Hora:</strong> 4:00 p.m.</p>
-        <p><strong>Lugar:</strong>
-          <a href="https://www.google.com/maps?q=San+Salvador" target="_blank">San Salvador</a>
-        </p>
-      </div>
-
-      <div class="divider"></div>
 
       <p class="note">Con la bendición de Dios y nuestras familias, te invitamos a compartir este día tan especial con nosotros.</p>
 
-<a class="rsvp" id="btnConfirmar" href="#">
-  Confirmar asistencia
-</a>
+      <a class="rsvp" id="btnConfirmar" href="#">
+        Confirmar asistencia
+      </a>
 
       <footer>
-        <p class="note">Con amor, Ana &amp; Nehemías 🤎</p>
+        <p class="note">Con amor, Ana & Nehemías 🤎</p>
       </footer>
     </div>
-
-    <!-- Flores abajo -->
-    <svg class="floral-bottom" viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="g2" x1="0" x2="1">
-          <stop offset="0" stop-color="#f8f0e6"/>
-          <stop offset="1" stop-color="#efe3d3"/>
-        </linearGradient>
-        <linearGradient id="gold2" x1="0" x2="1">
-          <stop offset="0" stop-color="#d6c0a3"/>
-          <stop offset="1" stop-color="#b89163"/>
-        </linearGradient>
-        <filter id="blur2" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="12" result="b"/>
-        </filter>
-      </defs>
-      <g transform="translate(600,110)">
-        <ellipse cx="-160" cy="10" rx="380" ry="80" fill="url(#g2)" opacity="0.9" filter="url(#blur2)"/>
-        <ellipse cx="180" cy="20" rx="380" ry="90" fill="#fff7ef" opacity="0.7" filter="url(#blur2)"/>
-      </g>
-    </svg>
 
   </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
