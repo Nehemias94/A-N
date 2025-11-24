@@ -227,21 +227,36 @@
     if (data) {
       document.getElementById("nombreInvitado").innerText = data.nombre;
 
-      // 👉 OCULTAR INPUT SI SOLO TIENE 1 INVITADO
+      // Si solo tiene 1 invitado, mostrar input pero bloquearlo con valor 1
       if (data.numero_invitados === 1) {
-        document.getElementById("inputInvitados").style.display = "none";
+        const input = document.getElementById("inputInvitados");
+        input.value = 1;
+        input.readOnly = true;
       }
-    }
 
-    if (data && data.confirmado === true) {
-      const btn = document.getElementById("btnConfirmar");
-      const msg = document.getElementById("mensajeConfirmacion");
-      btn.innerText = "Ya confirmado ✔";
-      btn.style.background = "#888";
-      btn.style.pointerEvents = "none";
+      // Si ya confirmó, mostrar numero_invitados_confirmados y bloquear input
+      if (data.confirmado === true) {
+        const btn = document.getElementById("btnConfirmar");
+        const msg = document.getElementById("mensajeConfirmacion");
 
-      msg.innerHTML = "Ya habías confirmado anteriormente 🤎";
-      msg.style.display = "block";
+        btn.innerText = "Ya confirmado ✔";
+        btn.style.background = "#888";
+        btn.style.pointerEvents = "none";
+
+        msg.innerHTML = "Ya habías confirmado anteriormente 🤎";
+        msg.style.display = "block";
+
+        // Mostrar el número de invitados confirmados y bloquear input
+        const input = document.getElementById("inputInvitados");
+        input.value = data.numero_invitados_confirmados || 1;
+        input.readOnly = true;
+      } else {
+        // Si tiene más de 1 invitado y no ha confirmado, input editable
+        if (data.numero_invitados > 1) {
+          document.getElementById("inputInvitados").value = "";
+          document.getElementById("inputInvitados").readOnly = false;
+        }
+      }
     }
   });
 
@@ -257,40 +272,34 @@
 
     const { data: invitado } = await db
       .from("invitados")
-      .select("confirmado, nombre, numero_invitados")
+      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados")
       .eq("codigo", invitadoID)
       .single();
 
     if (!invitado) return;
 
-    // SI YA CONFIRMÓ
     if (invitado.confirmado === true) {
       contenedorMensaje.innerHTML = "Ya habías confirmado antes 🤎";
       contenedorMensaje.style.display = "block";
       return;
     }
 
-    let cantidadConfirmada = 1; // valor por defecto
+    let cantidadConfirmada = 1;
 
-    // 👉 Si el límite es mayor que 1, leer del input
     if (invitado.numero_invitados > 1) {
       cantidadConfirmada = parseInt(document.getElementById("inputInvitados").value);
-
       if (!cantidadConfirmada || cantidadConfirmada < 1) {
         contenedorMensaje.innerHTML = "Ingresa cuántos asistirán.";
         contenedorMensaje.style.display = "block";
         return;
       }
-
       if (cantidadConfirmada > invitado.numero_invitados) {
-        contenedorMensaje.innerHTML =
-          `Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`;
+        contenedorMensaje.innerHTML = `Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`;
         contenedorMensaje.style.display = "block";
         return;
       }
     }
 
-    // GUARDAR CONFIRMACIÓN
     const { error } = await db
       .from("invitados")
       .update({
@@ -307,12 +316,14 @@
       return;
     }
 
-    // DESACTIVAR BOTÓN
     btn.innerText = "Confirmado ✔";
     btn.style.background = "#888";
     btn.style.pointerEvents = "none";
 
-    // MENSAJE PERSONALIZADO
+    const input = document.getElementById("inputInvitados");
+    input.value = cantidadConfirmada;
+    input.readOnly = true;
+
     contenedorMensaje.innerHTML = `
       Hola ${invitado.nombre}, gracias por confirmar 🤎<br>
       ${cantidadConfirmada === 1 ? "Asistirá 1 invitado." : `Has confirmado ${cantidadConfirmada} invitados.`}
@@ -407,6 +418,7 @@
   </div>
 </body>
 </html>
+
 
 
 
