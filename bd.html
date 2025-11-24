@@ -147,6 +147,55 @@
     }
   </style>
 </head>
+
+  <script type="module">
+  import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+  // ⚠️ REEMPLAZA con tus valores reales
+  const SUPABASE_URL = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg";
+  const SUPABASE_ANON_KEY = "TU_KEY_AQUI";
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Leer parámetro ?id=INV0001
+  const params = new URLSearchParams(window.location.search);
+  const invitadoID = params.get("id");
+
+  // Si no hay ID, no permitir confirmar
+  if (!invitadoID) {
+    document.querySelector(".rsvp").innerText = "Error: enlace inválido";
+    document.querySelector(".rsvp").style.pointerEvents = "none";
+  }
+
+  // Botón
+  const btn = document.querySelector(".rsvp");
+
+  // Guardar en Supabase al hacer clic
+  btn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const { error } = await supabase
+      .from("rsvp")
+      .insert({
+        invitado_id: invitadoID,
+        confirmado: true,
+        fecha_confirmacion: new Date().toISOString()
+      });
+
+    if (error) {
+      alert("❌ Hubo un error guardando tu confirmación.");
+      console.log(error);
+      return;
+    }
+
+    // Redirigir al formulario o mostrar mensaje
+    alert("¡Gracias! Tu asistencia ha sido confirmada.");
+
+    // Opcional: dirigir a otro lado
+    // window.location.href = "gracias.html";
+  });
+</script>
+
 <body>
   <div class="page">
 
@@ -228,3 +277,4 @@
   </div>
 </body>
 </html>
+
