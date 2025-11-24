@@ -155,6 +155,12 @@ body{
   from {opacity:0; transform:translateY(6px);}
   to {opacity:1; transform:translateY(0);}
 }
+footer{
+  margin-top:26px;
+  color:#777;
+  font-size:14px;
+  font-family:"Cormorant Garamond", serif;
+}
 </style>
 </head>
 
@@ -202,6 +208,11 @@ body{
     <div id="mensajeConfirmacion"></div>
   </div>
 
+  <!-- FOOTER -->
+  <footer>
+    <p class="note">Con amor, Ana & Nehemías 🤎</p>
+  </footer>
+
   <!-- FLORES INFERIORES -->
   <svg class="floral-bottom" viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -222,6 +233,7 @@ body{
       <ellipse cx="180" cy="20" rx="380" ry="90" fill="#fff7ef" opacity="0.7" filter="url(#blur2)"/>
     </g>
   </svg>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -229,7 +241,7 @@ body{
 const { createClient } = supabase;
 const db = createClient(
   "https://xapdvqeexykowetnlhge.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg"
+  "TU_API_KEY_AQUI"
 );
 
 const params = new URLSearchParams(window.location.search);
@@ -250,12 +262,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const contenedor = document.getElementById("contenedorInvitados");
   const contador = document.getElementById("contadorInvitados");
 
-  // Mostrar input solo si puede confirmar más de 1 y aún no confirmó
   if (data.numero_invitados === 1 || data.confirmado === true) {
     contenedor.style.display = "none";
   }
 
-  // Mostrar contador si tiene invitados
   if(data.numero_invitados > 1) {
     contador.innerText = `Máximo permitidos: ${data.numero_invitados}. Ya confirmados: ${data.numero_invitados_confirmados || 0}`;
   }
@@ -331,7 +341,6 @@ async function confirmarAsistencia() {
   btn.style.background = "#888";
   btn.style.pointerEvents = "none";
 
-  // Ocultar input si solo 1 o ya confirmado
   if (invitado.numero_invitados === 1 || cantidadConfirmada >= 1) {
     document.getElementById("contenedorInvitados").style.display = "none";
   }
@@ -340,16 +349,10 @@ async function confirmarAsistencia() {
     ${cantidadConfirmada === 1 ? "Asistirá 1 invitado." : `Has confirmado ${cantidadConfirmada} invitados.`}`;
   contenedorMensaje.style.display = "block";
 
-  // Actualizar contador
   if(invitado.numero_invitados > 1) {
     contador.innerText = `Máximo permitidos: ${invitado.numero_invitados}. Ya confirmados: ${cantidadConfirmada}`;
   }
 }
 </script>
-
-        <footer>
-        <p class="note">Con amor, Ana & Nehemías 🤎</p>
-      </footer>
 </body>
 </html>
-
