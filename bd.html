@@ -219,6 +219,10 @@
       .eq("codigo", invitadoID)
       .single();
 
+    if (data) {
+      document.getElementById("nombreInvitado").innerText = data.nombre;
+    }
+
     if (existente && existente.confirmado === true) {
       contenedorMensaje.innerHTML = "Ya habías confirmado antes 🤎";
       contenedorMensaje.style.display = "block";
@@ -292,6 +296,8 @@
 
       <div class="divider"></div>
 
+      <h2 id="nombreInvitado"></h2>
+
       <p class="note">Con la bendición de Dios y nuestras familias, te invitamos a compartir este día tan especial con nosotros.</p>
 
       <a id="btnConfirmar" class="rsvp" href="#" onclick="confirmarAsistencia()">Confirmar asistencia</a>
@@ -328,4 +334,5 @@
   </div>
 </body>
 </html>
+
 
