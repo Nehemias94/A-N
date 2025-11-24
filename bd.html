@@ -190,6 +190,43 @@
   }
 </script>
 
+
+  <script>
+  async function confirmarAsistencia() {
+
+    const contenedorMensaje = document.getElementById("mensajeConfirmacion");
+
+    if (!invitadoID) {
+      contenedorMensaje.innerHTML = "No se encontró tu número de invitación.";
+      contenedorMensaje.style.color = "red";
+      return;
+    }
+
+    const { data, error } = await db
+      .from("invitados")
+      .update({
+        confirmado: true,
+        fecha_confirmacion: new Date().toISOString()
+      })
+      .eq("codigo", invitadoID);
+
+    if (error) {
+      console.error("ERROR:", error);
+      contenedorMensaje.innerHTML = "Hubo un error al guardar tu confirmación.";
+      contenedorMensaje.style.color = "red";
+      return;
+    }
+
+    // ⭐ MENSAJE BONITO EN PANTALLA
+    contenedorMensaje.innerHTML = `
+      <span style="color: var(--cafe-dark); font-weight:600;">
+        ¡Gracias! Tu asistencia ha sido confirmada 🤎
+      </span>
+    `;
+
+    contenedorMensaje.style.color = "var(--cafe-dark)";
+  }
+</script>
   
 <body>
   <div class="page">
@@ -236,9 +273,13 @@
 
       <p class="note">Con la bendición de Dios y nuestras familias, te invitamos a compartir este día tan especial con nosotros.</p>
 
-      <a class="rsvp" href="#" onclick="confirmarAsistencia()">
+<a class="rsvp" href="#" onclick="confirmarAsistencia()">
   Confirmar asistencia
 </a>
+
+<div id="mensajeConfirmacion" 
+     style="margin-top:20px; font-size:20px; font-style:italic; color:var(--cafe-dark);">
+</div>
 
       <footer>
         <p>Con amor, Ana &amp; Nehemías 🤎</p>
@@ -269,6 +310,7 @@
   </div>
 </body>
 </html>
+
 
 
 
