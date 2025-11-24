@@ -216,7 +216,7 @@
       .from("invitados")
       .update({
         confirmado: true,
-        fecha_confirmacion: new Date().toISOString()
+        Fecha_confirmacion: new Date().toISOString().split("T")[0]
       })
       .eq("codigo", invitadoID);
 
@@ -365,6 +365,7 @@
   </div>
 </body>
 </html>
+
 
 
 
