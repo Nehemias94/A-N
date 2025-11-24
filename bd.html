@@ -242,12 +242,26 @@
     const contenedorMensaje = document.getElementById("mensajeConfirmacion");
 
     if (!invitadoID) {
-      contenedorMensaje.innerHTML = "No se encontró tu número de invitación.";
+      contenedorMensaje.innerHTML = "No se encontró el ID del invitado.";
       contenedorMensaje.style.color = "red";
       return;
     }
 
-    const { data, error } = await db
+    // Verificar si ya confirmado antes
+    const { data: existente } = await db
+      .from("invitados")
+      .select("confirmado")
+      .eq("codigo", invitadoID)
+      .single();
+
+    if (existente && existente.confirmado === true) {
+      contenedorMensaje.innerHTML = "Ya habías confirmado antes 🤎";
+      contenedorMensaje.style.color = "var(--cafe-dark)";
+      return;
+    }
+
+    // Guardar confirmación
+    const { error } = await db
       .from("invitados")
       .update({
         confirmado: true,
@@ -256,13 +270,13 @@
       .eq("codigo", invitadoID);
 
     if (error) {
-      console.error("ERROR:", error);
-      contenedorMensaje.innerHTML = "Hubo un error al guardar tu confirmación.";
+      console.error("ERROR Supabase:", error);
+      contenedorMensaje.innerHTML = "No se pudo guardar la confirmación.";
       contenedorMensaje.style.color = "red";
       return;
     }
 
-    // ⭐ MENSAJE BONITO EN PANTALLA
+    // Mensaje bonito
     contenedorMensaje.innerHTML = `
       <span style="color: var(--cafe-dark); font-weight:600;">
         ¡Gracias! Tu asistencia ha sido confirmada 🤎
@@ -351,6 +365,7 @@
   </div>
 </body>
 </html>
+
 
 
 
