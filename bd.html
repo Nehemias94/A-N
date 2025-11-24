@@ -219,7 +219,7 @@
 
     const { data: existente } = await db
       .from("invitados")
-      .select("confirmado")
+      .select("confirmado, nombre")
       .eq("codigo", invitadoID)
       .single();
 
@@ -229,14 +229,15 @@
       return;
     }
 
-  const { error } = await db
-    .from("invitados")
-    .update({
-      confirmado: true,
-      fecha_confirmacion: new Date().toISOString().split("T")[0], // solo fecha
-      hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }) // hora HH:MM:SS
-    })
-    .eq("codigo", invitadoID);
+    // GUARDAR CONFIRMACIÓN
+    const { error } = await db
+      .from("invitados")
+      .update({
+        confirmado: true,
+        fecha_confirmacion: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+        hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }) // HH:MM:SS
+      })
+      .eq("codigo", invitadoID);
 
     if (error) {
       contenedorMensaje.innerHTML = "No se pudo guardar la confirmación.";
@@ -244,11 +245,13 @@
       return;
     }
 
+    // DESACTIVAR BOTÓN
     btn.innerText = "Confirmado ✔";
     btn.style.background = "#888";
     btn.style.pointerEvents = "none";
 
-    contenedorMensaje.innerHTML = "¡Gracias! Tu asistencia ha sido confirmada 🤎";
+    // MENSAJE PERSONALIZADO
+    contenedorMensaje.innerHTML = `Hola ${existente.nombre}, gracias por confirmar 🤎`;
     contenedorMensaje.style.display = "block";
   }
 </script>
@@ -334,6 +337,7 @@
   </div>
 </body>
 </html>
+
 
 
 
