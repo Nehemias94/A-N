@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Boda Ana & Nehemías</title>
 
-  <!-- NUEVAS FUENTES -->
+  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
@@ -88,7 +88,6 @@
     .divider{
       width:96px;height:2px;background:var(--cafe);margin:18px auto;border-radius:2px;
     }
-
     .info{
       font-family: "Cormorant Garamond", serif;
       font-size:18px;
@@ -109,7 +108,6 @@
       font-weight:500;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.18);
     }
-
     .rsvp{
       display:inline-block;
       margin-top:22px;
@@ -131,15 +129,50 @@
       transform: translateY(-3px);
       box-shadow: 0 12px 26px rgba(168,130,86,0.32);
     }
-
     footer{
       margin-top:26px;
       color:#777;
       font-size:14px;
       font-family:"Cormorant Garamond", serif;
     }
-
-    /* ⭐ MENSAJE DE CONFIRMACIÓN ELEGANTE */
+    /* INPUT ELEGANTE */
+    .input-box {
+      width: 100%;
+      max-width: 260px;
+      margin: 18px auto;
+      padding: 12px 18px;
+      border-radius: 14px;
+      border: 1.8px solid rgba(200,169,126,0.55);
+      background: rgba(255, 249, 241, 0.85);
+      font-size: 18px;
+      font-family: "Cormorant Garamond", serif;
+      color: #3f3f3f;
+      text-align: center;
+      outline: none;
+      transition: all .25s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .input-box:focus {
+      border-color: var(--cafe);
+      background: #fffdf8;
+      box-shadow: 0 6px 18px rgba(168,130,86,0.25);
+      transform: translateY(-2px);
+    }
+    .input-box[readonly] {
+      background: #f2f2f2;
+      color: #555;
+      border-color: #ccc;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    .input-label {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--cafe-dark);
+      margin-bottom: 6px;
+      display: block;
+    }
     #mensajeConfirmacion{
       margin-top:26px;
       font-size:22px;
@@ -154,59 +187,99 @@
       display:none;
       animation: fadeIn .6s ease;
     }
-
     @keyframes fadeIn {
       from {opacity:0; transform:translateY(6px);}
       to {opacity:1; transform:translateY(0);}
     }
-
     @media (max-width:600px){
       .page{ padding:28px; border-radius:14px; }
       h1{ font-size:36px; }
       h2{ font-size:20px; }
       .floral-top, .floral-bottom{ transform: scale(0.9); }
     }
-
-   .input-box {
-    width: 100%;
-    max-width: 260px;
-    margin: 18px auto;
-    padding: 12px 18px;
-    border-radius: 14px;
-    border: 1.8px solid rgba(200,169,126,0.55);
-    background: rgba(255, 249, 241, 0.85);
-    font-size: 18px;
-    font-family: "Cormorant Garamond", serif;
-    color: #3f3f3f;
-    text-align: center;
-    outline: none;
-    transition: all .25s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  }
-  
-  .input-box:focus {
-    border-color: var(--cafe);
-    background: #fffdf8;
-    box-shadow: 0 6px 18px rgba(168,130,86,0.25);
-    transform: translateY(-2px);
-  }
-  
-  /* Cuando está bloqueado (readonly) */
-  .input-box[readonly] {
-    background: #f2f2f2;
-    color: #555;
-    border-color: #ccc;
-    box-shadow: none;
-    cursor: not-allowed;
-  }
   </style>
 </head>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<body>
+<div class="page">
 
+  <!-- FLORES SUPERIORES -->
+  <svg class="floral-top" viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="g1" x1="0" x2="1">
+        <stop offset="0" stop-color="#f8f0e6"/>
+        <stop offset="1" stop-color="#efe3d3"/>
+      </linearGradient>
+      <linearGradient id="gold" x1="0" x2="1">
+        <stop offset="0" stop-color="#d8c1a2"/>
+        <stop offset="1" stop-color="#c8a97e"/>
+      </linearGradient>
+      <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="14" result="b"/>
+      </filter>
+    </defs>
+    <g transform="translate(600,140) scale(1)">
+      <ellipse cx="-180" cy="-10" rx="420" ry="110" fill="url(#g1)" opacity="0.85" filter="url(#blur)"/>
+      <ellipse cx="160" cy="-20" rx="420" ry="120" fill="#fff7ea" opacity="0.72" filter="url(#blur)"/>
+    </g>
+    <g transform="translate(600,140)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.95">
+      <path d="M-220,20 C-200,0 -140,-30 -80,-20 C-40,-14 10,-4 60,-30" stroke="url(#gold)" stroke-width="10" opacity="0.95"/>
+      <path d="M240,10 C200,0 150,-30 90,-20 C40,-10 -10,0 -60,-2" stroke="url(#gold)" stroke-width="10" opacity="0.95"/>
+    </g>
+  </svg>
+
+  <div class="content">
+    <div class="divider"></div>
+    <div class="info note">
+      <p><strong>Fecha:</strong> 28 de marzo de 2026</p>
+      <p><strong>Hora:</strong> 4:00 p.m.</p>
+      <p><strong>Lugar:</strong> 
+        <a href="https://www.google.com/maps?q=San+Salvador" target="_blank">San Salvador</a>
+      </p>
+    </div>
+    <div class="divider"></div>
+    <p class="note">Con la bendición de Dios y nuestras familias, te invitamos a compartir este día tan especial con nosotros.</p>
+
+    <a id="btnConfirmar" class="rsvp" href="#" onclick="confirmarAsistencia()">Confirmar asistencia</a>
+
+    <!-- INPUT NUMERO DE INVITADOS -->
+    <div id="contenedorInvitados">
+      <label class="input-label">¿Cuántos asistirán?</label>
+      <input id="inputInvitados" type="number" min="1" class="input-box">
+    </div>
+
+    <div id="mensajeConfirmacion"></div>
+
+    <footer>
+      <p class="note">Con amor, Ana & Nehemías 🤎</p>
+    </footer>
+  </div>
+
+  <!-- FLORES INFERIORES -->
+  <svg class="floral-bottom" viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="g2" x1="0" x2="1">
+        <stop offset="0" stop-color="#f8f0e6"/>
+        <stop offset="1" stop-color="#efe3d3"/>
+      </linearGradient>
+      <linearGradient id="gold2" x1="0" x2="1">
+        <stop offset="0" stop-color="#d6c0a3"/>
+        <stop offset="1" stop-color="#b89163"/>
+      </linearGradient>
+      <filter id="blur2" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="12" result="b"/>
+      </filter>
+    </defs>
+    <g transform="translate(600,110)">
+      <ellipse cx="-160" cy="10" rx="380" ry="80" fill="url(#g2)" opacity="0.9" filter="url(#blur2)"/>
+      <ellipse cx="180" cy="20" rx="380" ry="90" fill="#fff7ef" opacity="0.7" filter="url(#blur2)"/>
+    </g>
+  </svg>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
   const { createClient } = supabase;
-
   const db = createClient(
     "https://xapdvqeexykowetnlhge.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg"
@@ -227,35 +300,26 @@
     if (data) {
       document.getElementById("nombreInvitado").innerText = data.nombre;
 
-      // Si solo tiene 1 invitado, mostrar input pero bloquearlo con valor 1
+      const input = document.getElementById("inputInvitados");
+
       if (data.numero_invitados === 1) {
-        const input = document.getElementById("inputInvitados");
         input.value = 1;
         input.readOnly = true;
       }
 
-      // Si ya confirmó, mostrar numero_invitados_confirmados y bloquear input
       if (data.confirmado === true) {
-        const btn = document.getElementById("btnConfirmar");
-        const msg = document.getElementById("mensajeConfirmacion");
+        document.getElementById("btnConfirmar").innerText = "Ya confirmado ✔";
+        document.getElementById("btnConfirmar").style.background = "#888";
+        document.getElementById("btnConfirmar").style.pointerEvents = "none";
 
-        btn.innerText = "Ya confirmado ✔";
-        btn.style.background = "#888";
-        btn.style.pointerEvents = "none";
+        document.getElementById("mensajeConfirmacion").innerHTML = "Hola " + data.nombre + ", ya habías confirmado anteriormente 🤎";
+        document.getElementById("mensajeConfirmacion").style.display = "block";
 
-        msg.innerHTML = "Ya habías confirmado anteriormente 🤎";
-        msg.style.display = "block";
-
-        // Mostrar el número de invitados confirmados y bloquear input
-        const input = document.getElementById("inputInvitados");
         input.value = data.numero_invitados_confirmados || 1;
         input.readOnly = true;
-      } else {
-        // Si tiene más de 1 invitado y no ha confirmado, input editable
-        if (data.numero_invitados > 1) {
-          document.getElementById("inputInvitados").value = "";
-          document.getElementById("inputInvitados").readOnly = false;
-        }
+      } else if (data.numero_invitados > 1) {
+        input.value = "";
+        input.readOnly = false;
       }
     }
   });
@@ -285,7 +349,6 @@
     }
 
     let cantidadConfirmada = 1;
-
     if (invitado.numero_invitados > 1) {
       cantidadConfirmada = parseInt(document.getElementById("inputInvitados").value);
       if (!cantidadConfirmada || cantidadConfirmada < 1) {
@@ -331,98 +394,5 @@
     contenedorMensaje.style.display = "block";
   }
 </script>
-
-<body>
-  <div class="page">
-
-    <!-- FLORES SUPERIORES -->
-    <svg class="floral-top" viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="g1" x1="0" x2="1">
-          <stop offset="0" stop-color="#f8f0e6"/>
-          <stop offset="1" stop-color="#efe3d3"/>
-        </linearGradient>
-        <linearGradient id="gold" x1="0" x2="1">
-          <stop offset="0" stop-color="#d8c1a2"/>
-          <stop offset="1" stop-color="#c8a97e"/>
-        </linearGradient>
-        <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="14" result="b"/>
-        </filter>
-      </defs>
-
-      <g transform="translate(600,140) scale(1)">
-        <ellipse cx="-180" cy="-10" rx="420" ry="110" fill="url(#g1)" opacity="0.85" filter="url(#blur)"/>
-        <ellipse cx="160" cy="-20" rx="420" ry="120" fill="#fff7ea" opacity="0.72" filter="url(#blur)"/>
-      </g>
-      <g transform="translate(600,140)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.95">
-        <path d="M-220,20 C-200,0 -140,-30 -80,-20 C-40,-14 10,-4 60,-30" stroke="url(#gold)" stroke-width="10" opacity="0.95"/>
-        <path d="M240,10 C200,0 150,-30 90,-20 C40,-10 -10,0 -60,-2" stroke="url(#gold)" stroke-width="10" opacity="0.95"/>
-      </g>
-    </svg>
-
-    <div class="content">
-
-      <div class="divider"></div>
-
-      <div class="info note">
-        <p><strong>Fecha:</strong> 28 de marzo de 2026</p>
-        <p><strong>Hora:</strong> 4:00 p.m.</p>
-        <p><strong>Lugar:</strong>
-          <a href="https://www.google.com/maps?q=San+Salvador" target="_blank">San Salvador</a>
-        </p>
-      </div>
-
-      <div class="divider"></div>
-
-      <h2 id="nombreInvitado"></h2>
-
-      <p class="note">Con la bendición de Dios y nuestras familias, te invitamos a compartir este día tan especial con nosotros.</p>
-
-      <div id="contenedorInvitados">
-        <label class="input-label">¿Cuántos asistirán?</label>
-        <input id="inputInvitados" type="number" min="1" class="input-box">
-      </div>
-
-      <a id="btnConfirmar" class="rsvp" href="#" onclick="confirmarAsistencia()">Confirmar asistencia</a>
-
-      <div id="mensajeConfirmacion"></div>
-
-      <footer>
-        <p class="note">Con amor, Ana & Nehemías 🤎</p>
-      </footer>
-    </div>
-
-    <!-- FLORES INFERIORES -->
-    <svg class="floral-bottom" viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="g2" x1="0" x2="1">
-          <stop offset="0" stop-color="#f8f0e6"/>
-          <stop offset="1" stop-color="#efe3d3"/>
-        </linearGradient>
-        <linearGradient id="gold2" x1="0" x2="1">
-          <stop offset="0" stop-color="#d6c0a3"/>
-          <stop offset="1" stop-color="#b89163"/>
-        </linearGradient>
-        <filter id="blur2" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="12" result="b"/>
-        </filter>
-      </defs>
-
-      <g transform="translate(600,110)">
-        <ellipse cx="-160" cy="10" rx="380" ry="80" fill="url(#g2)" opacity="0.9" filter="url(#blur2)"/>
-        <ellipse cx="180" cy="20" rx="380" ry="90" fill="#fff7ef" opacity="0.7" filter="url(#blur2)"/>
-      </g>
-    </svg>
-
-  </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
