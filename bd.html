@@ -151,7 +151,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
-  // Inicializar Supabase correctamente
+  // Inicializar Supabase
   const { createClient } = supabase;
 
   const db = createClient(
@@ -159,78 +159,75 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg"
   );
 
-  // Obtener el ID desde la URL ?id=INV0001
+  // Obtener ID INV0001 de la URL
   const params = new URLSearchParams(window.location.search);
   const invitadoID = params.get("id");
 
-  // Validación automática al cargar la página
-  document.addEventListener("DOMContentLoaded", async () => {
+  const boton = document.querySelector(".rsvp");
+
+  // 👉 Ver si ya confirmó antes
+  async function verificarEstado() {
+
     if (!invitadoID) {
-      alert("No se encontró el ID del invitado en la URL.");
+      boton.innerText = "ID no válido";
+      boton.style.pointerEvents = "none";
+      boton.style.opacity = "0.6";
       return;
     }
 
-    // Buscar invitado en la BD
     const { data, error } = await db
-      .from("invitados")
-      .select("*")
-      .eq("codigo", invitadoID)
-      .single();
-
-    if (error || !data) {
-      alert("Invitado no encontrado.");
-      return;
-    }
-
-    // Si ya confirmó antes → bloquear botón
-    if (data.confirmado === true) {
-      const btn = document.getElementById("btnConfirmar");
-      btn.innerText = "Ya confirmado ✔";
-      btn.style.background = "#888";
-      btn.style.pointerEvents = "none";
-      alert("Ya habías confirmado anteriormente. ¡Gracias! 🤎");
-    }
-  });
-
-
-  async function confirmarAsistencia() {
-    if (!invitadoID) {
-      alert("No se encontró el ID del invitado.");
-      return;
-    }
-
-    // Verificar si ya estaba confirmado
-    const { data: existente } = await db
       .from("invitados")
       .select("confirmado")
       .eq("codigo", invitadoID)
       .single();
 
-    if (existente.confirmado === true) {
-      alert("Ya confirmaste antes. ¡Gracias!");
+    if (error || !data) {
+      boton.innerText = "Invitado no encontrado";
+      boton.style.pointerEvents = "none";
+      boton.style.opacity = "0.6";
       return;
     }
 
-    // Guardar confirmación
+    // Si YA confirmó → bloquear
+    if (data.confirmado === true) {
+      boton.innerText = "Ya has confirmado ✔";
+      boton.style.pointerEvents = "none";
+      boton.style.opacity = "0.6";
+    }
+  }
+
+  verificarEstado();
+
+
+  // 👉 Confirmar asistencia
+  async function confirmarAsistencia() {
+
+    if (!invitadoID) {
+      alert("No se encontró el ID del invitado.");
+      return;
+    }
+
+    // Guardar fecha y hora actual en formato ISO
+    const ahora = new Date().toISOString();
+
     const { error } = await db
       .from("invitados")
       .update({
         confirmado: true,
-        fecha_confirmacion: new Date().toISOString()
+        fecha_confirmacion: ahora
       })
       .eq("codigo", invitadoID);
 
     if (error) {
-      console.error("ERROR Supabase:", error);
+      console.error(error);
       alert("No se pudo guardar la confirmación.");
       return;
     }
 
     // Cambiar botón
-    const btn = document.getElementById("btnConfirmar");
-    btn.innerText = "Confirmado ✔";
-    btn.style.background = "#888";
-    btn.style.pointerEvents = "none";
+    boton.innerText = "Confirmación registrada ✔";
+    boton.style.pointerEvents = "none";
+    boton.style.opacity = "0.6";
 
     alert("¡Gracias por confirmar tu asistencia!");
   }
@@ -356,6 +353,7 @@
   </div>
 </body>
 </html>
+
 
 
 
