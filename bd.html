@@ -191,6 +191,10 @@
       .eq("codigo", invitadoID)
       .single();
 
+    if (data) {
+      document.getElementById("nombreInvitado").innerText = data.nombre;
+    }
+
     if (data && data.confirmado === true) {
       const btn = document.getElementById("btnConfirmar");
       const msg = document.getElementById("mensajeConfirmacion");
@@ -218,10 +222,6 @@
       .select("confirmado")
       .eq("codigo", invitadoID)
       .single();
-
-    if (data) {
-      document.getElementById("nombreInvitado").innerText = data.nombre;
-    }
 
     if (existente && existente.confirmado === true) {
       contenedorMensaje.innerHTML = "Ya habías confirmado antes 🤎";
@@ -334,5 +334,6 @@
   </div>
 </body>
 </html>
+
 
 
