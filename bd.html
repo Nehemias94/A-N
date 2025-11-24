@@ -151,6 +151,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
+  // Inicializar Supabase
   const { createClient } = supabase;
 
   const db = createClient(
@@ -158,75 +159,62 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg"
   );
 
+  // Obtener el ID desde la URL
   const params = new URLSearchParams(window.location.search);
   const invitadoID = params.get("id");
 
-  const boton = document.getElementById("btnConfirmar");
-
-  // 🔍 Revisar si ya confirmó al cargar la página
-  async function verificarConfirmacion() {
-    if (!invitadoID) return;
-
-    const { data, error } = await db
-      .from("invitados")
-      .select("confirmado")
-      .eq("codigo", invitadoID)
-      .single();
-
-    if (error) {
-      console.error("Error leyendo Supabase", error);
-      return;
-    }
-
-    if (data && data.confirmado === true) {
-      boton.innerText = "Ya confirmaste ✔";
-      boton.style.background = "#aaa";
-      boton.style.pointerEvents = "none";
-    }
-  }
-
-  // ⭐ Confirmar asistencia
   async function confirmarAsistencia() {
+
     if (!invitadoID) {
       alert("No se encontró el ID del invitado en la URL.");
       return;
     }
 
-    // Volver a verificar antes de permitir confirmar
-    const { data: previo } = await db
+    // 1️⃣ Verificar si ya confirmó
+    const { data: existente, error: readError } = await db
       .from("invitados")
       .select("confirmado")
       .eq("codigo", invitadoID)
       .single();
 
-    if (previo && previo.confirmado === true) {
-      alert("Ya habías confirmado antes.");
+    if (readError) {
+      alert("Error al verificar el invitado.");
+      console.error(readError);
       return;
     }
 
+    if (existente && existente.confirmado === true) {
+      alert("Ya has confirmado anteriormente. ¡Gracias!");
+      return;
+    }
+
+    // 2️⃣ Crear fecha y hora actual en formato local
+    const now = new Date();
+
+    // Fecha/hora como Supabase (YYYY-MM-DD HH:MM:SS)
+    const fecha = now.toISOString().slice(0, 19).replace("T", " ");
+
+    // Solo la hora HH:MM:SS
+    const hora = now.toTimeString().slice(0, 8);
+
+    // 3️⃣ Guardar en la base de datos
     const { data, error } = await db
       .from("invitados")
       .update({
         confirmado: true,
-        fecha_confirmacion: new Date().toISOString()
+        fecha_confirmacion: fecha,
+        hora_confirmacion: hora
       })
       .eq("codigo", invitadoID);
 
     if (error) {
-      console.error("ERROR Supabase:", error);
+      console.error("Error al guardar:", error);
       alert("No se pudo guardar la confirmación.");
       return;
     }
 
-    boton.innerText = "Confirmado ✔";
-    boton.style.background = "#aaa";
-    boton.style.pointerEvents = "none";
-
     alert("¡Gracias por confirmar tu asistencia!");
   }
-
-  // Ejecuta validación al cargar página
-  verificarConfirmacion();
 </script>
 
 
@@ -349,6 +337,7 @@
   </div>
 </body>
 </html>
+
 
 
 
