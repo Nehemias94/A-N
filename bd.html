@@ -166,6 +166,39 @@
       h2{ font-size:20px; }
       .floral-top, .floral-bottom{ transform: scale(0.9); }
     }
+
+    .input-box {
+      width: 100%;
+      max-width: 260px;
+      margin: 18px auto;
+      padding: 12px 18px;
+      border-radius: 14px;
+      border: 1.8px solid rgba(200,169,126,0.55);
+      background: rgba(255, 249, 241, 0.85);
+      font-size: 18px;
+      font-family: "Cormorant Garamond", serif;
+      color: #3f3f3f;
+      text-align: center;
+      outline: none;
+      transition: all .25s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    
+    .input-box:focus {
+      border-color: var(--cafe);
+      background: #fffdf8;
+      box-shadow: 0 6px 18px rgba(168,130,86,0.25);
+      transform: translateY(-2px);
+    }
+    
+    .input-label {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--cafe-dark);
+      margin-bottom: 6px;
+      display: block;
+    }
   </style>
 </head>
 
@@ -335,7 +368,10 @@
 
       <p class="note">Con la bendición de Dios y nuestras familias, te invitamos a compartir este día tan especial con nosotros.</p>
 
-      <input id="inputInvitados" type="number" placeholder="¿Cuántos asistirán?" min="1">
+      <div id="contenedorInvitados">
+        <label class="input-label">¿Cuántos asistirán?</label>
+        <input id="inputInvitados" type="number" min="1" class="input-box">
+      </div>
 
       <a id="btnConfirmar" class="rsvp" href="#" onclick="confirmarAsistencia()">Confirmar asistencia</a>
 
@@ -371,6 +407,7 @@
   </div>
 </body>
 </html>
+
 
 
 
