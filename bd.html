@@ -188,7 +188,11 @@ body{
 
   <div class="content">
     <h1>Boda Ana & Nehemías</h1>
-    <p class="note">Con la bendición de Dios y nuestras familias, te invitamos a compartir este día tan especial con nosotros.</p>
+          <!-- MENSAJE PERSONALIZADO CON NOMBRE -->
+      <p class="note">
+        Hola <span id="nombreInvitado">invitado</span>, con la bendición de Dios y nuestras familias, 
+        te invitamos a compartir este día tan especial con nosotros.
+      </p>
 
     <!-- INPUT NUMERO DE INVITADOS -->
     <div id="contenedorInvitados">
@@ -250,6 +254,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     .eq("codigo", invitadoID)
     .single();
 
+   if (data) {
+    document.getElementById("nombreInvitado").innerText = data.nombre;
+  }
+
   if (!data) return;
 
   const input = document.getElementById("inputInvitados");
@@ -263,7 +271,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Mostrar contador si tiene invitados
   if(data.numero_invitados > 1) {
-    contador.innerText = `Máximo invitados permitidos: ${data.numero_invitados}. Ya confirmados: ${data.numero_invitados_confirmados || 0}`;
+    //contador.innerText = `Máximo invitados permitidos: ${data.numero_invitados}. Ya confirmados: ${data.numero_invitados_confirmados || 0}`;
+    contador.innerText = `Máximo invitados permitidos: ${data.numero_invitados}.`;
   }
 
   if (data.confirmado === true) {
@@ -354,6 +363,7 @@ async function confirmarAsistencia() {
 </script>
 </body>
 </html>
+
 
 
 
