@@ -148,52 +148,92 @@
   </style>
 </head>
 
-<script type="module">
-  import { createClient } from "https://esm.sh/@supabase/supabase-js";
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-  // ⚠️ REEMPLAZA con tus valores reales
-  const SUPABASE_URL = "https://xapdvqeexykowetnlhge.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg";
+<script>
+  // Inicializar Supabase correctamente
+  const { createClient } = supabase;
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const db = createClient(
+    "https://xapdvqeexykowetnlhge.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg"
+  );
 
-  // Leer parámetro ?id=INV0001
+  // Obtener el ID desde la URL ?id=INV0001
   const params = new URLSearchParams(window.location.search);
   const invitadoID = params.get("id");
 
-  // Si no hay ID, no permitir confirmar
-  if (!invitadoID) {
-    document.querySelector(".rsvp").innerText = "Error: enlace inválido";
-    document.querySelector(".rsvp").style.pointerEvents = "none";
-  }
-
-  // Botón
-  const btn = document.querySelector(".rsvp");
-
-  // Guardar en Supabase al hacer clic
-  btn.addEventListener("click", async (e) => {
-    e.preventDefault();
-
-    const { error } = await supabase
-      .from("rsvp")
-      .insert({
-        invitado_id: invitadoID,
-        confirmado: true,
-        fecha_confirmacion: new Date().toISOString()
-      });
-
-    if (error) {
-      alert("❌ Hubo un error guardando tu confirmación.");
-      console.log(error);
+  // Validación automática al cargar la página
+  document.addEventListener("DOMContentLoaded", async () => {
+    if (!invitadoID) {
+      alert("No se encontró el ID del invitado en la URL.");
       return;
     }
 
-    // Redirigir al formulario o mostrar mensaje
-    alert("¡Gracias! Tu asistencia ha sido confirmada.");
+    // Buscar invitado en la BD
+    const { data, error } = await db
+      .from("invitados")
+      .select("*")
+      .eq("codigo", invitadoID)
+      .single();
 
-    // Opcional: dirigir a otro lado
-    // window.location.href = "gracias.html";
+    if (error || !data) {
+      alert("Invitado no encontrado.");
+      return;
+    }
+
+    // Si ya confirmó antes → bloquear botón
+    if (data.confirmado === true) {
+      const btn = document.getElementById("btnConfirmar");
+      btn.innerText = "Ya confirmado ✔";
+      btn.style.background = "#888";
+      btn.style.pointerEvents = "none";
+      alert("Ya habías confirmado anteriormente. ¡Gracias! 🤎");
+    }
   });
+
+
+  async function confirmarAsistencia() {
+    if (!invitadoID) {
+      alert("No se encontró el ID del invitado.");
+      return;
+    }
+
+    // Verificar si ya estaba confirmado
+    const { data: existente } = await db
+      .from("invitados")
+      .select("confirmado")
+      .eq("codigo", invitadoID)
+      .single();
+
+    if (existente.confirmado === true) {
+      alert("Ya confirmaste antes. ¡Gracias!");
+      return;
+    }
+
+    // Guardar confirmación
+    const { error } = await db
+      .from("invitados")
+      .update({
+        confirmado: true,
+        fecha_confirmacion: new Date().toISOString()
+      })
+      .eq("codigo", invitadoID);
+
+    if (error) {
+      console.error("ERROR Supabase:", error);
+      alert("No se pudo guardar la confirmación.");
+      return;
+    }
+
+    // Cambiar botón
+    const btn = document.getElementById("btnConfirmar");
+    btn.innerText = "Confirmado ✔";
+    btn.style.background = "#888";
+    btn.style.pointerEvents = "none";
+
+    alert("¡Gracias por confirmar tu asistencia!");
+  }
 </script>
 
 <body>
@@ -272,6 +312,7 @@
   </div>
 </body>
 </html>
+
 
 
 
