@@ -194,11 +194,12 @@ body{
 
     <!-- INPUT NUMERO DE INVITADOS -->
     <div id="contenedorInvitados">
+      <div id="contadorInvitados"></div>
       <label class="input-label">¿Cuántos asistirán?</label>
       <input id="inputInvitados" type="number" min="1" class="input-box">
     </div>
 
-    <div id="contadorInvitados"></div>
+    
     <div id="mensajeConfirmacion"></div>
   </div>
 
@@ -262,7 +263,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Mostrar contador si tiene invitados
   if(data.numero_invitados > 1) {
-    contador.innerText = `Máximo permitidos: ${data.numero_invitados}. Ya confirmados: ${data.numero_invitados_confirmados || 0}`;
+    contador.innerText = `Máximo invitados permitidos: ${data.numero_invitados}. Ya confirmados: ${data.numero_invitados_confirmados || 0}`;
   }
 
   if (data.confirmado === true) {
@@ -353,6 +354,7 @@ async function confirmarAsistencia() {
 </script>
 </body>
 </html>
+
 
 
 
