@@ -148,11 +148,13 @@
   </style>
 </head>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
-  // Usa tu URL real y la ANON KEY (pero cámbiala antes)
-  const supabase = supabase.createClient(
+  // Inicializar Supabase correctamente
+  const { createClient } = supabase;
+
+  const db = createClient(
     "https://xapdvqeexykowetnlhge.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg"
   );
@@ -162,12 +164,15 @@
   const invitadoID = params.get("id");
 
   async function confirmarAsistencia() {
+
     if (!invitadoID) {
-      alert("No se encontró el ID del invitado.");
+      alert("No se encontró el ID del invitado en la URL.");
       return;
     }
 
-    const { data, error } = await supabase
+    console.log("ID detectado:", invitadoID);
+
+    const { data, error } = await db
       .from("invitados")
       .update({
         confirmado: true,
@@ -176,13 +181,16 @@
       .eq("codigo", invitadoID);
 
     if (error) {
-      console.error(error);
-      alert("Hubo un problema al guardar la confirmación.");
-    } else {
-      alert("¡Gracias por confirmar tu asistencia!");
+      console.error("ERROR Supabase:", error);
+      alert("No se pudo guardar la confirmación.");
+      return;
     }
+
+    alert("¡Gracias por confirmar tu asistencia!");
   }
 </script>
+
+  
 <body>
   <div class="page">
 
@@ -261,6 +269,7 @@
   </div>
 </body>
 </html>
+
 
 
 
