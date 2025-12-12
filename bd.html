@@ -487,6 +487,7 @@ async function confirmarAsistencia() {
       }
       if (cantidadConfirmada > invitado.numero_invitados) {
         showMessage(`Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`);
+        btn.disabled = true;
         return;
       }
     }
@@ -548,4 +549,5 @@ input.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+
 
