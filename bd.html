@@ -5,11 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Boda Ana & Nehemías</title>
 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 
-<!-- Nota: para producción, inyecta URL/KEY desde variables de entorno o un endpoint seguro -->
+<!-- Nota:
+  - Para producción inyecta SUPABASE_URL / SUPABASE_ANON_KEY desde el servidor en window.__SUPABASE_CONFIG__
+    o expón un endpoint seguro que devuelva solo la anon key (no service_role).
+  - Dejar meta tags es práctico para desarrollo, pero evita subir claves a repositorios públicos.
+-->
 <meta name="supabase-url" content="https://xapdvqeexykowetnlhge.supabase.co">
-<meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg">
+<meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTk[...]">
 
 <style>
 :root{
@@ -206,7 +211,7 @@ body{
 </head>
 
 <body>
-<div class="page" id="invitacion">
+<div class="page" id="invitacion" role="region" aria-labelledby="titulo-invitacion">
 
   <!-- FLORES SUPERIORES -->
   <svg class="floral-top" viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
@@ -233,34 +238,35 @@ body{
     </g>
   </svg>
 
-  <div class="content">
-    <h1>Nuestra Boda Ana &amp; Nehemías</h1>
+  <main class="content" id="main-content">
+    <h1 id="titulo-invitacion">Nuestra Boda Ana &amp; Nehemías</h1>
 
       <div class="divider"></div>
-          <!-- MENSAJE PERSONALIZADO CON NOMBRE -->
+
+      <!-- MENSAJE PERSONALIZADO CON NOMBRE -->
       <p class="note">
-        Hola <span id="nombreInvitado">invitado</span>, con la bendición de Dios y nuestras familias, 
+        Hola <span id="nombreInvitado">invitado</span>, con la bendición de Dios y nuestras familias,
         te invitamos a compartir este día tan especial con nosotros.
       </p>
 
-        <!-- 🎁 MENSAJE DE REGALO -->
-    <div id="mensajeRegalo" aria-hidden="true">
-      <div style="
-        margin: 18px auto;
-        padding: 14px 20px;
-        background: rgba(200,169,126,0.12);
-        border-left: 5px solid var(--cafe);
-        border-radius: 10px;
-        max-width: 360px;
-        font-size: 20px;
-        font-weight: 600;
-        color: var(--cafe-dark);
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      ">
-        🎁 <span style="font-style:italic;">Regalo de sobre</span>
+      <!-- 🎁 MENSAJE DE REGALO -->
+      <div id="mensajeRegalo" aria-hidden="true">
+        <div style="
+          margin: 18px auto;
+          padding: 14px 20px;
+          background: rgba(200,169,126,0.12);
+          border-left: 5px solid var(--cafe);
+          border-radius: 10px;
+          max-width: 360px;
+          font-size: 20px;
+          font-weight: 600;
+          color: var(--cafe-dark);
+          text-align: center;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        ">
+          🎁 <span style="font-style:italic;">Regalo de sobre</span>
+        </div>
       </div>
-    </div>
 
       <div class="divider"></div>
 
@@ -269,17 +275,18 @@ body{
         <p><strong>Hora:</strong> 4:00 p.m.</p>
         <p><strong>Lugar:</strong>
           <a href="https://www.google.com/maps?q=San+Salvador" target="_blank" rel="noopener noreferrer">San Salvador</a>
-        <!-- ICONOS MAPAS -->
-          <div class="map-links">
-            <a class="map-btn" href="https://www.google.com/maps?q=San+Salvador" target="_blank" rel="noopener noreferrer" aria-label="Abrir Google Maps">
-              <img src="https://icons.iconarchive.com/icons/marcus-roberto/google-play/256/Google-Maps-icon.png" alt="Google Maps">
-            </a>
-
-            <a class="map-btn" href="https://waze.com/ul?q=San+Salvador" target="_blank" rel="noopener noreferrer" aria-label="Abrir Waze">
-              <img src="https://img.icons8.com/?size=100&id=euH4MtqTk47Q&format=png&color=4169e1" alt="Waze">
-            </a>
-          </div>
         </p>
+
+        <!-- ICONOS MAPAS -->
+        <div class="map-links" aria-hidden="false">
+          <a class="map-btn" href="https://www.google.com/maps?q=San+Salvador" target="_blank" rel="noopener noreferrer" aria-label="Abrir Google Maps">
+            <img src="https://icons.iconarchive.com/icons/marcus-roberto/google-play/256/Google-Maps-icon.png" alt="Google Maps">
+          </a>
+
+          <a class="map-btn" href="https://waze.com/ul?q=San+Salvador" target="_blank" rel="noopener noreferrer" aria-label="Abrir Waze">
+            <img src="https://img.icons8.com/?size=100&id=euH4MtqTk47Q&format=png&color=4169e1" alt="Waze">
+          </a>
+        </div>
       </div>
 
     <div class="divider"></div>
@@ -289,19 +296,18 @@ body{
       <div id="contadorInvitados" class="note" aria-hidden="true"></div>
 
       <label class="input-label" for="inputInvitados">¿Cuántos asistirán?</label>
-      <input id="inputInvitados" type="number" min="1" step="1" class="input-box" aria-describedby="contadorInvitados" inputmode="numeric" pattern="[0-9]*" />
-
+      <input id="inputInvitados" type="number" min="1" step="1" class="input-box" aria-describedby="contadorInvitados" inputmode="numeric" pattern="[0-9]*" aria-label="Número de asistentes" />
     </div>
 
     <!-- Usamos un botón en vez de <a> para accesibilidad -->
     <button id="btnConfirmar" class="rsvp" type="button">Confirmar asistencia</button>
 
     <div id="mensajeConfirmacion" role="status" aria-live="polite"></div>
-  </div>
+  </main>
 
     <!-- FOOTER -->
   <footer>
-    <p><center>Con amor, Ana &amp; Nehemías 🤎</center></p>
+    <p style="text-align:center;">Con amor, Ana &amp; Nehemías 🤎</p>
   </footer>
 
   <!-- FLORES INFERIORES -->
@@ -330,31 +336,45 @@ body{
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
 /*
-  Mejoras principales en JS:
-  - No usar innerHTML para insertar el nombre (XSS). Usar textContent.
-  - Validaciones en cliente (max, min).
-  - Deshabilitar botón durante petición y evitar envíos múltiples.
-  - Manejo de errores y mensajes de loading.
-  - Separación clara de lógica y mensajes mostrados.
-  - Nota de seguridad: nunca subir service_role key al cliente. USE RLS y políticas en Supabase.
+  Mejoras aplicadas:
+  - Validaciones robustas y mensajes unificados.
+  - Prevención de XSS usando textContent.
+  - Evitar que el botón quede deshabilitado en caso de fallo.
+  - Manejo flexible de createClient desde el bundle del CDN.
+  - Recomendar inyección de config desde servidor (window.__SUPABASE_CONFIG__).
 */
 
-/* Lee la configuración desde meta tags — así no queda hardcodeado en el script visible en el HTML si prefieres inyectarlo desde el servidor. */
-const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
-const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
+const metaUrl = document.querySelector('meta[name="supabase-url"]')?.content || '';
+const metaKey = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
+
+/* Preferimos la inyección server-side en window.__SUPABASE_CONFIG__ (mejor para no versionar claves) */
+const injected = window.__SUPABASE_CONFIG__ || null;
+const SUPABASE_URL = injected?.url || metaUrl;
+const SUPABASE_ANON_KEY = injected?.anonKey || metaKey;
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.warn('Supabase URL/KEY no configurados. Reemplaza meta tags con valores seguros para producción.');
+  console.warn('Supabase URL/KEY no configurados. Reemplaza meta tags con valores seguros para producción o inyecta window.__SUPABASE_CONFIG__.');
 }
 
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+/* Crear cliente Supabase de forma robusta dependiendo del bundle (CDN puede exponer createClient o window.supabase.createClient) */
+let db = null;
+try {
+  if (typeof window.supabase === 'object' && typeof window.supabase.createClient === 'function') {
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else if (typeof createClient === 'function') {
+    // Si el bundle expone createClient globalmente
+    db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else {
+    console.error('No se encontró createClient de Supabase en el entorno.');
+  }
+} catch (e) {
+  console.error('Error al inicializar Supabase:', e);
+}
 
 /* Utilidades */
 const params = new URLSearchParams(window.location.search);
 const invitadoID = params.get("id");
 
-/* Referencias DOM */
 const nombreSpan = document.getElementById('nombreInvitado');
 const mensajeRegalo = document.getElementById('mensajeRegalo');
 const contenedor = document.getElementById('contenedorInvitados');
@@ -366,12 +386,11 @@ const contenedorMensaje = document.getElementById('mensajeConfirmacion');
 function showMessage(text, opts = {}) {
   contenedorMensaje.style.display = 'block';
   contenedorMensaje.style.color = opts.color || 'var(--cafe-dark)';
-  // insertamos como textContent para evitar XSS; si queremos saltos de línea, creamos nodos
-  contenedorMensaje.textContent = text;
+  contenedorMensaje.textContent = text; // usar textContent para evitar XSS
 }
 
 function showHTMLMessage(html) {
-  // Uso controlado: solo cuando estás seguro del contenido
+  // Uso controlado — evita usar con contenido no confiable
   contenedorMensaje.style.display = 'block';
   contenedorMensaje.innerHTML = html;
 }
@@ -383,13 +402,25 @@ function escapeHtml(s) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // UX: estado inicial
+  btn.disabled = true;
+  btn.textContent = 'Cargando...';
+
   if (!invitadoID) {
-    // Si no hay id, dejamos la página genérica.
+    // Página genérica, habilitar botón para que el usuario pueda ver el estado manualmente
+    btn.disabled = false;
+    btn.textContent = 'Confirmar asistencia';
+    return;
+  }
+
+  if (!db) {
+    showMessage('Error de configuración. Intenta nuevamente más tarde.', { color: '#b33' });
+    btn.disabled = false;
+    btn.textContent = 'Confirmar asistencia';
     return;
   }
 
   try {
-    // mejor usar try/catch por si falla la conexión
     const { data, error } = await db
       .from("invitados")
       .select("*")
@@ -399,14 +430,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (error) {
       console.error(error);
       showMessage('No se pudo obtener la información del invitado.');
+      btn.disabled = false;
+      btn.textContent = 'Confirmar asistencia';
       return;
     }
     if (!data) {
       showMessage('Invitado no encontrado.');
+      btn.disabled = false;
+      btn.textContent = 'Confirmar asistencia';
       return;
     }
 
-    // Usar textContent en vez de innerHTML para evitar inyección
     nombreSpan.textContent = data.nombre || 'invitado';
 
     // Mostrar regalo si corresponde
@@ -415,20 +449,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       mensajeRegalo.setAttribute('aria-hidden', 'false');
     } else {
       mensajeRegalo.style.display = 'none';
+      mensajeRegalo.setAttribute('aria-hidden', 'true');
     }
 
-    // Si no puede traer invitados, ocultamos el input
-    if (data.numero_invitados === 1 || data.confirmado === true) {
+    // Control de entrada según permisos
+    const maxInvitados = Number.isInteger(data.numero_invitados) ? data.numero_invitados : 1;
+    if (maxInvitados > 1) {
+      contador.textContent = `Máximo invitados permitidos: ${maxInvitados}.`;
+      contador.setAttribute('aria-hidden', 'false');
+      input.setAttribute('max', String(maxInvitados));
+      input.placeholder = `Máx ${maxInvitados}`;
+      input.value = ''; // vacío por defecto
+      contenedor.style.display = '';
+    } else {
+      // si solo 1 invitado, ocultamos input y asumimos 1
       contenedor.style.display = 'none';
-    }
-
-    // Mostrar contador si tiene invitados
-    if (data.numero_invitados > 1) {
-      contador.textContent = `Máximo invitados permitidos: ${data.numero_invitados}.`;
-      // Establecemos el max en el input para ayudar a la validación
-      input.setAttribute('max', String(data.numero_invitados));
-      input.value = data.numero_invitados === 1 ? '1' : '';
-      input.placeholder = `Máx ${data.numero_invitados}`;
     }
 
     if (data.confirmado === true) {
@@ -437,13 +472,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       btn.disabled = true;
 
       const confirmados = data.numero_invitados_confirmados || 1;
-      showMessage(`Hola ${data.nombre}, gracias por confirmar.Has confirmado ${confirmados} invitado(s).`);
-      showMessage(`¡TE ESPERAMOS!.`);
+      showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s). ¡Te esperamos!`);
+      return;
     }
+
+    // Estado normal: habilitar botón
+    btn.disabled = false;
+    btn.textContent = 'Confirmar asistencia';
 
   } catch (err) {
     console.error(err);
     showMessage('Error al conectar con la base de datos.');
+    btn.disabled = false;
+    btn.textContent = 'Confirmar asistencia';
   }
 });
 
@@ -451,14 +492,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 btn.addEventListener('click', confirmarAsistencia);
 
 async function confirmarAsistencia() {
-  // Bloqueo UI
+  if (btn.disabled) return;
   btn.disabled = true;
   const originalText = btn.textContent;
   btn.textContent = 'Guardando...';
 
+  let operationSucceeded = false;
+
   try {
     if (!invitadoID) {
       showMessage('No se encontró el ID del invitado.');
+      return;
+    }
+    if (!db) {
+      showMessage('Configuración incorrecta. Contacta al organizador.');
       return;
     }
 
@@ -474,25 +521,32 @@ async function confirmarAsistencia() {
       return;
     }
 
-    if (!invitado || invitado.confirmado) {
+    if (!invitado) {
+      showMessage('Invitado no encontrado.');
+      return;
+    }
+
+    if (invitado.confirmado) {
       showMessage('Ya habías confirmado antes 🤎');
       return;
     }
 
     let cantidadConfirmada = 1;
-    if (invitado.numero_invitados > 1) {
-      cantidadConfirmada = parseInt(input.value, 10);
-      if (!cantidadConfirmada || cantidadConfirmada < 1) {
+    const maxInv = Number.isInteger(invitado.numero_invitados) ? invitado.numero_invitados : 1;
+    if (maxInv > 1) {
+      const parsed = parseInt(input.value, 10);
+      if (Number.isNaN(parsed)) {
         showMessage('Ingresa cuántos asistirán.');
         return;
       }
-      if (cantidadConfirmada > invitado.numero_invitados) {
-        showMessage(`Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`);
+      cantidadConfirmada = Math.max(1, parsed);
+      if (cantidadConfirmada > maxInv) {
+        showMessage(`Solo puedes confirmar hasta ${maxInv} invitado(s).`);
         return;
       }
     }
 
-    // Actualizar
+    // Datos a actualizar
     const updatedData = {
       confirmado: true,
       fecha_confirmacion: new Date().toISOString().split("T")[0],
@@ -511,28 +565,29 @@ async function confirmarAsistencia() {
       return;
     }
 
+    operationSucceeded = true;
+
     btn.textContent = "Confirmado ✔";
     btn.style.background = "#888";
     btn.disabled = true;
 
     // Ocultar input si aplica
-    if (invitado.numero_invitados === 1 || cantidadConfirmada >= 1) {
+    if (maxInv === 1 || cantidadConfirmada >= 1) {
       contenedor.style.display = "none";
     }
 
-    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s).`);
+    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s).`);
 
     // Actualizar contador accesible
-    if (invitado.numero_invitados > 1) {
-      contador.textContent = `Máximo de invitados permitidos: ${invitado.numero_invitados}. Ya confirmados: ${cantidadConfirmada}`;
+    if (maxInv > 1) {
+      contador.textContent = `Máximo de invitados permitidos: ${maxInv}. Ya confirmados: ${cantidadConfirmada}`;
     }
-
   } catch (err) {
     console.error(err);
     showMessage('Ocurrió un error inesperado. Intenta nuevamente más tarde.');
   } finally {
-    // restaurar estado si quedó habilitado por error
-    if (!btn.disabled) {
+    // Si la operación no tuvo éxito, restauramos el estado del botón
+    if (!operationSucceeded) {
       btn.textContent = originalText;
       btn.disabled = false;
     }
@@ -549,8 +604,3 @@ input.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
-
-
-
-
-
