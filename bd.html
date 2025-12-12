@@ -437,7 +437,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       btn.disabled = true;
 
       const confirmados = data.numero_invitados_confirmados || 1;
-      showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s). ¡TE ESPERAMOS!.`);
+      showMessage(`Hola ${data.nombre}, gracias por confirmar.<br>Has confirmado ${confirmados} invitado(s).<br>¡TE ESPERAMOS!.`);
     }
 
   } catch (err) {
@@ -548,5 +548,6 @@ input.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+
 
 
