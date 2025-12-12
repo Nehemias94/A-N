@@ -297,6 +297,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
    if (data) {
     document.getElementById("nombreInvitado").innerText = data.nombre;
+
+     // 🎁 SI REGALO ES TRUE → MOSTRAR MENSAJE
+    if (data.regalo === true) {
+      document.getElementById("mensajeRegalo").style.display = "block";
+    }
   }
 
   if (!data) return;
@@ -404,6 +409,7 @@ async function confirmarAsistencia() {
 </script>
 </body>
 </html>
+
 
 
 
