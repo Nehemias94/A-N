@@ -164,6 +164,21 @@ body{
 .divider{
   width:96px;height:2px;background:var(--cafe);margin:10px auto;border-radius:2px;
 }
+
+.map-links{
+  margin-top:12px;
+  display:flex;
+  justify-content:center;
+  gap:18px;
+}
+.map-btn img{
+  width:42px;
+  height:42px;
+  transition:transform .2s ease;
+}
+.map-btn img:hover{
+  transform:scale(1.12);
+}
 </style>
 </head>
 
@@ -231,6 +246,16 @@ body{
         <p><strong>Hora:</strong> 4:00 p.m.</p>
         <p><strong>Lugar:</strong>
           <a href="https://www.google.com/maps?q=San+Salvador" target="_blank">San Salvador</a>
+        <!-- ICONOS MAPAS -->
+          <div class="map-links">
+            <a class="map-btn" href="https://www.google.com/maps?q=San+Salvador" target="_blank">
+              <img src="https://cdn-icons-png.flaticon.com/512/2991/2991231.png">
+            </a>
+          
+            <a class="map-btn" href="https://waze.com/ul?q=San+Salvador" target="_blank">
+              <img src="https://cdn-icons-png.flaticon.com/512/732/732244.png">
+            </a>
+          </div>
         </p>
       </div>
 
@@ -409,6 +434,7 @@ async function confirmarAsistencia() {
 </script>
 </body>
 </html>
+
 
 
 
