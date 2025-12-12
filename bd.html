@@ -9,8 +9,8 @@
 
 <!-- Nota: para producción, inyecta URL/KEY desde variables de entorno o un endpoint seguro -->
 <meta name="supabase-url" content="https://xapdvqeexykowetnlhge.supabase.co">
-<meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg">
-
+<meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTk[...]
+ 
 <style>
 :root{
   --cafe:#c8a97e;
@@ -456,6 +456,9 @@ async function confirmarAsistencia() {
   const originalText = btn.textContent;
   btn.textContent = 'Guardando...';
 
+  // Flag para saber si la operación terminó correctamente
+  let success = false;
+
   try {
     if (!invitadoID) {
       showMessage('No se encontró el ID del invitado.');
@@ -484,10 +487,14 @@ async function confirmarAsistencia() {
       cantidadConfirmada = parseInt(input.value, 10);
       if (!cantidadConfirmada || cantidadConfirmada < 1) {
         showMessage('Ingresa cuántos asistirán.');
+        input.focus();
         return;
       }
       if (cantidadConfirmada > invitado.numero_invitados) {
         showMessage(`Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`);
+        // mejora UX: seleccionar el valor erróneo para corregirlo fácilmente
+        input.focus();
+        input.select && input.select();
         return;
       }
     }
@@ -511,6 +518,9 @@ async function confirmarAsistencia() {
       return;
     }
 
+    // Marcamos éxito antes de mantener el botón deshabilitado
+    success = true;
+
     btn.textContent = "Confirmado ✔";
     btn.style.background = "#888";
     btn.disabled = true;
@@ -531,8 +541,8 @@ async function confirmarAsistencia() {
     console.error(err);
     showMessage('Ocurrió un error inesperado. Intenta nuevamente más tarde.');
   } finally {
-    // restaurar estado si quedó habilitado por error
-    if (!btn.disabled) {
+    // Si no hubo éxito, restauramos el estado del botón para permitir reintentos
+    if (!success) {
       btn.textContent = originalText;
       btn.disabled = false;
     }
@@ -549,6 +559,3 @@ input.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
-
-
-
