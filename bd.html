@@ -7,17 +7,11 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 
-<!-- Nota: para producción, inyecta URL/KEY desde variables de entorno o un endpoint seguro -->
-<meta name="supabase-url" content="https://xapdvqeexykowetnlhge.supabase.co">
-<meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTk[...]
- 
 <style>
 :root{
   --cafe:#c8a97e;
   --cafe-dark:#a98256;
   --text:#3f3f3f;
-  --max-width:760px;
-  --radius:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -37,9 +31,9 @@ body{
 }
 .page {
   width:100%;
-  max-width:var(--max-width);
+  max-width:760px;
   position:relative;
-  padding:36px;
+  padding:48px;
   border-radius:18px;
   background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
@@ -90,21 +84,13 @@ body{
   text-decoration:none;
   font-weight:700;
   box-shadow: 0 8px 18px rgba(168,130,86,0.25);
-  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+  transition: transform .15s ease, box-shadow .15s ease;
   font-family: "Cormorant Garamond", serif;
   font-size:18px;
   letter-spacing:0.4px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  border: none;
-  cursor: pointer;
 }
-.rsvp[disabled]{
-  opacity:0.7;
-  cursor:not-allowed;
-  transform:none;
-  box-shadow:none;
-}
-.rsvp:hover:not([disabled]){
+.rsvp:hover{
   transform: translateY(-3px);
   box-shadow: 0 12px 26px rgba(168,130,86,0.32);
 }
@@ -125,8 +111,7 @@ body{
   transition: all .25s ease;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-.input-box:focus,
-.input-box:focus-visible {
+.input-box:focus {
   border-color: var(--cafe);
   background: #fffdf8;
   box-shadow: 0 6px 18px rgba(168,130,86,0.25);
@@ -149,13 +134,13 @@ body{
 }
 #mensajeConfirmacion{
   margin-top:26px;
-  font-size:20px;
+  font-size:22px;
   font-weight:600;
   text-align:center;
   color:var(--cafe-dark);
   letter-spacing:0.4px;
   background:rgba(200,169,126,0.08);
-  padding:16px 18px;
+  padding:18px 22px;
   border-radius:14px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
   display:none;
@@ -190,26 +175,18 @@ body{
   width:42px;
   height:42px;
   transition:transform .2s ease;
-  display:block;
 }
 .map-btn img:hover{
   transform:scale(1.12);
-}
-
-/* Responsive tweaks */
-@media (max-width:420px){
-  .page{ padding:18px; }
-  .note{ font-size:18px; }
-  .input-box{ max-width:200px; }
 }
 </style>
 </head>
 
 <body>
-<div class="page" id="invitacion">
+<div class="page">
 
   <!-- FLORES SUPERIORES -->
-  <svg class="floral-top" viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <svg class="floral-top" viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="g1" x1="0" x2="1">
         <stop offset="0" stop-color="#f8f0e6"/>
@@ -234,7 +211,7 @@ body{
   </svg>
 
   <div class="content">
-    <h1>Nuestra Boda Ana &amp; Nehemías</h1>
+    <h1>Nuestra Boda Ana & Nehemías</h1>
 
       <div class="divider"></div>
           <!-- MENSAJE PERSONALIZADO CON NOMBRE -->
@@ -244,7 +221,7 @@ body{
       </p>
 
         <!-- 🎁 MENSAJE DE REGALO -->
-    <div id="mensajeRegalo" aria-hidden="true">
+    <div id="mensajeRegalo">
       <div style="
         margin: 18px auto;
         padding: 14px 20px;
@@ -264,19 +241,19 @@ body{
 
       <div class="divider"></div>
 
-      <div class="info note" role="region" aria-label="Detalles del evento">
+      <div class="info note">
         <p><strong>Fecha:</strong> 28 de marzo de 2026</p>
         <p><strong>Hora:</strong> 4:00 p.m.</p>
         <p><strong>Lugar:</strong>
-          <a href="https://www.google.com/maps?q=San+Salvador" target="_blank" rel="noopener noreferrer">San Salvador</a>
+          <a href="https://www.google.com/maps?q=San+Salvador" target="_blank">San Salvador</a>
         <!-- ICONOS MAPAS -->
           <div class="map-links">
-            <a class="map-btn" href="https://www.google.com/maps?q=San+Salvador" target="_blank" rel="noopener noreferrer" aria-label="Abrir Google Maps">
-              <img src="https://icons.iconarchive.com/icons/marcus-roberto/google-play/256/Google-Maps-icon.png" alt="Google Maps">
+            <a class="map-btn" href="https://www.google.com/maps?q=San+Salvador" target="_blank">
+              <img src="https://icons.iconarchive.com/icons/marcus-roberto/google-play/256/Google-Maps-icon.png">
             </a>
-
-            <a class="map-btn" href="https://waze.com/ul?q=San+Salvador" target="_blank" rel="noopener noreferrer" aria-label="Abrir Waze">
-              <img src="https://img.icons8.com/?size=100&id=euH4MtqTk47Q&format=png&color=4169e1" alt="Waze">
+          
+            <a class="map-btn" href="https://waze.com/ul?q=San+Salvador" target="_blank">
+              <img src="https://img.icons8.com/?size=100&id=euH4MtqTk47Q&format=png&color=4169e1">
             </a>
           </div>
         </p>
@@ -285,27 +262,24 @@ body{
     <div class="divider"></div>
 
     <!-- INPUT NUMERO DE INVITADOS -->
-    <div id="contenedorInvitados" aria-live="polite">
-      <div id="contadorInvitados" class="note" aria-hidden="true"></div>
-
-      <label class="input-label" for="inputInvitados">¿Cuántos asistirán?</label>
-      <input id="inputInvitados" type="number" min="1" step="1" class="input-box" aria-describedby="contadorInvitados" inputmode="numeric" pattern="[0-9]*" />
-
+    <div id="contenedorInvitados">
+      <div id="contadorInvitados" class="note"></div>
+      <label class="input-label">¿Cuántos asistirán?</label>
+      <input id="inputInvitados" type="number" min="1" class="input-box">
     </div>
 
-    <!-- Usamos un botón en vez de <a> para accesibilidad -->
-    <button id="btnConfirmar" class="rsvp" type="button">Confirmar asistencia</button>
+    <a id="btnConfirmar" class="rsvp" href="#" onclick="confirmarAsistencia()">Confirmar asistencia</a>
 
-    <div id="mensajeConfirmacion" role="status" aria-live="polite"></div>
+    <div id="mensajeConfirmacion"></div>
   </div>
 
     <!-- FOOTER -->
   <footer>
-    <p><center>Con amor, Ana &amp; Nehemías 🤎</center></p>
+    <p><center>Con amor, Ana & Nehemías 🤎</center></p>
   </footer>
 
   <!-- FLORES INFERIORES -->
-  <svg class="floral-bottom" viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <svg class="floral-bottom" viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="g2" x1="0" x2="1">
         <stop offset="0" stop-color="#f8f0e6"/>
@@ -326,236 +300,171 @@ body{
   </svg>
 </div>
 
-<!-- Dependencia Supabase: carga desde CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
-/*
-  Mejoras principales en JS:
-  - No usar innerHTML para insertar el nombre (XSS). Usar textContent.
-  - Validaciones en cliente (max, min).
-  - Deshabilitar botón durante petición y evitar envíos múltiples.
-  - Manejo de errores y mensajes de loading.
-  - Separación clara de lógica y mensajes mostrados.
-  - Nota de seguridad: nunca subir service_role key al cliente. USE RLS y políticas en Supabase.
-*/
-
-/* Lee la configuración desde meta tags — así no queda hardcodeado en el script visible en el HTML si prefieres inyectarlo desde el servidor. */
-const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
-const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
-
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.warn('Supabase URL/KEY no configurados. Reemplaza meta tags con valores seguros para producción.');
-}
-
 const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const db = createClient(
+  "https://xapdvqeexykowetnlhge.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhcGR2cWVleHlrb3dldG5saGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5OTk5MjgsImV4cCI6MjA3OTU3NTkyOH0.tynERwGVWQVZSHRoc6ab6hHe34GbxH4O7RcmHnbLmzg"
+);
 
-/* Utilidades */
 const params = new URLSearchParams(window.location.search);
 const invitadoID = params.get("id");
 
-/* Referencias DOM */
-const nombreSpan = document.getElementById('nombreInvitado');
-const mensajeRegalo = document.getElementById('mensajeRegalo');
-const contenedor = document.getElementById('contenedorInvitados');
-const contador = document.getElementById('contadorInvitados');
-const input = document.getElementById('inputInvitados');
-const btn = document.getElementById('btnConfirmar');
-const contenedorMensaje = document.getElementById('mensajeConfirmacion');
-
-function showMessage(text, opts = {}) {
-  contenedorMensaje.style.display = 'block';
-  contenedorMensaje.style.color = opts.color || 'var(--cafe-dark)';
-  // insertamos como textContent para evitar XSS; si queremos saltos de línea, creamos nodos
-  contenedorMensaje.textContent = text;
-}
-
-function showHTMLMessage(html) {
-  // Uso controlado: solo cuando estás seguro del contenido
-  contenedorMensaje.style.display = 'block';
-  contenedorMensaje.innerHTML = html;
-}
-
-function escapeHtml(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
-
 document.addEventListener("DOMContentLoaded", async () => {
-  if (!invitadoID) {
-    // Si no hay id, dejamos la página genérica.
-    return;
+  if (!invitadoID) return;
+
+  const { data } = await db
+    .from("invitados")
+    .select("*")
+    .eq("codigo", invitadoID)
+    .single();
+
+   if (data) {
+    document.getElementById("nombreInvitado").innerText = data.nombre;
+
+     // 🎁 SI REGALO ES TRUE → MOSTRAR MENSAJE
+    if (data.regalo === true) {
+      document.getElementById("mensajeRegalo").style.display = "block";
+    }
   }
 
-  try {
-    // mejor usar try/catch por si falla la conexión
-    const { data, error } = await db
-      .from("invitados")
-      .select("*")
-      .eq("codigo", invitadoID)
-      .single();
+  if (!data) return;
 
-    if (error) {
-      console.error(error);
-      showMessage('No se pudo obtener la información del invitado.');
-      return;
-    }
-    if (!data) {
-      showMessage('Invitado no encontrado.');
-      return;
-    }
+  const input = document.getElementById("inputInvitados");
+  const contenedor = document.getElementById("contenedorInvitados");
+  const contador = document.getElementById("contadorInvitados");
 
-    // Usar textContent en vez de innerHTML para evitar inyección
-    nombreSpan.textContent = data.nombre || 'invitado';
+  // Mostrar input solo si puede confirmar más de 1 y aún no confirmó
+  if (data.numero_invitados === 1 || data.confirmado === true) {
+    contenedor.style.display = "none";
+  }
 
-    // Mostrar regalo si corresponde
-    if (data.regalo === true) {
-      mensajeRegalo.style.display = 'block';
-      mensajeRegalo.setAttribute('aria-hidden', 'false');
-    } else {
-      mensajeRegalo.style.display = 'none';
-    }
+  // Mostrar contador si tiene invitados
+  if(data.numero_invitados > 1) {
+    //contador.innerText = `Máximo invitados permitidos: ${data.numero_invitados}. Ya confirmados: ${data.numero_invitados_confirmados || 0}`;
+    contador.innerText = `Máximo invitados permitidos: ${data.numero_invitados}.`;
+  }
 
-    // Si no puede traer invitados, ocultamos el input
-    if (data.numero_invitados === 1 || data.confirmado === true) {
-      contenedor.style.display = 'none';
-    }
+  if (data.confirmado === true) {
+    document.getElementById("btnConfirmar").innerText = "Ya confirmado ✔";
+    document.getElementById("btnConfirmar").style.background = "#888";
+    document.getElementById("btnConfirmar").style.pointerEvents = "none";
 
-    // Mostrar contador si tiene invitados
-    if (data.numero_invitados > 1) {
-      contador.textContent = `Máximo invitados permitidos: ${data.numero_invitados}.`;
-      // Establecemos el max en el input para ayudar a la validación
-      input.setAttribute('max', String(data.numero_invitados));
-      input.value = data.numero_invitados === 1 ? '1' : '';
-      input.placeholder = `Máx ${data.numero_invitados}`;
-    }
-
-    if (data.confirmado === true) {
-      btn.textContent = "Ya confirmado ✔";
-      btn.style.background = "#888";
-      btn.disabled = true;
-
-      const confirmados = data.numero_invitados_confirmados || 1;
-      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). ¡Te esperamos!`);
-      //showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s). ¡Te esperamos!`);
-    }
-
-  } catch (err) {
-    console.error(err);
-    showMessage('Error al conectar con la base de datos.');
+    document.getElementById("mensajeConfirmacion").innerHTML = 
+      `Hola ${data.nombre}, gracias por confirmar 🤎<br>
+      ${data.numero_invitados_confirmados === 1 ? "Asistirá 1 invitado." : `Has confirmado ${data.numero_invitados_confirmados} invitados.`}`;
+    document.getElementById("mensajeConfirmacion").style.display = "block";
   }
 });
 
-/* Confirmar asistencia: validaciones y actualización */
-btn.addEventListener('click', confirmarAsistencia);
-
 async function confirmarAsistencia() {
-  // Bloqueo UI
-  btn.disabled = true;
-  const originalText = btn.textContent;
-  btn.textContent = 'Guardando...';
+  const contenedorMensaje = document.getElementById("mensajeConfirmacion");
+  const btn = document.getElementById("btnConfirmar");
+  const input = document.getElementById("inputInvitados");
+  const contador = document.getElementById("contadorInvitados");
 
-  // Flag para saber si la operación terminó correctamente
-  let success = false;
+  if (!invitadoID) {
+    contenedorMensaje.innerHTML = "No se encontró el ID del invitado.";
+    contenedorMensaje.style.display = "block";
+    return;
+  }
 
-  try {
-    if (!invitadoID) {
-      showMessage('No se encontró el ID del invitado.');
+  const { data: invitado } = await db
+    .from("invitados")
+    .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados")
+    .eq("codigo", invitadoID)
+    .single();
+
+  if (!invitado || invitado.confirmado) {
+    contenedorMensaje.innerHTML = "Ya habías confirmado antes 🤎";
+    contenedorMensaje.style.display = "block";
+    return;
+  }
+
+  let cantidadConfirmada = 1;
+  if (invitado.numero_invitados > 1) {
+    cantidadConfirmada = parseInt(input.value);
+    if (!cantidadConfirmada || cantidadConfirmada < 1) {
+      contenedorMensaje.innerHTML = "Ingresa cuántos asistirán.";
+      contenedorMensaje.style.display = "block";
       return;
     }
-
-    const { data: invitado, error: fetchErr } = await db
-      .from("invitados")
-      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados")
-      .eq("codigo", invitadoID)
-      .single();
-
-    if (fetchErr) {
-      console.error(fetchErr);
-      showMessage('Error al verificar el estado de la invitación.');
+    if (cantidadConfirmada > invitado.numero_invitados) {
+      contenedorMensaje.innerHTML = `Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`;
+      contenedorMensaje.style.display = "block";
       return;
     }
+  }
 
-    if (!invitado || invitado.confirmado) {
-      showMessage('Ya habías confirmado antes 🤎');
-      return;
-    }
-
-    let cantidadConfirmada = 1;
-    if (invitado.numero_invitados > 1) {
-      cantidadConfirmada = parseInt(input.value, 10);
-      if (!cantidadConfirmada || cantidadConfirmada < 1) {
-        showMessage('Ingresa cuántos asistirán.');
-        input.focus();
-        return;
-      }
-      if (cantidadConfirmada > invitado.numero_invitados) {
-        showMessage(`Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`);
-        // mejora UX: seleccionar el valor erróneo para corregirlo fácilmente
-        input.focus();
-        input.select && input.select();
-        return;
-      }
-    }
-
-    // Actualizar
-    const updatedData = {
+  const { error } = await db
+    .from("invitados")
+    .update({
       confirmado: true,
       fecha_confirmacion: new Date().toISOString().split("T")[0],
       hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }),
       numero_invitados_confirmados: cantidadConfirmada
-    };
+    })
+    .eq("codigo", invitadoID);
 
-    const { error } = await db
-      .from("invitados")
-      .update(updatedData)
-      .eq("codigo", invitadoID);
+  if (error) {
+    contenedorMensaje.innerHTML = "No se pudo guardar la confirmación.";
+    contenedorMensaje.style.display = "block";
+    return;
+  }
 
-    if (error) {
-      console.error(error);
-      showMessage('No se pudo guardar la confirmación.');
-      return;
-    }
+  btn.innerText = "Confirmado ✔";
+  btn.style.background = "#888";
+  btn.style.pointerEvents = "none";
 
-    // Marcamos éxito antes de mantener el botón deshabilitado
-    success = true;
+  // Ocultar input si solo 1 o ya confirmado
+  if (invitado.numero_invitados === 1 || cantidadConfirmada >= 1) {
+    document.getElementById("contenedorInvitados").style.display = "none";
+  }
 
-    btn.textContent = "Confirmado ✔";
-    btn.style.background = "#888";
-    btn.disabled = true;
+  contenedorMensaje.innerHTML = `Hola ${invitado.nombre}, gracias por confirmar 🤎<br>
+    ${cantidadConfirmada === 1 ? "Asistirá 1 invitado." : `Has confirmado ${cantidadConfirmada} invitados.`}`;
+  contenedorMensaje.style.display = "block";
 
-    // Ocultar input si aplica
-    if (invitado.numero_invitados === 1 || cantidadConfirmada >= 1) {
-      contenedor.style.display = "none";
-    }
-
-    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). ¡Te esperamos!`);
-
-    // Actualizar contador accesible
-    if (invitado.numero_invitados > 1) {
-      contador.textContent = `Máximo de invitados permitidos: ${invitado.numero_invitados}. Ya confirmados: ${cantidadConfirmada}`;
-    }
-
-  } catch (err) {
-    console.error(err);
-    showMessage('Ocurrió un error inesperado. Intenta nuevamente más tarde.');
-  } finally {
-    // Si no hubo éxito, restauramos el estado del botón para permitir reintentos
-    if (!success) {
-      btn.textContent = originalText;
-      btn.disabled = false;
-    }
+  // Actualizar contador
+  if(invitado.numero_invitados > 1) {
+    contador.innerText = `Máximo de invitados permitidos: ${invitado.numero_invitados}. Ya confirmados: ${cantidadConfirmada}`;
   }
 }
-
-/* Mejora UX: permitir enviar con Enter cuando el input está enfocado */
-input.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    btn.click();
-  }
-});
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
