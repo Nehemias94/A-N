@@ -22,6 +22,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
+
 body{
   font-family: "Cormorant Garamond", serif;
   background:
@@ -30,12 +31,15 @@ body{
     linear-gradient(180deg, #fff 0%, #fffaf6 100%);
   color:var(--text);
   -webkit-font-smoothing:antialiased;
-  padding:28px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:100vh;
+  padding:20px;
+  
+  /* 🔥 QUITAMOS FLEX */
+  display:block;
+
+  /* Permitimos scroll */
+  overflow-x:hidden;
 }
+  
 .page {
   width:100%;
   max-width:var(--max-width);
@@ -599,6 +603,7 @@ input.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+
 
 
 
