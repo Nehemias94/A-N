@@ -197,6 +197,23 @@ body{
   transform:scale(1.12);
 }
 
+/* ✨ Imagen elegante */
+.imagen-boda {
+  margin: 25px auto;
+}
+
+.imagen-boda img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  transition: transform .3s ease;
+}
+
+.imagen-boda img:hover {
+  transform: scale(1.03);
+}
+
 /* Responsive tweaks */
 @media (max-width:420px){
   .page{ padding:18px; }
@@ -243,6 +260,11 @@ body{
         Hola <span id="nombreInvitado">invitado</span>, con la bendición de Dios y nuestras familias, 
         te invitamos a compartir este día tan especial con nosotros.
       </p>
+
+          <!-- 📸 Imagen agregada -->
+      <div class="imagen-boda">
+        <img src="td.jpg" alt="Anillos de boda con mascota">
+      </div>
 
         <!-- 🎁 MENSAJE DE REGALO -->
     <div id="mensajeRegalo" aria-hidden="true">
@@ -563,3 +585,4 @@ input.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+
