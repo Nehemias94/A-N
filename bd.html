@@ -32,13 +32,17 @@ body{
   color:var(--text);
   -webkit-font-smoothing:antialiased;
   padding:20px;
-  
-  /* 🔥 QUITAMOS FLEX */
-  display:block;
 
-  /* Permitimos scroll */
-  overflow-x:hidden;
+  /* 🔥 Centrado horizontal SIN romper scroll */
+  display:flex;
+  justify-content:center;
+
+  /* Permitimos crecimiento vertical */
+  align-items:flex-start;
+
+  min-height:100vh;
 }
+
   
 .page {
   width:100%;
@@ -603,6 +607,7 @@ input.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+
 
 
 
