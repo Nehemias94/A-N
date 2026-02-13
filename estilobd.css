@@ -199,34 +199,21 @@ body{
   .input-box{ max-width:200px; }
 }
 
-/* ✨ Imagen ajustada correctamente */
-.imagen-boda {
-  margin: 18px auto;
-  text-align: center;
-}
-
 .imagen-boda img {
   width: 100%;
-  max-width: 340px;  /* un poco más pequeña */
+  max-width: 340px;
   height: auto;
   display: block;
   margin: 0 auto;
   border-radius: 18px;
-  object-fit: contain; /* evita recortes */
+  object-fit: contain;
+
+  /* Difuminado en bordes */
+  -webkit-mask-image: radial-gradient(circle at center, black 75%, transparent 100%);
+  mask-image: radial-gradient(circle at center, black 75%, transparent 100%);
+
   box-shadow: 0 12px 28px rgba(0,0,0,0.15);
 }
 
-/* 🔥 Ajuste especial para móvil */
-@media (max-width: 480px) {
 
-  .imagen-boda {
-    margin: 14px auto;
-  }
-
-  .imagen-boda img {
-    max-width: 90%;
-  }
-
-
-}
 
