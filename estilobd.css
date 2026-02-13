@@ -200,10 +200,22 @@ body{
 }
 
 .imagen-boda img {
-  box-shadow:
-    0 0 40px 20px rgba(255, 250, 246, 0.8),
-    0 12px 28px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 18px;
+  object-fit: contain;
+
+  /* Difuminado en bordes */
+  -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 100%);
+  mask-image: radial-gradient(circle at center, black 20%, transparent 100%);
+
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
 }
+
+
 
 
 
