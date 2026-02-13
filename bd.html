@@ -110,6 +110,27 @@
     <button id="btnConfirmar" class="rsvp" type="button">Confirmar asistencia</button>
 
     <div id="mensajeConfirmacion" role="status" aria-live="polite"></div>
+
+    <!--  MENSAJE DE Numero de mesa -->
+      <div id="mesa" aria-hidden="true">
+        <div style="
+          margin: 18px auto;
+          padding: 14px 20px;
+          background: rgba(200,169,126,0.12);
+          /*border-left: 5px solid var(--cafe);*/
+          border-radius: 10px;
+          max-width: 360px;
+          font-size: 20px;
+          font-weight: 600;
+          color: var(--cafe-dark);
+          text-align: center;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        ">
+          🎁 <span style="font-style:italic;">“Mesa”</span>
+        </div>
+      </div>
+
+   
   </div>
 
     <!-- FOOTER -->
@@ -241,6 +262,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       mensajeRegalo.setAttribute('aria-hidden', 'false');
     } else {
       mensajeRegalo.style.display = 'none';
+    }
+
+   	// Mostrar Numero de mesa si corresponde
+    if (data.Numero_mesa > 0) {
+      mesa.style.display = 'block';
+      mesa.setAttribute('aria-hidden', 'false');
+    } else {
+      mesa.style.display = 'none';
     }
 
     // Si no puede traer invitados, ocultamos el input
@@ -376,6 +405,7 @@ input.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+
 
 
 
