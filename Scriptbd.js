@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const confirmados = data.numero_invitados_confirmados || 1;
       //showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s).`);
-      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). ¡Te Esperamos!`);
+      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). Tu numero de mesa: ${data.numero_mesa} ¡Te Esperamos!`);
     }
 
   } catch (err) {
@@ -241,6 +241,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
