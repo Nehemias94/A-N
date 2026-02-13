@@ -141,6 +141,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+btnNo.addEventListener('click', confirmarNoAsistencia);
+
 /* Confirmar asistencia: validaciones y actualización */
 btn.addEventListener('click', confirmarAsistencia);
 
@@ -252,13 +254,13 @@ input.addEventListener('keydown', (e) => {
 
 });
 
-btnNo.addEventListener('click', confirmarNoAsistencia);
 async function confirmarNoAsistencia() {
   // Bloqueo UI
   btnNo.disabled = true;
   const originalText = btnNo.textContent;
   btnNo.textContent = 'Guardando No ...';
 }
+
 
 
 
