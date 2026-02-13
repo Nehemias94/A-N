@@ -157,7 +157,7 @@ async function confirmarAsistencia() {
 
     const { data: invitado, error: fetchErr } = await db
       .from("invitados")
-      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados")
+      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados,numero_mesa")
       .eq("codigo", invitadoID)
       .single();
 
@@ -214,7 +214,7 @@ async function confirmarAsistencia() {
       contenedor.style.display = "none";
     }
 
-    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). ¡Te Esperamos!`);
+    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). Tu numero de mesa: ${invitado.numero_mesa} ¡Te Esperamos!`);
 
     // Actualizar contador accesible
     if (invitado.numero_invitados > 1) {
@@ -241,6 +241,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
