@@ -177,10 +177,16 @@ async function confirmarAsistencia() {
     if (invitado.numero_invitados > 1) {
       cantidadConfirmada = parseInt(input.value, 10);
       if (!cantidadConfirmada || cantidadConfirmada < 1) {
+        btn.disabled = false;
+        const originalText = btn.textContent;
+        btn.textContent = 'Confirmar asistencia';
         showMessage('Ingresa cuántos asistirán.', { type: 'error' });
         return;
       }
       if (cantidadConfirmada > invitado.numero_invitados) {
+        btn.disabled = false;
+        const originalText = btn.textContent;
+        btn.textContent = 'Confirmar asistencia';
         showMessage(`Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`, { type: 'error' });
         btn.disabled = false;
         return;
@@ -202,6 +208,9 @@ async function confirmarAsistencia() {
 
     if (error) {
       console.error(error);
+      btn.disabled = false;
+      const originalText = btn.textContent;
+      btn.textContent = 'Confirmar asistencia';
       showMessage('No se pudo guardar la confirmación.', { type: 'error' });
       return;
     }
@@ -224,7 +233,7 @@ async function confirmarAsistencia() {
 
   } catch (err) {
     console.error(err);
-    showMessage('Ocurrió un error inesperado. Intenta nuevamente más tarde.', { type: 'error' });
+    showMessage('Ocurrió un error inesperado. Intenta nuevamente o más tarde.', { type: 'error' });
   } finally {
     // restaurar estado si quedó habilitado por error
     if (!btn.disabled) {
@@ -242,6 +251,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
