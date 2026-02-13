@@ -31,7 +31,8 @@ const contador = document.getElementById('contadorInvitados');
 const input = document.getElementById('inputInvitados');
 const btn = document.getElementById('btnConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
-const mensajeMesa = document.getElementById('numeroMesa');
+const mensajeMesa = document.getElementById('mensajeMesa');
+const numeroMesa = document.getElementById('numeroMesa');
 
 /* Mensajes: ahora aceptamos { type: 'error' } para mostrar en rojo y usar aria-live="assertive" */
 function showMessage(text, opts = {}) {
@@ -101,6 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
    	// Mostrar Numero de mesa si corresponde
     if (data.numero_mesa > 0) {
+      numeroMesa.textContent = `Numero de mesa: ${data.numero_mesa}.`;
       mensajeMesa.style.display = 'block';
       mensajeMesa.setAttribute('aria-hidden', 'false');
     } else {
@@ -238,6 +240,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
