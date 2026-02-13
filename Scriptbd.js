@@ -31,8 +31,8 @@ const contador = document.getElementById('contadorInvitados');
 const input = document.getElementById('inputInvitados');
 const btn = document.getElementById('btnConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
-const mensajeMesa = document.getElementById('mensajeMesa');
-const numeroMesa = document.getElementById('numeroMesa');
+const mensajeMesa = document.getElementById('msjeMesa');
+const numeroMesa = document.getElementById('numMesa');
 
 /* Mensajes: ahora aceptamos { type: 'error' } para mostrar en rojo y usar aria-live="assertive" */
 function showMessage(text, opts = {}) {
@@ -240,6 +240,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
