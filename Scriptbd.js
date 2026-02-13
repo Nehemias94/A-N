@@ -297,6 +297,9 @@ async function confirmarNoAsistencia() {
     btnNoAsist.style.background = "#888";
     btnNoAsist.disabled = true;
 
+        // Ocultar btn confirmar asistencia
+      btn.style.display = "none";
+
     showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎`);
 
   } catch (err) {
@@ -319,6 +322,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
