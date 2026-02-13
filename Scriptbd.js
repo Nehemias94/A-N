@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
    	// Mostrar Numero de mesa si corresponde
-    if (data.numero_mesa > 0) {
+    if (data.numero_mesa > 0 || data.confirmado === true) {
       mesa.style.display = 'block';
       mesa.setAttribute('aria-hidden', 'false');
     } else {
@@ -238,4 +238,5 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
