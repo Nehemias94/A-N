@@ -271,7 +271,7 @@ async function confirmarNoAsistencia() {
     }
 
     if (!invitado || invitado.confirmado === false || invitado.confirmado === true) {
-      showMessage('Ya habías confirmado antes 🤎');
+      showMessage('Esta invitación ya fue respondida 🤎');
       return;
     }
 
@@ -313,6 +313,7 @@ async function confirmarNoAsistencia() {
     }
   }
 });
+
 
 
 
