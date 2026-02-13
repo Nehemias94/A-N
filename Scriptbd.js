@@ -260,7 +260,7 @@ async function confirmarNoAsistencia() {
 
     const { data: invitado, error: fetchErr } = await db
       .from("invitados")
-      .select("confirmado, nombre)
+      .select("confirmado, nombre")
       .eq("codigo", invitadoID)
       .single();
 
@@ -313,6 +313,7 @@ async function confirmarNoAsistencia() {
     }
   }
 });
+
 
 
 
