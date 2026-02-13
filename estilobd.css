@@ -62,7 +62,7 @@ body{
 .content{
   position:relative;
   z-index:2;
-  text-align:center;
+  text-align:left;
   padding:18px 8px;
 }
 .note{
@@ -226,5 +226,6 @@ body{
   .imagen-boda img {
     max-width: 90%;
   }
+
 
 }
