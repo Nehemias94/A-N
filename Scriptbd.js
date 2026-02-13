@@ -270,7 +270,7 @@ async function confirmarNoAsistencia() {
       return;
     }
 
-    if (!invitado || invitado.confirmado) {
+    if (!invitado || invitado.confirmado === false || invitado.confirmado === true) {
       showMessage('Ya habías confirmado antes 🤎');
       return;
     }
@@ -313,6 +313,7 @@ async function confirmarNoAsistencia() {
     }
   }
 });
+
 
 
 
