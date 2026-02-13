@@ -107,6 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       mensajeMesa.setAttribute('aria-hidden', 'false');
     } else {
       mensajeMesa.style.display = 'none';
+      numeroMesa.style.display = 'none';
     }
     
     // Si no puede traer invitados, ocultamos el input
@@ -240,6 +241,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
