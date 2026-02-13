@@ -30,7 +30,7 @@ const contenedor = document.getElementById('contenedorInvitados');
 const contador = document.getElementById('contadorInvitados');
 const input = document.getElementById('inputInvitados');
 const btn = document.getElementById('btnConfirmar');
-const btnNoAsist = document.getElementById('btnNoAsistira');
+const btnNoAsist = document.getElementById('btnNoConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
 const mensajeMesa = document.getElementById('msjeMesa');
 const numeroMesa = document.getElementById('numMesa');
@@ -250,6 +250,87 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 
+});
+
+
+/* Confirmar NO asistencia: validaciones y actualización */
+btnNoAsist.addEventListener('click', confirmarNoAsistencia);
+
+async function confirmarNoAsistencia() {
+  // Bloqueo UI
+  btnNoAsist.disabled = true;
+  const originalText = btnNoAsist.textContent;
+  btnNoAsist.textContent = 'Guardando...';
+
+  try {
+    if (!invitadoID) {
+      showMessage('No se encontró el ID del invitado.', { type: 'error' });
+      return;
+    }
+
+    const { data: invitado, error: fetchErr } = await db
+      .from("invitados")
+      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados,numero_mesa")
+      .eq("codigo", invitadoID)
+      .single();
+
+    if (fetchErr) {
+      console.error(fetchErr);
+      showMessage('Error al verificar el estado de la invitación.', { type: 'error' });
+      return;
+    }
+
+    if (!invitado || invitado.confirmado === false || invitado.confirmado) {
+      showMessage('Esta invitación ya fue respondida 🤎');
+      return;
+    }
+    // Actualizar
+    const updatedData = {
+      confirmado: false,
+      fecha_confirmacion: new Date().toISOString().split("T")[0],
+      hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }),
+    };
+
+    const { error } = await db
+      .from("invitados")
+      .update(updatedData)
+      .eq("codigo", invitadoID);
+
+    if (error) {
+      console.error(error);
+      btnNoAsist.disabled = false;
+      const originalText = btnNoAsist.textContent;
+      btnNoAsist.textContent = 'Confirmar asistencia';
+      showMessage('No se pudo guardar la confirmación.', { type: 'error' });
+      return;
+    }
+
+    btnNoAsist.textContent = "Confirmado ✔";
+    btnNoAsist.style.background = "#888";
+    btnNoAsist.disabled = true;
+
+    // Ocultar input si aplica
+    if (invitado.numero_invitados === 1 || cantidadConfirmada >= 1) {
+      contenedor.style.display = "none";
+    }
+
+    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). Tu numero de mesa: ${invitado.numero_mesa} ¡Te Esperamos!`);
+
+    // Actualizar contador accesible
+    if (invitado.numero_invitados > 1) {
+      contador.textContent = `Máximo de invitados permitidos: ${invitado.numero_invitados}. Ya confirmados: ${cantidadConfirmada}`;
+    }
+
+  } catch (err) {
+    console.error(err);
+    showMessage('Ocurrió un error inesperado. Intenta nuevamente o más tarde.', { type: 'error' });
+  } finally {
+    // restaurar estado si quedó habilitado por error
+    if (!btnNoAsist.disabled) {
+      btnNoAsist.textContent = originalText;
+      btnNoAsist.disabled = false;
+    }
+  }
 });
 
 
