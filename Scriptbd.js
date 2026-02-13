@@ -30,7 +30,6 @@ const contenedor = document.getElementById('contenedorInvitados');
 const contador = document.getElementById('contadorInvitados');
 const input = document.getElementById('inputInvitados');
 const btn = document.getElementById('btnConfirmar');
-const btnNoAsist = document.getElementById('btnNoConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
 const mensajeMesa = document.getElementById('msjeMesa');
 const numeroMesa = document.getElementById('numMesa');
@@ -251,6 +250,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
