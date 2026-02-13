@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
    	// Mostrar Numero de mesa si corresponde
     if (data.numero_mesa > 0) {
-      mensajeMesa.textContent = `Numero de mesa: ${data.numero_mesa}.`;
+      numeroMesa.textContent = `Numero de mesa: ${data.numero_mesa}.`;
       mensajeMesa.style.display = 'block';
       mensajeMesa.setAttribute('aria-hidden', 'false');
     } else {
@@ -240,6 +240,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
