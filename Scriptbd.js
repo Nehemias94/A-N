@@ -244,7 +244,7 @@ input.addEventListener('keydown', (e) => {
 });
 
 /* Confirmar NO asistencia: validaciones y actualización */
-btnNoAsist.addEventListener('click', btnNoAsistira);
+btnNoAsist.addEventListener('click', confirmarNoAsistencia);
 
 async function confirmarNoAsistencia() {
   // Bloqueo UI
@@ -322,6 +322,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
