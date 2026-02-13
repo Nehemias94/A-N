@@ -30,6 +30,7 @@ const contenedor = document.getElementById('contenedorInvitados');
 const contador = document.getElementById('contadorInvitados');
 const input = document.getElementById('inputInvitados');
 const btn = document.getElementById('btnConfirmar');
+const btnNoAsist = document.getElementById('btnNoAsistira');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
 const mensajeMesa = document.getElementById('msjeMesa');
 const numeroMesa = document.getElementById('numMesa');
@@ -241,6 +242,84 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
+/* Confirmar NO asistencia: validaciones y actualización */
+btnNoAsist.addEventListener('click', btnNoAsistira);
+
+async function confirmarNoAsistencia() {
+  // Bloqueo UI
+  btnNoAsist.disabled = true;
+  const originalText = btnNoAsist.textContent;
+  btnNoAsist.textContent = 'Guardando...';
+
+  try {
+    if (!invitadoID) {
+      showMessage('No se encontró el ID del invitado.', { type: 'error' });
+      return;
+    }
+
+    const { data: invitado, error: fetchErr } = await db
+      .from("invitados")
+      .select("confirmado, nombre)
+      .eq("codigo", invitadoID)
+      .single();
+
+    if (fetchErr) {
+      console.error(fetchErr);
+      showMessage('Error al verificar el estado de la invitación.', { type: 'error' });
+      return;
+    }
+
+    if (!invitado || invitado.confirmado) {
+      showMessage('Ya habías confirmado antes 🤎');
+      return;
+    }
+
+    // Actualizar
+    const updatedData = {
+      confirmado: false,
+      fecha_confirmacion: new Date().toISOString().split("T")[0],
+      hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }),
+    };
+
+    const { error } = await db
+      .from("invitados")
+      .update(updatedData)
+      .eq("codigo", invitadoID);
+
+    if (error) {
+      console.error(error);
+      showMessage('No se pudo guardar la confirmación.', { type: 'error' });
+      return;
+    }
+
+    btnNoAsist.textContent = "Confirmar que no asistirá ✔";
+    btnNoAsist.style.background = "#888";
+    btnNoAsist.disabled = true;
+
+    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎`);
+
+  } catch (err) {
+    console.error(err);
+    showMessage('Ocurrió un error inesperado. Intenta nuevamente más tarde.', { type: 'error' });
+  } finally {
+    // restaurar estado si quedó habilitado por error
+    if (!btnNoAsist.disabled) {
+      btnNoAsist.textContent = originalText;
+      btnNoAsist.disabled = false;
+    }
+  }
+}
+
+/* Mejora UX: permitir enviar con Enter cuando el input está enfocado */
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    btnNoAsist.click();
+  }
+
+});
+
 
 
 
