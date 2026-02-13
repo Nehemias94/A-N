@@ -101,14 +101,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
    	// Mostrar Numero de mesa si corresponde
-    if (data.numero_mesa > 0 && data.confirmado === true) {
-      numeroMesa.textContent = `Numero de mesa: ${data.numero_mesa}.`;
-      mensajeMesa.style.display = 'block';
-      mensajeMesa.setAttribute('aria-hidden', 'false');
-    } else {
-      mensajeMesa.style.display = 'none';
-      numeroMesa.style.display = 'none';
-    }
+    //if (data.numero_mesa > 0 && data.confirmado === true) {
+    //  numeroMesa.textContent = `Numero de mesa: ${data.numero_mesa}.`;
+     // mensajeMesa.style.display = 'block';
+     // mensajeMesa.setAttribute('aria-hidden', 'false');
+    //} else {
+      //mensajeMesa.style.display = 'none';
+      //numeroMesa.style.display = 'none';
+    //}
     
     // Si no puede traer invitados, ocultamos el input
     if (data.numero_invitados === 1 || data.confirmado === true) {
@@ -241,6 +241,7 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
 
 
 
