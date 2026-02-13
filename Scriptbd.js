@@ -100,12 +100,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
    	// Mostrar Numero de mesa si corresponde
-    //if (data.Numero_mesa > 0) {
-    //  mesa.style.display = 'block';
-    //  mesa.setAttribute('aria-hidden', 'false');
-    //} else {
-    //  mesa.style.display = 'none';
-    //}
+    if (data.numero_mesa > 0) {
+      mesa.style.display = 'block';
+      mesa.setAttribute('aria-hidden', 'false');
+    } else {
+      mesa.style.display = 'none';
+    }
 
     // Si no puede traer invitados, ocultamos el input
     if (data.numero_invitados === 1 || data.confirmado === true) {
@@ -238,3 +238,4 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
