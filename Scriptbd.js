@@ -33,6 +33,7 @@ const btn = document.getElementById('btnConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
 const mensajeMesa = document.getElementById('msjeMesa');
 const numeroMesa = document.getElementById('numMesa');
+const btnNo = document.getElementById('btnNoConfirmar');
 
 /* Mensajes: ahora aceptamos { type: 'error' } para mostrar en rojo y usar aria-live="assertive" */
 function showMessage(text, opts = {}) {
@@ -250,6 +251,15 @@ input.addEventListener('keydown', (e) => {
   }
 
 });
+
+btn.addEventListener('click', confirmarNoAsistencia);
+async function confirmarNoAsistencia() {
+  // Bloqueo UI
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = 'Guardando No ...';
+}
+
 
 
 
