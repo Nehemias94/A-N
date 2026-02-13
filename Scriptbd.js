@@ -142,7 +142,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 /* Confirmar asistencia: validaciones y actualización */
-btn.addEventListener('click', confirmarAsistencia);
+/*btn.addEventListener('click', confirmarAsistencia);*/
+btn.addEventListener('click', confirmarNoAsistencia);
 
 async function confirmarAsistencia() {
   // Bloqueo UI
@@ -332,6 +333,7 @@ async function confirmarNoAsistencia() {
     }
   }
 });
+
 
 
 
