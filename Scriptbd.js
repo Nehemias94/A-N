@@ -312,16 +312,8 @@ async function confirmarNoAsistencia() {
       btnNoAsist.disabled = false;
     }
   }
-}
-
-/* Mejora UX: permitir enviar con Enter cuando el input está enfocado */
-input.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    btnNoAsist.click();
-  }
-
 });
+
 
 
 
