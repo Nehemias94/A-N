@@ -252,13 +252,14 @@ input.addEventListener('keydown', (e) => {
 
 });
 
-btn.addEventListener('click', confirmarNoAsistencia);
+btnNo.addEventListener('click', confirmarNoAsistencia);
 async function confirmarNoAsistencia() {
   // Bloqueo UI
-  btn.disabled = true;
-  const originalText = btn.textContent;
-  btn.textContent = 'Guardando No ...';
+  btnNo.disabled = true;
+  const originalText = btnNo.textContent;
+  btnNo.textContent = 'Guardando No ...';
 }
+
 
 
 
