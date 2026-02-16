@@ -185,60 +185,47 @@ const btnTexto = document.getElementById('btnTexto');
 function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
   return new Promise((resolve) => {
 
-    // Mostrar mensaje inicial (pregunta)
     modalTexto.textContent = mensajeConfirmacion;
     modal.style.display = 'flex';
+
     modalCancelar.style.display = 'inline-block';
     modalAceptar.disabled = false;
     modalCancelar.disabled = false;
+    spinner.style.display = 'none';
+    btnTexto.textContent = 'Aceptar';
 
-    function limpiarEventos() {
-      modalAceptar.removeEventListener('click', aceptar);
-      modalCancelar.removeEventListener('click', cancelar);
-    }
+    let estado = "confirmacion"; // control de estado
 
-    async function aceptar() {
+    async function manejarClickAceptar() {
 
-      // 🔄 Activar spinner
-      modalAceptar.classList.add('loading');
-      spinner.style.display = 'inline-block';
-      btnTexto.textContent = 'Enviando...';
-      modalAceptar.disabled = true;
-      modalCancelar.disabled = true;
+      // 🔹 PRIMER CLICK → confirmar
+      if (estado === "confirmacion") {
 
-      try {
+        modalAceptar.classList.add('loading');
+        spinner.style.display = 'inline-block';
+        btnTexto.textContent = 'Enviando...';
+        modalAceptar.disabled = true;
+        modalCancelar.disabled = true;
 
-        // ⏳ Simulación pequeña de carga visual
         await new Promise(resolve => setTimeout(resolve, 1200));
 
-        // ✅ Mostrar mensaje personalizado
-        if (mensajeExito) {
-          modalTexto.textContent = mensajeExito;
-        } else {
-          modalTexto.textContent = "✅ Confirmación exitosa";
-        }
-
-        spinner.style.display = 'none';
-        btnTexto.textContent = 'Aceptar';
         modalAceptar.classList.remove('loading');
+        spinner.style.display = 'none';
+        modalAceptar.disabled = false;
 
-            function aceptar() {
-              limpiarEventos();
-              resolve(true);
-            }
-
+        modalTexto.textContent = mensajeExito || "✅ Confirmación exitosa";
+        btnTexto.textContent = 'Cerrar';
         modalCancelar.style.display = 'none';
 
-        // Cerrar automáticamente después de 2 segundos
-        /*setTimeout(() => {
-          modal.style.display = 'none';
-          limpiarEventos();
-          resolve(true);
-        }, 2000);*/
+        estado = "final";
+        return;
+      }
 
-      } catch (error) {
-        console.error(error);
-        resolve(false);
+      // 🔹 SEGUNDO CLICK → cerrar
+      if (estado === "final") {
+        modal.style.display = 'none';
+        limpiarEventos();
+        resolve(true);
       }
     }
 
@@ -248,10 +235,16 @@ function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
       resolve(false);
     }
 
-    modalAceptar.addEventListener('click', aceptar);
+    function limpiarEventos() {
+      modalAceptar.removeEventListener('click', manejarClickAceptar);
+      modalCancelar.removeEventListener('click', cancelar);
+    }
+
+    modalAceptar.addEventListener('click', manejarClickAceptar);
     modalCancelar.addEventListener('click', cancelar);
   });
 }
+
 
 
 //mensaje con tiempo para quitarce
@@ -266,6 +259,13 @@ function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
 }*/
 
 async function confirmarAsistencia() {
+
+  // 🔹 PRIMERO preguntar
+  const seguro = await mostrarModal(
+    "¿Estás seguro de que deseas confirmar tu asistencia?"
+  );
+
+  if (!seguro) return;
 
   btn.disabled = true;
   const originalText = btn.textContent;
@@ -310,7 +310,7 @@ async function confirmarAsistencia() {
       }
     }
 
-    // 🔹 Actualizar en base de datos
+    // 🔹 Update en Supabase
     const updatedData = {
       confirmado: true,
       fecha_confirmacion: new Date().toISOString().split("T")[0],
@@ -329,18 +329,14 @@ async function confirmarAsistencia() {
       return;
     }
 
-    // 🔹 Preparar mensaje personalizado
-    const mensajeFinal = `Hola ${invitado.nombre}, gracias por confirmar 🤎  
-      Has confirmado ${cantidadConfirmada} invitado(s).  
-      Tu número de mesa: ${invitado.numero_mesa} ¡Te esperamos!`;
+    // 🔹 Ahora mostrar mensaje final
+    const mensajeFinal = `Hola ${invitado.nombre}, gracias por confirmar 🤎
+    Has confirmado ${cantidadConfirmada} invitado(s).
+    Tu número de mesa: ${invitado.numero_mesa} ¡Te esperamos!`;
 
-    // 🔹 Mostrar modal con mensaje final
-    await mostrarModal(
-      "¿Estás seguro de que deseas confirmar tu asistencia?",
-      mensajeFinal
-    );
+    await mostrarModal(mensajeFinal);
 
-    // 🔹 Actualizar UI después del modal
+    // 🔹 Actualizar UI
     btn.textContent = "Confirmado ✔";
     btn.style.background = "#888";
     btn.disabled = true;
@@ -450,6 +446,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
