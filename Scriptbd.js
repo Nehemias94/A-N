@@ -221,6 +221,11 @@ async function confirmarAsistencia() {
     btn.style.background = "#888";
     btn.disabled = true;
 
+        // Bloqueo UI
+    btnNo.disabled = true;
+    const originalText = btnNo.textContent;
+    btnNo.style.display = "none";
+
     // Ocultar input si aplica
     if (invitado.numero_invitados === 1 || cantidadConfirmada >= 1) {
       contenedor.style.display = "none";
@@ -260,6 +265,7 @@ async function confirmarNoAsistencia() {
   const originalText = btnNo.textContent;
   btnNo.textContent = 'Guardando No ...';
 }
+
 
 
 
