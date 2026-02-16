@@ -167,6 +167,31 @@ btnNo.addEventListener('click', confirmarNoAsistencia);
 /* Confirmar asistencia: validaciones y actualización */
 btn.addEventListener('click', confirmarAsistencia);
 
+const modal = document.getElementById('modalConfirmacion');
+const modalTexto = document.getElementById('modalTexto');
+const modalAceptar = document.getElementById('modalAceptar');
+const modalCancelar = document.getElementById('modalCancelar');
+
+function mostrarModal(mensaje) {
+  return new Promise((resolve) => {
+    modalTexto.textContent = mensaje;
+    modal.style.display = 'flex';
+
+    function cerrar(valor) {
+      modal.style.display = 'none';
+      modalAceptar.removeEventListener('click', aceptar);
+      modalCancelar.removeEventListener('click', cancelar);
+      resolve(valor);
+    }
+
+    function aceptar() { cerrar(true); }
+    function cancelar() { cerrar(false); }
+
+    modalAceptar.addEventListener('click', aceptar);
+    modalCancelar.addEventListener('click', cancelar);
+  });
+}
+
 async function confirmarAsistencia() {
   
   const seguro = confirm("¿Estás seguro de que deseas confirmar tu asistencia?");
@@ -357,6 +382,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
