@@ -140,6 +140,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). Tu numero de mesa: ${data.numero_mesa} ¡Te Esperamos!`);
     }
 
+    if (data.confirmado === false) {
+      btnNo.textContent = "confirmado No asistira ✔";
+      btnNo.style.background = "#888";
+      btnNo.disabled = true;
+
+                // Bloqueo UI
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.style.display = "none";
+
+      contenedor.style.display = 'none';
+
+      //showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s).`);
+      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎`);
+    }
+
   } catch (err) {
     console.error(err);
     showMessage('Error al conectar con la base de datos.', { type: 'error' });
@@ -186,14 +202,14 @@ async function confirmarAsistencia() {
       if (!cantidadConfirmada || cantidadConfirmada < 1) {
         btn.disabled = false;
         const originalText = btn.textContent;
-        btn.textContent = 'Confirmar asistencia';
+        btn.textContent = originalText;
         showMessage('Ingresa cuántos asistirán.', { type: 'error' });
         return;
       }
       if (cantidadConfirmada > invitado.numero_invitados) {
         btn.disabled = false;
         const originalText = btn.textContent;
-        btn.textContent = 'Confirmar asistencia';
+        btn.textContent = originalText;
         showMessage(`Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`, { type: 'error' });
         btn.disabled = false;
         return;
@@ -217,7 +233,7 @@ async function confirmarAsistencia() {
       console.error(error);
       btn.disabled = false;
       const originalText = btn.textContent;
-      btn.textContent = 'Confirmar asistencia';
+      btn.textContent = originalText;
       showMessage('No se pudo guardar la confirmación.', { type: 'error' });
       return;
     }
@@ -269,7 +285,76 @@ async function confirmarNoAsistencia() {
   btnNo.disabled = true;
   const originalText = btnNo.textContent;
   btnNo.textContent = 'Guardando No ...';
+  try {
+    if (!invitadoID) {
+      showMessage('No se encontró el ID del invitado.', { type: 'error' });
+      return;
+    }
+
+    const { data: invitado, error: fetchErr } = await db
+      .from("invitados")
+      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados,numero_mesa")
+      .eq("codigo", invitadoID)
+      .single();
+
+    if (fetchErr) {
+      console.error(fetchErr);
+      showMessage('Error al verificar el estado de la invitación.', { type: 'error' });
+      return;
+    }
+
+    if (!invitado || invitado.confirmado) {
+      showMessage('Ya habías confirmado antes 🤎');
+      return;
+    }
+
+    // Actualizar
+    const updatedData = {
+      confirmado: false,
+      fecha_confirmacion: new Date().toISOString().split("T")[0],
+      hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }),
+    };
+
+    const { error } = await db
+      .from("invitados")
+      .update(updatedData)
+      .eq("codigo", invitadoID);
+
+    if (error) {
+      console.error(error);
+      btn.disabled = false;
+      const originalText = btn.textContent;
+      btn.textContent = originalText;
+      showMessage('No se pudo guardar la confirmación.', { type: 'error' });
+      return;
+    }
+
+    btnNo.textContent = "Confirmado No asistira ✔";
+    btnNo.style.background = "#888";
+    btnNo.disabled = true;
+
+        // Bloqueo UI
+    btnNo.disabled = true;
+    const originalText = btnNo.textContent;
+    btnNo.style.display = "none";
+
+    // Ocultar input si aplica
+      contenedor.style.display = "none";
+
+    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎`);
+
+  } catch (err) {
+    console.error(err);
+    showMessage('Ocurrió un error inesperado. Intenta nuevamente o más tarde.', { type: 'error' });
+  } finally {
+    // restaurar estado si quedó habilitado por error
+    if (!btnNo.disabled) {
+      btnNo.textContent = originalText;
+      btnNo.disabled = false;
+    }
+  } 
 }
+
 
 
 
