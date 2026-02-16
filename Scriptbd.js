@@ -205,38 +205,8 @@ function mostrarModal(mensaje) {
         // ⏳ Simulación de carga (puedes poner tu fetch aquí)
         //await new Promise(resolve => setTimeout(resolve, 1500));
 
-        if (!invitadoID) {
-          showMessage('No se encontró el ID del invitado.', { type: 'error' });
-          return;
-        }
-
-        const { data: invitado, error: fetchErr } = await db
-          .from("invitados")
-          .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados,numero_mesa")
-          .eq("codigo", invitadoID)
-          .single();
-    
-        if (fetchErr) {
-          console.error(fetchErr);
-          showMessage('Error al verificar el estado de la invitación.', { type: 'error' });
-          return;
-        }
-
-        if (!invitado || invitado.confirmado) {
-          modalTexto.textContent = "Ya habías confirmado antes 🤎";
-          return;
-        }
-
-        if (invitado.numero_invitados === 1 || cantidadConfirmada >= 1) {
-          contenedor.style.display = "none";
-        }
-
-    //showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). Tu numero de mesa: ${invitado.numero_mesa} ¡Te Esperamos!`);
-    //showSuccessMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). Tu numero de mesa: ${invitado.numero_mesa} ¡Te Esperamos!`);
-
-
         // ✅ Mostrar éxito
-        modalTexto.textContent = "✅ Hola" + ${invitado.nombre} + ", gracias por confirmar 🤎  Has confirmado " + ${cantidadConfirmada} + " invitado(s). Tu numero de mesa: " + ${invitado.numero_mesa} + " ¡Te Esperamos!";
+        modalTexto.textContent = "✅ Confirmación exitosa";
         
         spinner.style.display = 'none';
         btnTexto.textContent = 'Aceptar';
@@ -267,6 +237,7 @@ function mostrarModal(mensaje) {
     modalCancelar.addEventListener('click', cancelar);
   });
 }
+
 
 
 
@@ -476,6 +447,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
