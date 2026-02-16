@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const confirmados = data.numero_invitados_confirmados || 1;
       //showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s).`);
-      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎🤎  Has confirmado ${confirmados} invitado(s). Tu numero de mesa: ${data.numero_mesa} ¡Te Esperamos!`);
+      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). Tu numero de mesa: ${data.numero_mesa} ¡Te Esperamos!`);
       //showSuccessMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). Tu numero de mesa: ${data.numero_mesa} ¡Te Esperamos!`);
     }
 
@@ -225,11 +225,11 @@ function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
         modalCancelar.style.display = 'none';
 
         // Cerrar automáticamente después de 2 segundos
-        setTimeout(() => {
+        /*setTimeout(() => {
           modal.style.display = 'none';
           limpiarEventos();
           resolve(true);
-        }, 2000);
+        }, 2000);*/
 
       } catch (error) {
         console.error(error);
@@ -445,6 +445,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
