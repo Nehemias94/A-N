@@ -137,7 +137,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const confirmados = data.numero_invitados_confirmados || 1;
       //showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s).`);
-      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). Tu numero de mesa: ${data.numero_mesa} ¡Te Esperamos!`);
+      //showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). Tu numero de mesa: ${data.numero_mesa} ¡Te Esperamos!`);
+      showSuccessMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). Tu numero de mesa: ${data.numero_mesa} ¡Te Esperamos!`);
     }
 
     if (data.confirmado === false) {
@@ -190,6 +191,12 @@ function mostrarModal(mensaje) {
     modalAceptar.addEventListener('click', aceptar);
     modalCancelar.addEventListener('click', cancelar);
   });
+}
+
+function showSuccessMessage(texto) {
+  contenedorMensaje.style.display = 'block';
+  contenedorMensaje.style.color = 'var(--cafe-dark)';
+  contenedorMensaje.textContent = texto;
 }
 
 async function confirmarAsistencia() {
@@ -283,7 +290,8 @@ async function confirmarAsistencia() {
       contenedor.style.display = "none";
     }
 
-    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). Tu numero de mesa: ${invitado.numero_mesa} ¡Te Esperamos!`);
+    //showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). Tu numero de mesa: ${invitado.numero_mesa} ¡Te Esperamos!`);
+    showSuccessMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). Tu numero de mesa: ${invitado.numero_mesa} ¡Te Esperamos!`);
 
     // Actualizar contador accesible
     if (invitado.numero_invitados > 1) {
@@ -385,6 +393,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
