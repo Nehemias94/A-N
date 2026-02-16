@@ -199,6 +199,17 @@ function showSuccessMessage(texto) {
   contenedorMensaje.textContent = texto;
 }
 
+//mensaje con tiempo para quitarce
+/*function showSuccessMessage(texto) {
+  contenedorMensaje.style.display = 'block';
+  contenedorMensaje.style.color = 'var(--cafe-dark)';
+  contenedorMensaje.textContent = texto;
+
+  setTimeout(() => {
+    contenedorMensaje.style.display = 'none';
+  }, 4000);
+}*/
+
 async function confirmarAsistencia() {
   
   //const seguro = confirm("¿Estás seguro de que deseas confirmar tu asistencia?");
@@ -393,6 +404,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
