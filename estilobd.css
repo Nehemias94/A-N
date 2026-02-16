@@ -389,6 +389,33 @@ body{
   animation: fadeIn .6s ease;
 }
 
+/* Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 3px solid rgba(255,255,255,0.4);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+  display: none;
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Cuando el botón está cargando */
+.btn-principal.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+
 
 
 
