@@ -182,7 +182,7 @@ const modalCancelar = document.getElementById('modalCancelar');
 const spinner = document.getElementById('spinner');
 const btnTexto = document.getElementById('btnTexto');
 
-function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
+function mostrarModal(mensajeConfirmacion, mensajeExitoFinal = null) {
   return new Promise((resolve) => {
 
     modalTexto.textContent = mensajeConfirmacion;
@@ -194,7 +194,7 @@ function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
     spinner.style.display = 'none';
     btnTexto.textContent = 'Aceptar';
 
-    let estado = "confirmacion"; // control de estado
+    let estado = "confirmacion";
 
     async function manejarClickAceptar() {
 
@@ -213,7 +213,8 @@ function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
         spinner.style.display = 'none';
         modalAceptar.disabled = false;
 
-        modalTexto.textContent = mensajeExito || "✅ Confirmación exitosa";
+        // 🔥 AQUÍ mostramos el mensaje final personalizado
+        modalTexto.textContent = mensajeExitoFinal || "✅ Confirmación exitosa";
         btnTexto.textContent = 'Cerrar';
         modalCancelar.style.display = 'none';
 
@@ -236,14 +237,8 @@ function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
     }
 
     function limpiarEventos() {
-      modalAceptar.removeEventListener('click', manejarClickAceptar);
-      modalCancelar.removeEventListener('click', cancelar);
-    }
+      modalAceptar.removeEventListener('click', manejarClickA
 
-    modalAceptar.addEventListener('click', manejarClickAceptar);
-    modalCancelar.addEventListener('click', cancelar);
-  });
-}
 
 
 
@@ -260,9 +255,14 @@ function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
 
 async function confirmarAsistencia() {
 
+  if (!invitadoID) {
+    showMessage('No se encontró el ID del invitado.', { type: 'error' });
+    return;
+  }
+
   // 🔹 PRIMERO preguntar
   const seguro = await mostrarModal(
-    "¿Estás seguro de que deseas confirmar tu asistencia?"
+    "¿Estás seguro de que deseas confirmar su asistencia?"
   );
 
   if (!seguro) return;
@@ -272,20 +272,16 @@ async function confirmarAsistencia() {
   btn.textContent = 'Guardando...';
 
   try {
-    if (!invitadoID) {
-      showMessage('No se encontró el ID del invitado.', { type: 'error' });
-      return;
-    }
 
     const { data: invitado, error: fetchErr } = await db
       .from("invitados")
-      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados, numero_mesa")
+      .select("confirmado, nombre, numero_invitados, numero_mesa")
       .eq("codigo", invitadoID)
       .single();
 
     if (fetchErr) {
       console.error(fetchErr);
-      showMessage('Error al verificar el estado de la invitación.', { type: 'error' });
+      showMessage('Error al verificar el estado.', { type: 'error' });
       return;
     }
 
@@ -310,17 +306,15 @@ async function confirmarAsistencia() {
       }
     }
 
-    // 🔹 Update en Supabase
-    const updatedData = {
-      confirmado: true,
-      fecha_confirmacion: new Date().toISOString().split("T")[0],
-      hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }),
-      numero_invitados_confirmados: cantidadConfirmada
-    };
-
+    // 🔹 AHORA sí hacemos el UPDATE
     const { error } = await db
       .from("invitados")
-      .update(updatedData)
+      .update({
+        confirmado: true,
+        fecha_confirmacion: new Date().toISOString().split("T")[0],
+        hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }),
+        numero_invitados_confirmados: cantidadConfirmada
+      })
       .eq("codigo", invitadoID);
 
     if (error) {
@@ -329,12 +323,12 @@ async function confirmarAsistencia() {
       return;
     }
 
-    // 🔹 Ahora mostrar mensaje final
-    const mensajeFinal = `Hola ${invitado.nombre}, gracias por confirmar 🤎
-    Has confirmado ${cantidadConfirmada} invitado(s).
-    Tu número de mesa: ${invitado.numero_mesa} ¡Te esperamos!`;
-
-    await mostrarModal(mensajeFinal);
+    // 🔹 Mostrar mensaje final
+    showMessage(
+      `Hola ${invitado.nombre}, gracias por confirmar 🤎
+      Has confirmado ${cantidadConfirmada} invitado(s).
+      Tu número de mesa: ${invitado.numero_mesa} ¡Te esperamos!`
+    );
 
     // 🔹 Actualizar UI
     btn.textContent = "Confirmado ✔";
@@ -343,17 +337,11 @@ async function confirmarAsistencia() {
 
     btnNo.disabled = true;
     btnNo.style.display = "none";
-
     contenedor.style.display = "none";
-
-    if (invitado.numero_invitados > 1) {
-      contador.textContent =
-        `Máximo permitidos: ${invitado.numero_invitados}. Confirmados: ${cantidadConfirmada}`;
-    }
 
   } catch (err) {
     console.error(err);
-    showMessage('Ocurrió un error inesperado. Intenta nuevamente.', { type: 'error' });
+    showMessage('Ocurrió un error inesperado.', { type: 'error' });
   } finally {
     if (!btn.disabled) {
       btn.textContent = originalText;
@@ -361,7 +349,6 @@ async function confirmarAsistencia() {
     }
   }
 }
-
 
 /* Mejora UX: permitir enviar con Enter cuando el input está enfocado */
 input.addEventListener('keydown', (e) => {
@@ -446,6 +433,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
