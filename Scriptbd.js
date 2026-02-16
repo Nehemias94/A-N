@@ -182,9 +182,11 @@ const modalCancelar = document.getElementById('modalCancelar');
 const spinner = document.getElementById('spinner');
 const btnTexto = document.getElementById('btnTexto');
 
-function mostrarModal(mensaje) {
+function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
   return new Promise((resolve) => {
-    modalTexto.textContent = mensaje;
+
+    // Mensaje inicial (pregunta)
+    modalTexto.textContent = mensajeConfirmacion;
     modal.style.display = 'flex';
 
     function limpiarEventos() {
@@ -202,24 +204,27 @@ function mostrarModal(mensaje) {
       modalCancelar.disabled = true;
 
       try {
-        // ⏳ Simulación de carga (puedes poner tu fetch aquí)
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Aquí puedes poner tu lógica real si quieres
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
-        // ✅ Mostrar éxito
-        modalTexto.textContent = "✅ Confirmación exitosa";
-        
+        // ✅ Mostrar mensaje personalizado si existe
+        if (mensajeExito) {
+          modalTexto.textContent = mensajeExito;
+        } else {
+          modalTexto.textContent = "✅ Confirmación exitosa";
+        }
+
         spinner.style.display = 'none';
         btnTexto.textContent = 'Aceptar';
         modalAceptar.classList.remove('loading');
 
         modalCancelar.style.display = 'none';
 
-        // Esperar 1.5 segundos y cerrar
-        /*setTimeout(() => {
+        setTimeout(() => {
           modal.style.display = 'none';
           limpiarEventos();
           resolve(true);
-        }, 1500);*/
+        }, 2000);
 
       } catch (error) {
         console.error(error);
@@ -242,6 +247,7 @@ function mostrarModal(mensaje) {
 
 
 
+
 //mensaje con tiempo para quitarce
 /*function showSuccessMessage(texto) {
   contenedorMensaje.style.display = 'block';
@@ -255,10 +261,15 @@ function mostrarModal(mensaje) {
 
 async function confirmarAsistencia() {
   
-  //const seguro = confirm("¿Estás seguro de que deseas confirmar tu asistencia?");
-  //if (!seguro) return;
-
-  const seguro = await mostrarModal("¿Estás seguro de que deseas confirmar tu asistencia?");
+  const mensajeFinal = `Hola ${invitado.nombre}, gracias por confirmar 🤎  
+  Has confirmado ${cantidadConfirmada} invitado(s).  
+  Tu numero de mesa: ${invitado.numero_mesa} ¡Te Esperamos!`;
+  
+  const seguro = await mostrarModal(
+    "¿Estás seguro de que deseas confirmar tu asistencia?",
+    mensajeFinal
+  );
+  
   if (!seguro) return;
   
   btn.disabled = true;
@@ -447,6 +458,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
