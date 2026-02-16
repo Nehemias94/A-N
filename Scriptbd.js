@@ -187,38 +187,57 @@ function mostrarModal(mensaje) {
     modalTexto.textContent = mensaje;
     modal.style.display = 'flex';
 
-    function cerrar(valor) {
-      modal.style.display = 'none';
-
-      // Restaurar botón
-      modalAceptar.classList.remove('loading');
-      spinner.style.display = 'none';
-      btnTexto.textContent = 'Confirmar';
-      modalAceptar.disabled = false;
-
+    function limpiarEventos() {
       modalAceptar.removeEventListener('click', aceptar);
       modalCancelar.removeEventListener('click', cancelar);
-      resolve(valor);
     }
 
-    function aceptar() {
+    async function aceptar() {
+
       // 🔄 Activar spinner
       modalAceptar.classList.add('loading');
       spinner.style.display = 'inline-block';
       btnTexto.textContent = 'Enviando...';
       modalAceptar.disabled = true;
+      modalCancelar.disabled = true;
 
-      resolve(true); // devolvemos true pero NO cerramos todavía
+      try {
+        // ⏳ Simulación de carga (puedes poner tu fetch aquí)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // ✅ Mostrar éxito
+        modalTexto.textContent = "✅ Confirmación exitosa";
+        
+        spinner.style.display = 'none';
+        btnTexto.textContent = 'Aceptar';
+        modalAceptar.classList.remove('loading');
+
+        modalCancelar.style.display = 'none';
+
+        // Esperar 1.5 segundos y cerrar
+        setTimeout(() => {
+          modal.style.display = 'none';
+          limpiarEventos();
+          resolve(true);
+        }, 1500);
+
+      } catch (error) {
+        console.error(error);
+        resolve(false);
+      }
     }
 
     function cancelar() {
-      cerrar(false);
+      modal.style.display = 'none';
+      limpiarEventos();
+      resolve(false);
     }
 
     modalAceptar.addEventListener('click', aceptar);
     modalCancelar.addEventListener('click', cancelar);
   });
 }
+
 
 
 
@@ -427,6 +446,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
