@@ -196,7 +196,10 @@ async function confirmarAsistencia() {
   
   //const seguro = confirm("¿Estás seguro de que deseas confirmar tu asistencia?");
   //if (!seguro) return;
-  // Bloqueo UI
+
+  const seguro = await mostrarModal("¿Estás seguro de que deseas confirmar tu asistencia?");
+  if (!seguro) return;
+  
   btn.disabled = true;
   const originalText = btn.textContent;
   btn.textContent = 'Guardando...';
@@ -382,6 +385,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
