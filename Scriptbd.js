@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (data.confirmado === false) {
-      btnNo.textContent = "confirmado No asistira ✔";
+      btnNo.textContent = "Has confirmado No asistiras ✔";
       btnNo.style.background = "#888";
       btnNo.disabled = true;
 
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       contenedor.style.display = 'none';
 
       //showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s).`);
-      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎`);
+      showMessage(`Hola ${data.nombre}, Has confirmado que no asistiras, gracias por confirmar 🤎`);
     }
 
   } catch (err) {
@@ -329,7 +329,7 @@ async function confirmarNoAsistencia() {
       return;
     }
 
-    btnNo.textContent = "Confirmado No asistira ✔";
+    btnNo.textContent = "Has Confirmado No asistiras ✔";
     btnNo.style.background = "#888";
     btnNo.disabled = true;
 
@@ -341,7 +341,7 @@ async function confirmarNoAsistencia() {
     // Ocultar input si aplica
       contenedor.style.display = "none";
 
-    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎`);
+    showMessage(`Hola ${invitado.nombre}, Has Confirmado No asistira, gracias por confirmar 🤎`);
 
   } catch (err) {
     console.error(err);
@@ -354,6 +354,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
