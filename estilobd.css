@@ -373,6 +373,22 @@ body{
   from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
 }
+/*MENSAJE CONFIRMACION*/
+#mensajeConfirmacion{
+  margin-top:26px;
+  font-size:20px;
+  font-weight:600;
+  text-align:center;
+  color:var(--cafe-dark);
+  letter-spacing:0.4px;
+  background:rgba(200,169,126,0.08);
+  padding:16px 18px;
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  display:none;
+  animation: fadeIn .6s ease;
+}
+
 
 
 
