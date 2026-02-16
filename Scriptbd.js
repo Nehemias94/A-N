@@ -334,9 +334,9 @@ async function confirmarNoAsistencia() {
     btnNo.disabled = true;
 
         // Bloqueo UI
-    btnNo.disabled = true;
-    const originalText = btnNo.textContent;
-    btnNo.style.display = "none";
+    btn.disabled = true;
+    const originalText = btn.textContent;
+    btn.style.display = "none";
 
     // Ocultar input si aplica
       contenedor.style.display = "none";
@@ -354,6 +354,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
