@@ -35,6 +35,12 @@ const mensajeMesa = document.getElementById('msjeMesa');
 const numeroMesa = document.getElementById('numMesa');
 const btnNo = document.getElementById('btnNoConfirmar');
 
+function showSuccessMessage(texto) {
+  contenedorMensaje.style.display = 'block';
+  contenedorMensaje.style.color = 'var(--cafe-dark)';
+  contenedorMensaje.textContent = texto;
+}
+
 /* Mensajes: ahora aceptamos { type: 'error' } para mostrar en rojo y usar aria-live="assertive" */
 function showMessage(text, opts = {}) {
   contenedorMensaje.style.display = 'block';
@@ -193,11 +199,6 @@ function mostrarModal(mensaje) {
   });
 }
 
-function showSuccessMessage(texto) {
-  contenedorMensaje.style.display = 'block';
-  contenedorMensaje.style.color = 'var(--cafe-dark)';
-  contenedorMensaje.textContent = texto;
-}
 
 //mensaje con tiempo para quitarce
 /*function showSuccessMessage(texto) {
@@ -404,6 +405,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
