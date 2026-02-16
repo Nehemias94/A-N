@@ -130,6 +130,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       btn.style.background = "#888";
       btn.disabled = true;
 
+                // Bloqueo UI
+      btnNo.disabled = true;
+      const originalText = btnNo.textContent;
+      btnNo.style.display = "none";
+
       const confirmados = data.numero_invitados_confirmados || 1;
       //showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s).`);
       showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). Tu numero de mesa: ${data.numero_mesa} ¡Te Esperamos!`);
@@ -265,6 +270,7 @@ async function confirmarNoAsistencia() {
   const originalText = btnNo.textContent;
   btnNo.textContent = 'Guardando No ...';
 }
+
 
 
 
