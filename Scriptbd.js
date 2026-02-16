@@ -168,6 +168,9 @@ btnNo.addEventListener('click', confirmarNoAsistencia);
 btn.addEventListener('click', confirmarAsistencia);
 
 async function confirmarAsistencia() {
+  
+  const seguro = confirm("¿Estás seguro de que deseas confirmar tu asistencia?");
+  if (!seguro) return;
   // Bloqueo UI
   btn.disabled = true;
   const originalText = btn.textContent;
@@ -354,6 +357,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
