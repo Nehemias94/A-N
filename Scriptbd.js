@@ -203,7 +203,7 @@ function mostrarModal(mensaje) {
 
       try {
         // ⏳ Simulación de carga (puedes poner tu fetch aquí)
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        //await new Promise(resolve => setTimeout(resolve, 1500));
 
         // ✅ Mostrar éxito
         modalTexto.textContent = "✅ Confirmación exitosa";
@@ -446,6 +446,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
