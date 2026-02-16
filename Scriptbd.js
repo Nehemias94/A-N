@@ -221,7 +221,11 @@ function mostrarModal(mensajeConfirmacion, mensajeExito = null) {
         spinner.style.display = 'none';
         btnTexto.textContent = 'Aceptar';
         modalAceptar.classList.remove('loading');
-        limpiarEventos();
+
+            function aceptar() {
+              limpiarEventos();
+              resolve(true);
+            }
 
         modalCancelar.style.display = 'none';
 
@@ -446,6 +450,7 @@ async function confirmarNoAsistencia() {
     }
   } 
 }
+
 
 
 
