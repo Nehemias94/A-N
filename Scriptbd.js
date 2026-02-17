@@ -123,9 +123,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       btn.disabled = true;
 
       const confirmados = data.numero_invitados_confirmados || 1;
+      const numeromesa = data.numero_mesa || 1;
 
       showMessage(
-        `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!`
+        `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
       );
     }
 
@@ -328,7 +329,7 @@ async function confirmarAsistencia() {
     contenedor.style.display = "none";
 
     showMessage(
-      `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). ¡Te Esperamos!`
+      `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!`
     );
 
   await mostrarModalMensaje(
@@ -360,6 +361,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
