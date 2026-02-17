@@ -253,8 +253,14 @@ btn.addEventListener('click', confirmarAsistencia);
 
 async function confirmarAsistencia() {
 
+  // 🔐 Validar ID
+  if (!invitadoID) {
+    showMessage('Enlace inválido.', { type: 'error' });
+    return;
+  }
+
   const seguro = await mostrarModal(
-  "¿Deseas confirmar tu asistencia?"
+    "¿Deseas confirmar tu asistencia?"
   );
 
   if (!seguro) return;
@@ -270,9 +276,10 @@ async function confirmarAsistencia() {
       return;
     }
 
+    // 🔎 Obtener datos actuales
     const { data: invitado, error: fetchErr, status: fetchStatus } = await db
       .from("invitados")
-      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados, numero_mesa")
+      .select("confirmado, nombre, numero_invitados, numero_mesa")
       .eq("codigo", invitadoID)
       .single();
 
@@ -281,11 +288,17 @@ async function confirmarAsistencia() {
       return;
     }
 
-    if (!invitado || invitado.confirmado) {
+    if (!invitado) {
+      showMessage('Invitado no encontrado.', { type: 'error' });
+      return;
+    }
+
+    if (invitado.confirmado) {
       showMessage('Ya habías confirmado antes 🤎');
       return;
     }
 
+    // 🎟 Validar cantidad
     let cantidadConfirmada = 1;
 
     if (invitado.numero_invitados > 1) {
@@ -297,36 +310,38 @@ async function confirmarAsistencia() {
       }
 
       if (cantidadConfirmada > invitado.numero_invitados) {
-        /*showMessage(
-          `Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`,
-          { type: 'error' }
-        );*/
-
         await mostrarModalMensaje(
-            `❌ Solo puedes confirmar ${invitado.numero_invitados} invitado(s).` , { type: 'error' }
+          `❌ Solo puedes confirmar ${invitado.numero_invitados} invitado(s).`
         );
-        btn.textContent = originalText;
-        btn.disabled = false;
         return;
       }
     }
 
+    const now = new Date();
+
     const updatedData = {
       confirmado: true,
-      fecha_confirmacion: new Date().toISOString().split("T")[0],
-      hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false }),
+      fecha_confirmacion: now.toISOString().split("T")[0],
+      hora_confirmacion: now.toLocaleTimeString("es-ES", { hour12: false }),
       numero_invitados_confirmados: cantidadConfirmada
     };
 
-    const { error: updateErr, status: updateStatus } = await db
+    // 🔐 UPDATE protegido (solo si no estaba confirmado)
+    const { error: updateErr, status: updateStatus, count } = await db
       .from("invitados")
       .update(updatedData)
-      .eq("codigo", invitadoID);
+      .eq("codigo", invitadoID)
+      .eq("confirmado", false)
+      .select(); // necesario para saber si actualizó
 
     if (updateErr) {
       mostrarErrorSupabase(updateErr, updateStatus);
-      btn.textContent = originalText;
-      btn.disabled = false;
+      return;
+    }
+
+    // 🔎 Si no actualizó ninguna fila, alguien ya confirmó
+    if (!count && count !== 0) {
+      showMessage('No se pudo confirmar. Intenta nuevamente.', { type: 'error' });
       return;
     }
 
@@ -337,30 +352,36 @@ async function confirmarAsistencia() {
     contenedor.style.display = "none";
 
     showMessage(
-      `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!`
+      `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). Tu mesa asignada es la número ${invitado.numero_mesa}. ¡Te esperamos!`
     );
 
-  await mostrarModalMensaje(
-      `🎉Gracias por confirmar tu asistencia 🤎.
-    Has confirmado ${cantidadConfirmada} invitado(s),
-    tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!.`
-  );
+    await mostrarModalMensaje(
+      `🎉 Gracias por confirmar tu asistencia 🤎.
+Has confirmado ${cantidadConfirmada} invitado(s).
+Tu mesa asignada es la número ${invitado.numero_mesa}.
+¡Te esperamos!`
+    );
 
   } catch (err) {
+
     console.error("ERROR INESPERADO:", err);
+
     showMessage(
       `Error inesperado: ${err.message || 'Error de conexión.'}`,
       { type: 'error' }
     );
-    btn.textContent = originalText;
-    btn.disabled = false;
+
   } finally {
-    if (!btn.disabled) {
+
+    // 🔄 Restaurar botón solo si no quedó confirmado
+    if (btn.textContent !== "Confirmado ✔") {
       btn.textContent = originalText;
       btn.disabled = false;
     }
+
   }
 }
+
 
 /* Enviar con Enter */
 input.addEventListener('keydown', (e) => {
@@ -369,6 +390,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
