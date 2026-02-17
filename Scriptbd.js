@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const confirmados = data.numero_invitados_confirmados || 1;
 
       showMessage(
-        `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). ¡Te Esperamos!`
+        `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!`
       );
     }
 
@@ -267,7 +267,7 @@ async function confirmarAsistencia() {
 
     const { data: invitado, error: fetchErr, status: fetchStatus } = await db
       .from("invitados")
-      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados")
+      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados, numero_mesa")
       .eq("codigo", invitadoID)
       .single();
 
@@ -331,11 +331,11 @@ async function confirmarAsistencia() {
       `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). ¡Te Esperamos!`
     );
 
-    await mostrarModalMensaje(
-      `🎉 Confirmación realizada correctamente.
-      
-    Gracias por confirmar tu asistencia.`
-    );
+  await mostrarModalMensaje(
+      `🎉Gracias por confirmar tu asistencia 🤎.
+    Has confirmado ${cantidadConfirmada} invitado(s),
+    tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!.`
+  );
 
   } catch (err) {
     console.error("ERROR INESPERADO:", err);
@@ -360,6 +360,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
