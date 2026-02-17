@@ -19,6 +19,14 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const params = new URLSearchParams(window.location.search);
 const invitadoID = params.get("id");
 
+const regexCodigo = /^INV\d{4}$/;
+
+if (!regexCodigo.test(invitadoID)) {
+  showMessage("Enlace inválido.", { type: "error" });
+  throw new Error("ID inválido");
+}
+
+
 const nombreSpan = document.getElementById('nombreInvitado');
 const mensajeRegalo = document.getElementById('mensajeRegalo');
 const contenedor = document.getElementById('contenedorInvitados');
@@ -390,6 +398,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
