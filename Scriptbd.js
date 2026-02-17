@@ -293,9 +293,13 @@ async function confirmarAsistencia() {
       }
 
       if (cantidadConfirmada > invitado.numero_invitados) {
-        showMessage(
+        /*showMessage(
           `Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`,
           { type: 'error' }
+        );*/
+
+          await mostrarModalMensaje(
+            `❌ Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).` , { type: 'error' }
         );
         btn.textContent = originalText;
         btn.disabled = false;
@@ -361,6 +365,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
