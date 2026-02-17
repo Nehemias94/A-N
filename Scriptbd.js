@@ -249,7 +249,7 @@ btn.addEventListener('click', confirmarAsistencia);
 async function confirmarAsistencia() {
 
   const seguro = await mostrarModal(
-  "¿Estás seguro de que deseas confirmar su asistencia?"
+  "¿Deseas confirmar tu asistencia?"
   );
 
   if (!seguro) return;
@@ -360,6 +360,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
