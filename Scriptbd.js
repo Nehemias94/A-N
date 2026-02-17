@@ -146,6 +146,8 @@ const modal = document.getElementById('modalConfirmacion');
 const modalTexto = document.getElementById('modalTexto');
 const modalAceptar = document.getElementById('modalAceptar');
 const modalCancelar = document.getElementById('modalCancelar');
+const spinner = document.getElementById('spinner');
+const btnTexto = document.getElementById('btnTexto');
 
 function mostrarModal(mensaje) {
   return new Promise((resolve) => {
@@ -155,18 +157,44 @@ function mostrarModal(mensaje) {
 
     function cerrar(valor) {
       modal.style.display = 'none';
+      modalAceptar.classList.remove('loading');
+      spinner.style.display = 'none';
+      btnTexto.textContent = 'Confirmar';
+      modalAceptar.disabled = false;
+
       modalAceptar.removeEventListener('click', aceptar);
       modalCancelar.removeEventListener('click', cancelar);
+
       resolve(valor);
     }
 
-    function aceptar() { cerrar(true); }
-    function cancelar() { cerrar(false); }
+    async function aceptar() {
+
+      // 🔄 Activar spinner
+      modalAceptar.classList.add('loading');
+      spinner.style.display = 'inline-block';
+      btnTexto.textContent = 'Guardando...';
+      modalAceptar.disabled = true;
+
+      try {
+        // Aquí va tu proceso real (ejemplo async)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        cerrar(true);
+
+      } catch (error) {
+        console.error(error);
+        cerrar(false);
+      }
+    }
+
+    function cancelar() {
+      cerrar(false);
+    }
 
     modalAceptar.addEventListener('click', aceptar);
     modalCancelar.addEventListener('click', cancelar);
 
-    // Cerrar si presiona ESC
     document.addEventListener('keydown', function escListener(e) {
       if (e.key === 'Escape') {
         document.removeEventListener('keydown', escListener);
@@ -291,5 +319,6 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
