@@ -330,6 +330,19 @@ body{
   animation: fadeIn .6s ease;
 }
 
+#modalTexto2{
+  font-size:20px;
+  font-weight:600;
+  text-align:center;
+  color:var(--cafe-dark);
+  letter-spacing:0.4px;
+  background:rgba(200,169,126,0.08);
+  padding:16px 18px;
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  animation: fadeIn .6s ease;
+}
+
 .modal-botones {
   margin-top: 22px;
   display: flex;
@@ -414,6 +427,7 @@ body{
   pointer-events: none;
   opacity: 0.85;
 }
+
 
 
 
