@@ -211,26 +211,28 @@ function mostrarModal(mensaje) {
 
 /*Modal message*/
 
-const modalmsj = document.getElementById('modalMessage');
-const modalTextomsj = document.getElementById('modalTexto');
-const modalCancelarmsj = document.getElementById('modalCancelar');
+const modalMensaje = document.getElementById('modalMessage');
+const modalTextoMensaje = document.getElementById('modalTextoMensaje');
+const modalCerrarMensaje = document.getElementById('modalCerrarMensaje');
 
-function mostrarModalmsj(mensaje) {
+function mostrarModalMensaje(mensaje) {
   return new Promise((resolve) => {
 
-    modalTextomsj.textContent = mensaje;
-    modalmsj.style.display = 'flex';
+    modalTextoMensaje.textContent = mensaje;
+    modalMensaje.style.display = 'flex';
 
-    function cancelar() {
-      cerrar(false);
+    function cerrar() {
+      modalMensaje.style.display = 'none';
+      modalCerrarMensaje.removeEventListener('click', cerrar);
+      resolve(true);
     }
-    
-    modalCancelar.addEventListener('click', cancelar);
+
+    modalCerrarMensaje.addEventListener('click', cerrar);
 
     document.addEventListener('keydown', function escListener(e) {
       if (e.key === 'Escape') {
         document.removeEventListener('keydown', escListener);
-        cerrar(false);
+        cerrar();
       }
     });
 
@@ -329,9 +331,11 @@ async function confirmarAsistencia() {
       `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). ¡Te Esperamos!`
     );
 
-    const seguro = await mostrarModalmsj(
-  "¿test?"
-  );
+    await mostrarModalMensaje(
+      `🎉 Confirmación realizada correctamente.
+      
+    Gracias por confirmar tu asistencia.`
+    );
 
   } catch (err) {
     console.error("ERROR INESPERADO:", err);
@@ -356,6 +360,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
