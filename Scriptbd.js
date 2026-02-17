@@ -233,6 +233,8 @@ async function confirmarAsistencia() {
           `Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`,
           { type: 'error' }
         );
+        btn.textContent = originalText;
+        btn.disabled = false;
         return;
       }
     }
@@ -251,6 +253,8 @@ async function confirmarAsistencia() {
 
     if (updateErr) {
       mostrarErrorSupabase(updateErr, updateStatus);
+      btn.textContent = originalText;
+      btn.disabled = false;
       return;
     }
 
@@ -270,6 +274,8 @@ async function confirmarAsistencia() {
       `Error inesperado: ${err.message || 'Error de conexión.'}`,
       { type: 'error' }
     );
+    btn.textContent = originalText;
+    btn.disabled = false;
   } finally {
     if (!btn.disabled) {
       btn.textContent = originalText;
@@ -285,4 +291,5 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
