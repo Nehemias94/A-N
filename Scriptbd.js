@@ -149,6 +149,10 @@ const modalCancelar = document.getElementById('modalCancelar');
 const spinner = document.getElementById('spinner');
 const btnTexto = document.getElementById('btnTexto');
 
+const modalmsj = document.getElementById('modalmessage');
+const modalTextomsj = document.getElementById('modalTexto');
+const modalCancelarmsj = document.getElementById('modalCancelar');
+
 function mostrarModal(mensaje) {
   return new Promise((resolve) => {
 
@@ -319,6 +323,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
