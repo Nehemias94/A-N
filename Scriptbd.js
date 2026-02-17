@@ -128,6 +128,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       showMessage(
         `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
       );
+
+        await mostrarModalMensaje(
+             `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
+        );
     }
 
   } catch (err) {
@@ -298,8 +302,8 @@ async function confirmarAsistencia() {
           { type: 'error' }
         );*/
 
-          await mostrarModalMensaje(
-            `❌ Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).` , { type: 'error' }
+        await mostrarModalMensaje(
+            `❌ Solo puedes confirmar ${invitado.numero_invitados} invitado(s).` , { type: 'error' }
         );
         btn.textContent = originalText;
         btn.disabled = false;
@@ -365,6 +369,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
