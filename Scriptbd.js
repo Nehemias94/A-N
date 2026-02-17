@@ -149,7 +149,7 @@ const modalCancelar = document.getElementById('modalCancelar');
 const spinner = document.getElementById('spinner');
 const btnTexto = document.getElementById('btnTexto');
 
-const modalmsj = document.getElementById('modalmessage');
+const modalmsj = document.getElementById('modalMessage');
 const modalTextomsj = document.getElementById('modalTexto');
 const modalCancelarmsj = document.getElementById('modalCancelar');
 
@@ -208,6 +208,35 @@ function mostrarModal(mensaje) {
 
   });
 }
+
+/*Modal message*/
+
+const modalmsj = document.getElementById('modalMessage');
+const modalTextomsj = document.getElementById('modalTexto');
+const modalCancelarmsj = document.getElementById('modalCancelar');
+
+function mostrarModalmsj(mensaje) {
+  return new Promise((resolve) => {
+
+    modalTextomsj.textContent = mensaje;
+    modalmsj.style.display = 'flex';
+
+    function cancelar() {
+      cerrar(false);
+    }
+    
+    modalCancelar.addEventListener('click', cancelar);
+
+    document.addEventListener('keydown', function escListener(e) {
+      if (e.key === 'Escape') {
+        document.removeEventListener('keydown', escListener);
+        cerrar(false);
+      }
+    });
+
+  });
+}
+
 
 /* =========================
    CONFIRMAR ASISTENCIA
@@ -300,6 +329,10 @@ async function confirmarAsistencia() {
       `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). ¡Te Esperamos!`
     );
 
+    const seguro = await mostrarModalmsj(
+  "¿test?"
+  );
+
   } catch (err) {
     console.error("ERROR INESPERADO:", err);
     showMessage(
@@ -323,6 +356,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
