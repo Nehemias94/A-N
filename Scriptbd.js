@@ -139,12 +139,57 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 /* =========================
+   MODAL LOGICA
+========================= */
+
+const modal = document.getElementById('modalConfirmacion');
+const modalTexto = document.getElementById('modalTexto');
+const modalAceptar = document.getElementById('modalAceptar');
+const modalCancelar = document.getElementById('modalCancelar');
+
+function mostrarModal(mensaje) {
+  return new Promise((resolve) => {
+
+    modalTexto.textContent = mensaje;
+    modal.style.display = 'flex';
+
+    function cerrar(valor) {
+      modal.style.display = 'none';
+      modalAceptar.removeEventListener('click', aceptar);
+      modalCancelar.removeEventListener('click', cancelar);
+      resolve(valor);
+    }
+
+    function aceptar() { cerrar(true); }
+    function cancelar() { cerrar(false); }
+
+    modalAceptar.addEventListener('click', aceptar);
+    modalCancelar.addEventListener('click', cancelar);
+
+    // Cerrar si presiona ESC
+    document.addEventListener('keydown', function escListener(e) {
+      if (e.key === 'Escape') {
+        document.removeEventListener('keydown', escListener);
+        cerrar(false);
+      }
+    });
+
+  });
+}
+
+/* =========================
    CONFIRMAR ASISTENCIA
 ========================= */
 
 btn.addEventListener('click', confirmarAsistencia);
 
 async function confirmarAsistencia() {
+
+  const seguro = await mostrarModal(
+  "¿Estás seguro de que deseas confirmar su asistencia?"
+  );
+
+  if (!seguro) return;
 
   btn.disabled = true;
   const originalText = btn.textContent;
@@ -240,3 +285,4 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
