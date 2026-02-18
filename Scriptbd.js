@@ -452,6 +452,7 @@ async function confirmarNoAsistencia() {
       .from("invitados")
       .update(updatedData)
       .eq("codigo", invitadoID)
+      .is("confirmado", null)
       //.eq("confirmado", null)
         .select(); // necesario para saber si actualizó
 
@@ -496,6 +497,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
