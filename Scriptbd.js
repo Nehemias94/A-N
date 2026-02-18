@@ -262,6 +262,7 @@ function mostrarModalMensaje(mensaje) {
 ========================= */
 
 btn.addEventListener('click', confirmarAsistencia);
+btnNo.addEventListener('click', confirmarNoAsistencia);
 
 async function confirmarAsistencia() {
 
@@ -395,6 +396,102 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
+async function confirmarNoAsistencia() {
+
+  const seguro = await mostrarModal(
+    "¿Deseas confirmar tu asistencia?"
+  );
+
+  if (!seguro) return;
+
+  btnNo.disabled = true;
+  const originalText = btnNo.textContent;
+  btnNo.textContent = 'Guardando...';
+
+  try {
+
+    if (!navigator.onLine) {
+      showMessage('No tienes conexión a internet.', { type: 'error' });
+      return;
+    }
+
+    // 🔎 Obtener datos actuales
+    const { data: invitado, error: fetchErr, status: fetchStatus } = await db
+      .from("invitados")
+      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados, numero_mesa")
+      .eq("codigo", invitadoID)
+      .single();
+
+    if (fetchErr) {
+      mostrarErrorSupabase(fetchErr, fetchStatus);
+      return;
+    }
+
+    if (!invitado) {
+      showMessage('Invitado no encontrado.', { type: 'error' });
+      return;
+    }
+
+    if (invitado.confirmado) {
+      showMessage('Has confirmado que no asistirás 🤎');
+      return;
+    }
+
+    const updatedData = {
+      confirmado: false,
+      fecha_confirmacion: new Date().toISOString().split("T")[0],
+      hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false })
+    };
+
+       // 🔐 UPDATE protegido (solo si no estaba confirmado) 
+    const { error: updateErr, status: updateStatus } = await db
+      .from("invitados")
+      .update(updatedData)
+      .eq("codigo", invitadoID)
+        .select(); // necesario para saber si actualizó
+
+    if (updateErr) {
+      mostrarErrorSupabase(updateErr, updateStatus);
+      btnNo.textContent = originalText;
+      btnNo.disabled = false;
+      return;
+    }
+
+    btnNo.textContent = "Has confirmado que no asistirás. ✔";
+    btnNo.style.background = "#888";
+    btnNo.disabled = true;
+
+    contenedor.style.display = "none";
+
+    showMessage(
+      `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`);
+
+  
+    await mostrarModalMensaje(
+        `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`
+    );
+
+    btn.textContent = originalText;
+    btn.disabled = true;
+    btn.style.display = "none";
+
+  } catch (err) {
+    console.error("ERROR INESPERADO:", err);
+    showMessage(
+      `Error inesperado: ${err.message || 'Error de conexión.'}`,
+      { type: 'error' }
+    );
+    btnNo.textContent = originalText;
+    btnNo.disabled = false;
+  } finally {
+    if (!btn.disabled) {
+      btnNo.textContent = originalText;
+      btnNo.disabled = false;
+    }
+  }
+}
+
 
 
 
