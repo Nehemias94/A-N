@@ -333,7 +333,9 @@ async function confirmarAsistencia() {
 
       if (!cantidadConfirmada || cantidadConfirmada < 1) {
         //showMessage('Ingresa cuántos asistirán.', { type: 'error' });
-        await mostrarModalMensaje('Ingresa cuántos asistirán.', { type: 'error' });
+        await mostrarModalMensaje('❌ Debe ingresa cuántos asistirán.', { type: 'error' });
+        btn.textContent = originalText;
+        btn.disabled = false;
         return;
       }
 
@@ -361,6 +363,7 @@ async function confirmarAsistencia() {
       .from("invitados")
       .update(updatedData)
       .eq("codigo", invitadoID)
+      .or("confirmado.is.null,confirmado.eq.false") // ✅ clave
         .select(); // necesario para saber si actualizó
 
     if (updateErr) {
@@ -414,6 +417,8 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
+/*********************No***********************/
 
 async function confirmarNoAsistencia() {
 
@@ -512,6 +517,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
