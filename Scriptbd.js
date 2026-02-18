@@ -337,7 +337,7 @@ async function confirmarAsistencia() {
       
     showMessage(
       `Hola ${invitado.nombre}, 
-      gracias por confirmar 🤎🤎 Has confirmado ${invitado.numero_invitados_confirmados} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} 
+      gracias por confirmar 🤎 Has confirmado ${invitado.numero_invitados_confirmados} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} 
       ¡Te Esperamos!`
     );
       
@@ -363,9 +363,9 @@ async function confirmarAsistencia() {
           `Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`,
           { type: 'error' }
         );*/
-        await mostrarModalMensaje(`❌ Solo puedes confirmar ${invitado.numero_invitados} invitado(s).` , { type: 'error' });
         btn.textContent = originalText;
         btn.disabled = false;
+        await mostrarModalMensaje(`❌ Solo puedes confirmar ${invitado.numero_invitados} invitado(s).` , { type: 'error' });
         return;
       }
     }
@@ -398,6 +398,10 @@ async function confirmarAsistencia() {
 
     contenedor.style.display = "none";
 
+    btnNo.textContent = originalText;
+    btnNo.disabled = true;
+    btnNo.style.display = "none";
+
     showMessage(
       `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!`
     );
@@ -408,11 +412,6 @@ async function confirmarAsistencia() {
         Has confirmado ${cantidadConfirmada} invitado(s),
         tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!.`
     );
-
-    btnNo.textContent = originalText;
-    btnNo.disabled = true;
-    btnNo.style.display = "none";
-
   } catch (err) {
     console.error("ERROR INESPERADO:", err);
     showMessage(
@@ -536,6 +535,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
