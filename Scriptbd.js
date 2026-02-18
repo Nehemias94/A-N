@@ -296,12 +296,17 @@ async function confirmarAsistencia() {
     }
 
     if (!invitado) {
-      showMessage('Invitado no encontrado.', { type: 'error' });
+      //showMessage('Invitado no encontrado.', { type: 'error' });
+
+      await mostrarModalMensaje(
+          'Invitado no encontrado.', { type: 'error' }
+      );
       return;
     }
 
     if (invitado.confirmado) {
-      showMessage('Ya habías confirmado antes 🤎');
+      //showMessage('Ya habías confirmado antes 🤎');
+      await mostrarModalMensaje('Ya habías confirmado antes 🤎');
       return;
     }
 
@@ -312,7 +317,8 @@ async function confirmarAsistencia() {
       cantidadConfirmada = parseInt(input.value, 10);
 
       if (!cantidadConfirmada || cantidadConfirmada < 1) {
-        showMessage('Ingresa cuántos asistirán.', { type: 'error' });
+        //showMessage('Ingresa cuántos asistirán.', { type: 'error' });
+        await mostrarModalMensaje('Ingresa cuántos asistirán.', { type: 'error' });
         return;
       }
 
@@ -321,10 +327,7 @@ async function confirmarAsistencia() {
           `Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`,
           { type: 'error' }
         );*/
-
-        await mostrarModalMensaje(
-            `❌ Solo puedes confirmar ${invitado.numero_invitados} invitado(s).` , { type: 'error' }
-        );
+        await mostrarModalMensaje(`❌ Solo puedes confirmar ${invitado.numero_invitados} invitado(s).` , { type: 'error' });
         btn.textContent = originalText;
         btn.disabled = false;
         return;
@@ -365,8 +368,8 @@ async function confirmarAsistencia() {
   
     await mostrarModalMensaje(
         `🎉Gracias por confirmar tu asistencia 🤎.
-      Has confirmado ${cantidadConfirmada} invitado(s),
-      tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!.`
+        Has confirmado ${cantidadConfirmada} invitado(s),
+        tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!.`
     );
 
     btnNo.textContent = originalText;
@@ -400,7 +403,7 @@ input.addEventListener('keydown', (e) => {
 async function confirmarNoAsistencia() {
 
   const seguro = await mostrarModal(
-    "¿Deseas confirmar tu asistencia?"
+    "¿Deseas confirmar que NO asistirás?"
   );
 
   if (!seguro) return;
@@ -433,7 +436,7 @@ async function confirmarNoAsistencia() {
       return;
     }
 
-    if (invitado.confirmado) {
+    if (invitado.confirmado === false) {
       showMessage('Has confirmado que no asistirás 🤎');
       return;
     }
@@ -449,6 +452,7 @@ async function confirmarNoAsistencia() {
       .from("invitados")
       .update(updatedData)
       .eq("codigo", invitadoID)
+      .eq("confirmado", null)
         .select(); // necesario para saber si actualizó
 
     if (updateErr) {
@@ -485,12 +489,14 @@ async function confirmarNoAsistencia() {
     btnNo.textContent = originalText;
     btnNo.disabled = false;
   } finally {
-    if (!btn.disabled) {
+    if (!btnNo.disabled) {
+      const originalText = btnNo.textContent;
       btnNo.textContent = originalText;
       btnNo.disabled = false;
     }
   }
 }
+
 
 
 
