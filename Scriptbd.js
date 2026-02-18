@@ -33,6 +33,7 @@ const contenedor = document.getElementById('contenedorInvitados');
 const contador = document.getElementById('contadorInvitados');
 const input = document.getElementById('inputInvitados');
 const btn = document.getElementById('btnConfirmar');
+const btnNo = document.getElementById('btnNoConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
 const mesa = document.getElementById('numeroMesa');
 
@@ -137,9 +138,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
       );
 
-        await mostrarModalMensaje(
+        /*await mostrarModalMensaje(
              `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
-        );
+        );*/
     }
 
   } catch (err) {
@@ -357,6 +358,7 @@ async function confirmarAsistencia() {
       `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!`
     );
 
+  
   await mostrarModalMensaje(
       `🎉Gracias por confirmar tu asistencia 🤎.
     Has confirmado ${cantidadConfirmada} invitado(s),
@@ -386,3 +388,4 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
