@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         showMessage(
           `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`);
     
-        btn.textContent = originalText;
+        //btn.textContent = originalText;
         btn.disabled = true;
         btn.style.display = "none";
       
@@ -513,6 +513,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
