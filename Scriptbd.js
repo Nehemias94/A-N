@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       contenedor.style.display = 'none';
     }
 
-    if (data.numero_invitados > 1) {
+    if (data.numero_invitados > 1 || data.confirmado === true) {
       contador.textContent = `Máximo invitados permitidos: ${data.numero_invitados}.`;
       input.setAttribute('max', String(data.numero_invitados));
     }
@@ -144,6 +144,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         /*await mostrarModalMensaje(
              `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
         );*/
+    }
+    
+    if (data.confirmado === false) {
+        btnNo.textContent = "Has confirmado que no asistirás. ✔";
+        btnNo.style.background = "#888";
+        btnNo.disabled = true;
+    
+        contenedor.style.display = "none";
+    
+        showMessage(
+          `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`);
+    
+        btn.textContent = originalText;
+        btn.disabled = true;
+        btn.style.display = "none";
+      
     }
 
   } catch (err) {
@@ -497,6 +513,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
