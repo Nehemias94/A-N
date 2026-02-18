@@ -138,6 +138,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
       );
 
+       btnNo.textContent = originalText;
+       btnNo.disabled = true;
+       btnNo.style.display = "none";
+
         /*await mostrarModalMensaje(
              `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
         );*/
@@ -359,11 +363,15 @@ async function confirmarAsistencia() {
     );
 
   
-  await mostrarModalMensaje(
-      `🎉Gracias por confirmar tu asistencia 🤎.
-    Has confirmado ${cantidadConfirmada} invitado(s),
-    tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!.`
-  );
+    await mostrarModalMensaje(
+        `🎉Gracias por confirmar tu asistencia 🤎.
+      Has confirmado ${cantidadConfirmada} invitado(s),
+      tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!.`
+    );
+
+    btnNo.textContent = originalText;
+    btnNo.disabled = true;
+    btnNo.style.display = "none";
 
   } catch (err) {
     console.error("ERROR INESPERADO:", err);
@@ -388,4 +396,5 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
