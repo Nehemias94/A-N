@@ -295,6 +295,8 @@ async function confirmarAsistencia() {
 
     if (!navigator.onLine) {
       showMessage('No tienes conexión a internet.', { type: 'error' });
+        btn.textContent = originalText;
+        btn.disabled = false;
       return;
     }
 
@@ -314,8 +316,9 @@ async function confirmarAsistencia() {
       //showMessage('Invitado no encontrado.', { type: 'error' });
 
       await mostrarModalMensaje(
-          'Invitado no encontrado.', { type: 'error' }
-      );
+          'Invitado no encontrado.', { type: 'error' });
+          btn.textContent = originalText;
+          btn.disabled = false;
       return;
     }
 
@@ -329,14 +332,14 @@ async function confirmarAsistencia() {
 
     contenedor.style.display = "none";
 
-    showMessage(
-      `Hola ${invitado.nombre}, 
-      gracias por confirmar 🤎 Has confirmado ${invitado.numero_invitados_confirmados} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} 
-      ¡Te Esperamos!`
-    );
-
      btnNo.disabled = true;
      btnNo.style.display = "none";
+      
+    showMessage(
+      `Hola ${invitado.nombre}, 
+      gracias por confirmar 🤎🤎 Has confirmado ${invitado.numero_invitados_confirmados} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} 
+      ¡Te Esperamos!`
+    );
       
       return;
     }
@@ -533,6 +536,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
