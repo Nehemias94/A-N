@@ -138,7 +138,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
       );
 
-       btnNo.textContent = originalText;
        btnNo.disabled = true;
        btnNo.style.display = "none";
 
@@ -396,6 +395,7 @@ input.addEventListener('keydown', (e) => {
     btn.click();
   }
 });
+
 
 
 
