@@ -151,14 +151,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         btnNo.style.background = "#888";
         btnNo.disabled = true;
     
-        contenedor.style.display = "none";
+        //contenedor.style.display = "none";
     
         showMessage(
           `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`);
     
-        //btn.textContent = originalText;
-        btn.disabled = true;
-        btn.style.display = "none";
+         btn.disabled = true;
+         btn.style.display = "none";
       
     }
 
@@ -513,6 +512,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
