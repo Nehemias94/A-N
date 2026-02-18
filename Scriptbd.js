@@ -66,11 +66,11 @@ function mostrarErrorSupabase(error, status = null) {
     mensaje = "No tienes conexión a internet.";
   } else if (error) {
     mensaje = `
-Error: ${error.message || 'Error desconocido'}
-${error.code ? `Código: ${error.code}` : ''}
-${error.details ? `Detalle: ${error.details}` : ''}
-${status ? `HTTP: ${status}` : ''}
-`;
+    Error: ${error.message || 'Error desconocido'}
+    ${error.code ? `Código: ${error.code}` : ''}
+    ${error.details ? `Detalle: ${error.details}` : ''}
+    ${status ? `HTTP: ${status}` : ''}
+    `;
   }
 
   showMessage(mensaje, { type: 'error' });
@@ -322,6 +322,19 @@ async function confirmarAsistencia() {
     if (invitado.confirmado) {
       //showMessage('Ya habías confirmado antes 🤎');
       await mostrarModalMensaje('Ya habías confirmado antes 🤎');
+
+    btn.textContent = "Confirmado ✔";
+    btn.style.background = "#888";
+    btn.disabled = true;
+
+    contenedor.style.display = "none";
+
+    showMessage(
+      `Hola ${invitado.nombre}, 
+      gracias por confirmar 🤎 Has confirmado ${invitado.numero_invitados_confirmados} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} 
+      ¡Te Esperamos!`
+    );
+      
       return;
     }
 
@@ -517,6 +530,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
