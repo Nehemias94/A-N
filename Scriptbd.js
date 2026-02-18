@@ -334,6 +334,9 @@ async function confirmarAsistencia() {
       gracias por confirmar 🤎 Has confirmado ${invitado.numero_invitados_confirmados} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} 
       ¡Te Esperamos!`
     );
+
+     btnNo.disabled = true;
+     btnNo.style.display = "none";
       
       return;
     }
@@ -530,6 +533,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
