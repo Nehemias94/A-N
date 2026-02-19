@@ -485,11 +485,12 @@ body{
 }*/
 
 .map-btn{
+  letter-spacing:0.5px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
 
-  width:180px;
+  width:200px;
   height:48px;
 
   border-radius:30px;
@@ -519,12 +520,6 @@ body{
   box-shadow: 0 14px 28px rgba(74,163,224,0.45);
 }
 
-
-.map-btn:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(168,130,86,0.35);
-}
-
 /* 📱 En pantallas pequeñas se ponen uno debajo del otro */
 @media (max-width:480px){
   .map-links{
@@ -536,6 +531,7 @@ body{
     width:200px;  /* mismo ancho en móvil */
   }
 }
+
 
 
 
