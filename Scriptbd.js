@@ -74,7 +74,7 @@ if (countdownEl) {
 
     // Mostrar en formato elegante
     countdownEl.innerHTML = `
-      ⏳ Faltan<br><br>
+      ⏳ Faltan<br>
       <span>${dias}</span> días · 
       <span>${horas}</span> h · 
       <span>${minutos}</span> m · 
@@ -629,6 +629,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
