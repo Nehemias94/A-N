@@ -462,6 +462,68 @@ body{
   margin-top:4px;
 }
 
+/* =========================
+   CUENTA REGRESIVA PREMIUM
+========================= */
+
+.countdown{
+  margin-top:26px;
+  padding:22px 20px;
+  background:rgba(200,169,126,0.08);
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  animation: fadeIn .6s ease;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.countdown-title{
+  font-size:22px;
+  font-weight:600;
+  color:var(--cafe-dark);
+  margin-bottom:18px;
+  letter-spacing:0.5px;
+}
+
+.countdown-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:12px;
+}
+
+.count-box{
+  background: linear-gradient(180deg,var(--cafe),var(--cafe-dark));
+  color:white;
+  border-radius:12px;
+  padding:14px 8px;
+  box-shadow: 0 8px 18px rgba(168,130,86,0.25);
+  transition: transform .2s ease;
+}
+
+.count-box:hover{
+  transform: translateY(-3px);
+}
+
+.count-number{
+  display:block;
+  font-size:26px;
+  font-weight:700;
+}
+
+.count-label{
+  font-size:14px;
+  letter-spacing:1px;
+  opacity:0.9;
+}
+
+/* Responsive */
+@media (max-width:480px){
+  .countdown-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+
 
 
 
