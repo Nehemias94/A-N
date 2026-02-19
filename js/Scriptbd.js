@@ -102,8 +102,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   btn.addEventListener('click', confirmarAsistencia);
 btnNo.addEventListener('click', confirmarNoAsistencia);
 
+  // 🔎 Obtener ID desde HASH (#) o ?id=
+function obtenerID() {
+  // 1️⃣ Primero intentar con #
+  const hashID = window.location.hash.substring(1);
+
+  if (hashID) {
+    return hashID;
+  }
+
+  // 2️⃣ Si no hay hash, intentar con ?id=
   const params = new URLSearchParams(window.location.search);
-  invitadoID = params.get("id");
+  return params.get("id");
+}
+
+invitadoID = obtenerID();
+  
+  //const params = new URLSearchParams(window.location.search);  
+  //invitadoID = params.get("id");
 
     if (!invitadoID) {
       await mostrarModalMensajeError("❌ Enlace inválido. Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.");
@@ -636,6 +652,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
