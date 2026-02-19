@@ -491,10 +491,11 @@ body{
   }
 
   .map-btn{
-    width:100%;
-    max-width:260px;
+    width:auto;
+    padding:6px 16px;
   }
 }
+
 
 
 
