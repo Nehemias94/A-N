@@ -111,7 +111,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    nombreSpan.textContent = data.nombre || 'invitado';
+    //nombreSpan.textContent = data.nombre || 'invitado;
+    nombreSpan.textContent = data.nombre;
 
     if (data.regalo === true) {
       mensajeRegalo.style.display = 'block';
@@ -566,6 +567,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
