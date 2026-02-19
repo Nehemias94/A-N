@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!data) {
       //showMessage('Invitado no encontrado.', { type: 'error' });
         await mostrarModalMensajeError(
-             '❌ Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.'}
+             '❌ Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.'
         );
       return;
     }
@@ -566,6 +566,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
