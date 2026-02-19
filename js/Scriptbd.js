@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
      if (!navigator.onLine) {
       //showMessage('No tienes conexión a internet.', { type: 'error' });
-        await mostrarModalMensaje(
+        await mostrarModalMensajeError(
            '❌ No tienes conexión a internet. Recargue la pagina o intente mas tarde.'
         );
       return;
@@ -622,6 +622,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
