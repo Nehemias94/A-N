@@ -19,12 +19,25 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const params = new URLSearchParams(window.location.search);
 const invitadoID = params.get("id");
 
-//const regexCodigo = /^INV\d{4}$/;
-const regexCodigo = /^INV\d{4}(-[a-zA-Z0-9-]+)?$/;
+if (!invitadoID) {
+  await mostrarModalMensajeError("❌ Enlace inválido. ID vacio");
+  throw new Error("ID vacío");
+}
 
-if (!regexCodigo.test(invitadoID)) {
+//const regexCodigo = /^INV\d{4}$/;
+//const regexCodigo = /^INV\d{4}(-[a-zA-Z0-9-]+)?$/;
+const regexCodigo = /^INV\d{4}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/*if (!regexCodigo.test(invitadoID)) {
   showMessage("Enlace inválido.", { type: "error" });
   throw new Error("ID inválido");
+}*/
+
+if (!regexCodigo.test(invitadoID)) {
+  await mostrarModalMensajeError(
+    "❌ Este enlace no es válido o está incompleto. Formato ID inválido"
+  );
+  throw new Error("Formato ID inválido");
 }
 
 
@@ -609,6 +622,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
