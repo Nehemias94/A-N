@@ -5,7 +5,7 @@
   - Muestra status HTTP
   - Log completo en consola
 */
-
+let invitadoID = null;
 const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
 const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
 
@@ -16,29 +16,29 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const params = new URLSearchParams(window.location.search);
+/*const params = new URLSearchParams(window.location.search);
 const invitadoID = params.get("id");
 
 if (!invitadoID) {
   await mostrarModalMensajeError("❌ Enlace inválido. ID vacio");
   throw new Error("ID vacío");
-}
+}*/
 
 //const regexCodigo = /^INV\d{4}$/;
 //const regexCodigo = /^INV\d{4}(-[a-zA-Z0-9-]+)?$/;
-const regexCodigo = /^INV\d{4}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+//const regexCodigo = /^INV\d{4}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /*if (!regexCodigo.test(invitadoID)) {
   showMessage("Enlace inválido.", { type: "error" });
   throw new Error("ID inválido");
 }*/
 
-if (!regexCodigo.test(invitadoID)) {
+/*if (!regexCodigo.test(invitadoID)) {
   await mostrarModalMensajeError(
     "❌ Este enlace no es válido o está incompleto. Formato ID inválido"
   );
   throw new Error("Formato ID inválido");
-}
+}*/
 
 
 const nombreSpan = document.getElementById('nombreInvitado');
@@ -70,7 +70,7 @@ function showMessage(text, opts = {}) {
   contenedorMensaje.textContent = text;
 }
 
-function mostrarErrorSupabase(error, status = null) {
+async function mostrarErrorSupabase(error, status = null) {
   console.error("===== ERROR SUPABASE =====");
   console.error("Status:", status);
   console.error("Error completo:", error);
@@ -88,7 +88,7 @@ function mostrarErrorSupabase(error, status = null) {
     `;
   }
 
-  //showMessage(mensaje, { type: 'error' });
+  showMessage(mensaje, { type: 'error' });
   await mostrarModalMensaje(
        '❌' + mensaje
   );
@@ -100,11 +100,23 @@ function mostrarErrorSupabase(error, status = null) {
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+  const params = new URLSearchParams(window.location.search);
+  invitadoID = params.get("id");
+
     if (!invitadoID) {
       await mostrarModalMensajeError("❌ Enlace inválido. Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.");
       return;
     }
 
+  const regexCodigo = /^INV\d{4}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+  if (!regexCodigo.test(invitadoID)) {
+    await mostrarModalMensajeError(
+      "❌ Este enlace no es válido o está incompleto."
+    );
+     return; // 🔥 IMPORTANTE: no usar throw aquí
+  }
+   
      if (!navigator.onLine) {
       //showMessage('No tienes conexión a internet.', { type: 'error' });
         await mostrarModalMensajeError(
@@ -115,13 +127,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
 
-    if (!navigator.onLine) {
+   /* if (!navigator.onLine) {
       //showMessage('No tienes conexión a internet.', { type: 'error' });
         await mostrarModalMensaje(
            '❌ No tienes conexión a internet.'
         );
       return;
-    }
+    }*/
 
     const { data, error, status } = await db
       .from("invitados")
@@ -129,14 +141,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       .eq("codigo", invitadoID)
       .single();
 
-    if (error) {
+    /*if (error) {
       mostrarErrorSupabase(error, status);
       return;
-    }
+    }*/
 
     if (error) {
+      mostrarErrorSupabase(error, status);
       await mostrarModalMensajeError(
-        "❌ Este enlace no es válido o ya no está disponible." + error + status
+        "❌ Este enlace no es válido o ya no está disponible."
       );
       return;
     }
@@ -577,9 +590,9 @@ async function confirmarNoAsistencia() {
       .from("invitados")
       .update(updatedData)
       .eq("codigo", invitadoID)
-      .is("confirmado", null)
-      //.eq("confirmado", null)
-        .select(); // necesario para saber si actualizó
+      //.is("confirmado", null)
+      .or("confirmado.is.null,confirmado.eq.false")  
+      .select(); // necesario para saber si actualizó
 
     if (updateErr) {
       mostrarErrorSupabase(updateErr, updateStatus);
@@ -622,6 +635,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
