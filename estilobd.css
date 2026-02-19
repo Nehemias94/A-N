@@ -463,15 +463,15 @@ body{
   flex-wrap:wrap;
 }
 
-.map-btn{
+/*.map-btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   
   width:180px;          /* 🔥 mismo ancho fijo */
-  height:48px;          /* 🔥 misma altura fija */
+  /*height:48px;          /* 🔥 misma altura fija */
   
-  border-radius:28px;
+  /*border-radius:28px;
   text-decoration:none;
   font-weight:600;
   font-size:16px;
@@ -482,6 +482,41 @@ body{
 
   box-shadow: 0 8px 18px rgba(168,130,86,0.25);
   transition: all .2s ease;
+}*/
+
+.map-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  width:180px;
+  height:48px;
+
+  border-radius:30px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:16px;
+  font-family: "Cormorant Garamond", serif;
+
+  background: linear-gradient(180deg,var(--cafe),var(--cafe-dark));
+  color:white;
+
+  box-shadow: 0 10px 22px rgba(168,130,86,0.25);
+  transition: all .25s ease;
+}
+
+.map-btn:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(168,130,86,0.35);
+}
+
+.map-btn.waze{
+  background: linear-gradient(180deg,#7cc8ff,#4aa3e0);
+  box-shadow: 0 10px 22px rgba(74,163,224,0.35);
+}
+
+.map-btn.waze:hover{
+  box-shadow: 0 14px 28px rgba(74,163,224,0.45);
 }
 
 
@@ -501,6 +536,7 @@ body{
     width:200px;  /* mismo ancho en móvil */
   }
 }
+
 
 
 
