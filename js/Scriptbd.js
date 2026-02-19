@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       .from("invitados")
       .select("*")
       .eq("codigo", invitadoID)
-      .single();
+      .maybeSingle(); // 👈 cambio aquí
 
     if (error) {
       mostrarErrorSupabase(error, status);
@@ -550,6 +550,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
