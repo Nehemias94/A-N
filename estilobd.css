@@ -523,15 +523,19 @@ body{
 
 /* 📱 En pantallas pequeñas se ponen uno debajo del otro */
 @media (max-width:480px){
+
   .map-links{
     flex-direction:column;
     align-items:center;
+    gap:16px; /* 👈 espacio vertical entre botones */
   }
 
   .map-btn{
-    width:200px;  /* mismo ancho en móvil */
+    width:200px;
   }
+
 }
+
 
 
 
