@@ -75,7 +75,10 @@ function mostrarErrorSupabase(error, status = null) {
     `;
   }
 
-  showMessage(mensaje, { type: 'error' });
+  //showMessage(mensaje, { type: 'error' });
+  await mostrarModalMensaje(
+       '❌' + mensaje
+  );
 }
 
 /* =========================
@@ -89,7 +92,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
 
     if (!navigator.onLine) {
-      showMessage('No tienes conexión a internet.', { type: 'error' });
+      //showMessage('No tienes conexión a internet.', { type: 'error' });
+        await mostrarModalMensaje(
+           '❌ No tienes conexión a internet.'
+        );
       return;
     }
 
@@ -175,8 +181,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   } catch (err) {
     console.error("ERROR GENERAL:", err);
-    showMessage(
+    /*showMessage(
       `Error inesperado: ${err.message || 'No se pudo conectar al servidor.'}`,
+      { type: 'error' }
+    );*/
+
+    await mostrarModalMensaje(
+        `❌ Error inesperado: ${err.message || 'No se pudo conectar al servidor.'}`,
       { type: 'error' }
     );
   }
@@ -319,7 +330,11 @@ async function confirmarAsistencia() {
   try {
 
     if (!navigator.onLine) {
-      showMessage('No tienes conexión a internet.', { type: 'error' });
+      //showMessage('No tienes conexión a internet.', { type: 'error' });
+      await mostrarModalMensaje(
+          'No tienes conexión a internet.', { type: 'error' }
+      );
+      
         btn.textContent = originalText;
         btn.disabled = false;
       return;
@@ -341,7 +356,7 @@ async function confirmarAsistencia() {
       //showMessage('Invitado no encontrado.', { type: 'error' });
 
       await mostrarModalMensaje(
-          'Invitado no encontrado.', { type: 'error' });
+          '❌ Invitado no encontrado.', { type: 'error' });
           btn.textContent = originalText;
           btn.disabled = false;
       return;
@@ -436,7 +451,7 @@ async function confirmarAsistencia() {
     btnNo.style.display = "none";
 
     showMessage(
-      `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!`
+      `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). ¡Te Esperamos!`
     );
 
   
@@ -447,8 +462,13 @@ async function confirmarAsistencia() {
     );
   } catch (err) {
     console.error("ERROR INESPERADO:", err);
-    showMessage(
+   /* showMessage(
       `Error inesperado: ${err.message || 'Error de conexión.'}`,
+      { type: 'error' }
+    );*/
+
+    await mostrarModalMensaje(
+      `❌ Error inesperado: ${err.message || 'Error de conexión.'}`,
       { type: 'error' }
     );
     btn.textContent = originalText;
@@ -486,7 +506,10 @@ async function confirmarNoAsistencia() {
   try {
 
     if (!navigator.onLine) {
-      showMessage('No tienes conexión a internet.', { type: 'error' });
+      //showMessage('No tienes conexión a internet.', { type: 'error' });
+      await mostrarModalMensaje(
+        '❌ No tienes conexión a internet.', { type: 'error' }
+      );
       return;
     }
 
@@ -568,6 +591,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
