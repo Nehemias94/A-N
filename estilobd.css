@@ -461,3 +461,8 @@ body{
 .countdown-numbers{
   margin-top:4px;
 }
+
+.info + .rsvp{
+  margin-top:18px;
+}
+
