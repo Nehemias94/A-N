@@ -291,8 +291,8 @@ function mostrarModalMensajeError(mensaje) {
 
     modalTextoMensajeError.textContent = mensaje;
     modalMensajeError.style.display = 'flex';
-    });
 
+    resolve(true); // importante cerrar el promise
   });
 }
 /* =========================
@@ -566,6 +566,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
