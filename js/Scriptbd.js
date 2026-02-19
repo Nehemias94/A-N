@@ -104,7 +104,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (!data) {
-      showMessage('Invitado no encontrado.', { type: 'error' });
+      //showMessage('Invitado no encontrado.', { type: 'error' });
+        await mostrarModalMensajeError(
+             'Invitado no encontrado.', { type: 'error' }
+        );
       return;
     }
 
@@ -563,6 +566,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
