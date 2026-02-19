@@ -19,17 +19,6 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const params = new URLSearchParams(window.location.search);
 const invitadoID = params.get("id");
 
-const invitadoIDCompleto = params.get("id");
-
-if (!invitadoIDCompleto) {
-  await mostrarModalMensajeError("❌ Enlace inválido.");
-  throw new Error("ID vacío");
-}
-
-// 🔥 LIMPIAR ID
-const invitadoID = invitadoIDCompleto.split("-")[0];
-
-
 //const regexCodigo = /^INV\d{4}$/;
 const regexCodigo = /^INV\d{4}(-[a-zA-Z0-9-]+)?$/;
 
@@ -602,6 +591,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
