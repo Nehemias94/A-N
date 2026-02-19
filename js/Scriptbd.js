@@ -20,11 +20,12 @@ const params = new URLSearchParams(window.location.search);
 const invitadoID = params.get("id");
 
 //const regexCodigo = /^INV\d{4}$/;
+const regexCodigo = /^INV\d{4}(-[a-zA-Z0-9-]+)?$/;
 
-/*if (!regexCodigo.test(invitadoID)) {
+if (!regexCodigo.test(invitadoID)) {
   showMessage("Enlace inválido.", { type: "error" });
   throw new Error("ID inválido");
-}*/
+}
 
 
 const nombreSpan = document.getElementById('nombreInvitado');
@@ -567,6 +568,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
