@@ -121,6 +121,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
+    if (error) {
+      await mostrarModalMensajeError(
+        "❌ Este enlace no es válido o ya no está disponible." + error + status
+      );
+      return;
+    }
+
     if (!data) {
       //showMessage('Invitado no encontrado.', { type: 'error' });
         await mostrarModalMensajeError(
@@ -602,6 +609,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
