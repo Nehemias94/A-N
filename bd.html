@@ -87,6 +87,24 @@
         Hola <span id="nombreInvitado"></span>, Con la bendición de Dios y nuestras familias, queremos que seas parte de este día tan especial en nuestras vidas.
       </p>
 
+         <!-- 🎀 Número de mesa -->
+      <div id="msjeMesa"
+           style="margin: 18px auto;
+           padding: 14px 20px;
+           background: rgba(200,169,126,0.12);
+           border-radius: 10px;
+           max-width: 360px;
+           font-size: 20px;
+           font-weight: 600;
+           color: var(--cafe-dark);
+           text-align: center;
+           box-shadow: 0 4px 10px rgba(0,0,0,0.08);"
+           class="note"
+           aria-hidden="true">
+      
+         <span id="numMesa" style="font-style:italic;"></span>
+      </div>
+
           <!-- 📸 Imagen agregada -->
       <div class="imagen-boda">
         <img src="td.jpeg" alt="Anillos de boda con mascota">
@@ -163,24 +181,7 @@
 
     <button id="btnNoConfirmar" class="rsvp" type="button">No podre asistir</button>
    
-    <div id="mensajeConfirmacion" role="status" aria-live="polite"></div>
-
-    <!--  MENSAJE DE Numero de mesa -->
-                <div id="msjeMesa" style="margin: 18px auto;
-                   padding: 14px 20px;
-                   background: rgba(200,169,126,0.12);
-                   /*border-left: 5px solid var(--cafe);*/
-                   border-radius: 10px;
-                   max-width: 360px;
-                   font-size: 20px;
-                   font-weight: 600;
-                   color: var(--cafe-dark);
-                   text-align: center;
-                   box-shadow: 0 4px 10px rgba(0,0,0,0.08);" class="note" aria-hidden="true">
-                      <span id="numMesa" style="font-style:italic;"></span>
-                </div>
-
-   
+    <div id="mensajeConfirmacion" role="status" aria-live="polite"></div>  
   </div>
 
     <!-- FOOTER -->
@@ -216,6 +217,7 @@
 <script src="Scriptbd.js"></script>
 </body>
 </html>
+
 
 
 
