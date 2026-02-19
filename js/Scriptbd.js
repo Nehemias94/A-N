@@ -99,6 +99,8 @@ async function mostrarErrorSupabase(error, status = null) {
 ========================= */
 
 document.addEventListener("DOMContentLoaded", async () => {
+  btn.addEventListener('click', confirmarAsistencia);
+btnNo.addEventListener('click', confirmarNoAsistencia);
 
   const params = new URLSearchParams(window.location.search);
   invitadoID = params.get("id");
@@ -147,7 +149,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }*/
 
     if (error) {
-      mostrarErrorSupabase(error, status);
       await mostrarModalMensajeError(
         "❌ Este enlace no es válido o ya no está disponible."
       );
@@ -356,8 +357,8 @@ function mostrarModalMensajeError(mensaje) {
    CONFIRMAR ASISTENCIA
 ========================= */
 
-btn.addEventListener('click', confirmarAsistencia);
-btnNo.addEventListener('click', confirmarNoAsistencia);
+//btn.addEventListener('click', confirmarAsistencia);
+//btnNo.addEventListener('click', confirmarNoAsistencia);
 
 async function confirmarAsistencia() {
 
@@ -635,6 +636,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
