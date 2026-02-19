@@ -428,21 +428,33 @@ body{
   opacity: 0.85;
 }
 
-/*CUENTA REGRESIVA*/
+/* =========================
+   CUENTA REGRESIVA ELEGANTE
+========================= */
+
 .countdown{
-  margin: 20px auto;
-  padding: 16px 20px;
-  background: rgba(200,169,126,0.12);
-  border-radius: 12px;
-  max-width: 400px;
-  text-align: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--cafe-dark);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-  letter-spacing: 1px;
+  margin-top:26px;
+  font-size:20px;
+  font-weight:600;
+  text-align:center;
+  color:var(--cafe-dark);
+  letter-spacing:0.4px;
+  background:rgba(200,169,126,0.08);
+  padding:18px 20px;
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  animation: fadeIn .6s ease;
+  font-family: "Cormorant Garamond", serif;
 }
+
+/* Números más destacados */
+.countdown span{
+  font-size:24px;
+  font-weight:700;
+  color:var(--cafe);
+}
+
+
 
 
 
