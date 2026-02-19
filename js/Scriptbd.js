@@ -19,7 +19,7 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const params = new URLSearchParams(window.location.search);
 const invitadoID = params.get("id");
 
-const regexCodigo = /^INV\d{4}$/;
+//const regexCodigo = /^INV\d{4}$/;
 
 if (!regexCodigo.test(invitadoID)) {
   showMessage("Enlace inválido.", { type: "error" });
@@ -567,6 +567,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
