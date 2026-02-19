@@ -278,7 +278,20 @@ function mostrarModalMensaje(mensaje) {
   });
 }
 
+/*Modal message*/
 
+const modalMensajeError = document.getElementById('modalMessageError');
+const modalTextoMensajeError = document.getElementById('modalTextoMensajeError');
+
+function mostrarModalMensajeError(mensaje) {
+  return new Promise((resolve) => {
+
+    modalTextoMensajeError.textContent = mensaje;
+    modalMensajeError.style.display = 'flex';
+    });
+
+  });
+}
 /* =========================
    CONFIRMAR ASISTENCIA
 ========================= */
@@ -550,6 +563,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
