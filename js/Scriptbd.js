@@ -87,7 +87,18 @@ function mostrarErrorSupabase(error, status = null) {
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  if (!invitadoID) return;
+    if (!invitadoID) {
+      await mostrarModalMensajeError("❌ Enlace inválido. Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.");
+      return;
+    }
+
+     if (!navigator.onLine) {
+      //showMessage('No tienes conexión a internet.', { type: 'error' });
+        await mostrarModalMensaje(
+           '❌ No tienes conexión a internet. Recargue la pagina o intente mas tarde.'
+        );
+      return;
+    }
 
   try {
 
@@ -591,6 +602,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
