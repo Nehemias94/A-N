@@ -454,6 +454,15 @@ body{
   color:var(--cafe);
 }
 
+.countdown-title{
+  margin-bottom:8px;
+}
+
+.countdown-numbers{
+  margin-top:4px;
+}
+
+
 
 
 
