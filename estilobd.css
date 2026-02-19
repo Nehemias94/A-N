@@ -464,7 +464,7 @@ body{
 }
 
 .map-btn{
-  flex:1;
+  flex:0 1 auto;
   min-width:140px;
   max-width:200px;
   text-align:center;
@@ -497,6 +497,7 @@ body{
     max-width:260px;
   }
 }
+
 
 
 
