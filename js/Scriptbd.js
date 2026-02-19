@@ -114,10 +114,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       mensajeRegalo.style.display = 'block';
     }
 
-    if (data.numero_mesa && data.numero_mesa > 0 || data.confirmado === true) {
+    // 🪑 Mostrar mesa SOLO si ya confirmó
+    if (data.confirmado === true && data.numero_mesa) {
       numMesa.textContent = `🪑 Tu mesa asignada es la número ${data.numero_mesa}`;
       msjeMesa.style.display = 'block';
       msjeMesa.removeAttribute('aria-hidden');
+    } else {
+      msjeMesa.style.display = 'none';
     }
 
 
@@ -547,6 +550,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
