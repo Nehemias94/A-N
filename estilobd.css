@@ -428,6 +428,24 @@ body{
   opacity: 0.85;
 }
 
+/*CUENTA REGRESIVA*/
+.countdown{
+  margin: 20px auto;
+  padding: 16px 20px;
+  background: rgba(200,169,126,0.12);
+  border-radius: 12px;
+  max-width: 400px;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--cafe-dark);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  letter-spacing: 1px;
+}
+
+
+
 
 
 
