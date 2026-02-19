@@ -512,7 +512,8 @@ body{
 }
 
 .map-btn.waze{
-  background: linear-gradient(180deg,#7cc8ff,#4aa3e0);
+  /*background: linear-gradient(180deg,#7cc8ff,#4aa3e0);*/
+  background: linear-gradient(180deg,var(--cafe),var(--cafe-dark));
   box-shadow: 0 10px 22px rgba(74,163,224,0.35);
 }
 
@@ -531,6 +532,7 @@ body{
     width:200px;  /* mismo ancho en móvil */
   }
 }
+
 
 
 
