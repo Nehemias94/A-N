@@ -40,8 +40,36 @@ setInterval(function () {
   }
 }, 1000);
 
+/**********************************CUENTA REGRESIVA**************************************/
+// 📅 Fecha del evento
+  const fechaEvento = new Date("March 28, 2026 16:00:00").getTime();
+  const countdownEl = document.getElementById("cuentaRegresiva");
 
+  function actualizarCuentaRegresiva() {
+    const ahora = new Date().getTime();
+    const diferencia = fechaEvento - ahora;
 
+    if (diferencia <= 0) {
+      countdownEl.innerHTML = "🎉 ¡Hoy es el gran día! 🎉";
+      clearInterval(intervalo);
+      return;
+    }
+
+    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+    countdownEl.innerHTML = `
+      ⏳ Faltan<br>
+      ${dias} días ${horas}h ${minutos}m ${segundos}s
+    `;
+  }
+
+  const intervalo = setInterval(actualizarCuentaRegresiva, 1000);
+  actualizarCuentaRegresiva();
+
+/**********************************FIN CUENTA REGRESIVA**************************************/
 
 /*
   Manejo avanzado de errores:
@@ -580,6 +608,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
