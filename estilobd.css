@@ -467,12 +467,11 @@ body{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
-
-  padding:10px 22px;
-  min-width:150px;
-
-  border-radius:30px;
+  
+  width:180px;          /* 🔥 mismo ancho fijo */
+  height:48px;          /* 🔥 misma altura fija */
+  
+  border-radius:28px;
   text-decoration:none;
   font-weight:600;
   font-size:16px;
@@ -484,7 +483,6 @@ body{
   box-shadow: 0 8px 18px rgba(168,130,86,0.25);
   transition: all .2s ease;
 }
-
 
 
 .map-btn:hover{
@@ -500,10 +498,11 @@ body{
   }
 
   .map-btn{
-    width:auto;
-    padding:6px 16px;
+    width:200px;  /* mismo ancho en móvil */
   }
 }
+
+
 
 
 
