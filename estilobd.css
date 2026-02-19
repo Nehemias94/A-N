@@ -462,10 +462,6 @@ body{
   margin-top:4px;
 }
 
-.info + .rsvp{
-  margin-top:18px;
-}
-
 .map-links{
   margin-top:18px;
   display:flex;
@@ -473,5 +469,54 @@ body{
   gap:14px;
   flex-wrap:wrap;
 }
+
+/* =========================
+   BOTONES UBICACIÓN
+========================= */
+
+.map-links{
+  margin-top:18px;
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.map-btn{
+  flex:1;
+  min-width:140px;
+  max-width:200px;
+  text-align:center;
+  padding:10px 16px;
+  border-radius:24px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:16px;
+  font-family: "Cormorant Garamond", serif;
+  background: linear-gradient(180deg,var(--cafe),var(--cafe-dark));
+  color:white;
+  box-shadow: 0 6px 14px rgba(168,130,86,0.25);
+  transition: all .2s ease;
+}
+
+.map-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(168,130,86,0.35);
+}
+
+/* 📱 En pantallas pequeñas se ponen uno debajo del otro */
+@media (max-width:480px){
+  .map-links{
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .map-btn{
+    width:100%;
+    max-width:260px;
+  }
+}
+
+
 
 
