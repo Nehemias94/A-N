@@ -466,3 +466,12 @@ body{
   margin-top:18px;
 }
 
+.map-links{
+  margin-top:18px;
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+
