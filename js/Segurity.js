@@ -27,7 +27,7 @@ document.addEventListener("keydown", function (e) {
 });
 
 // ⚠️ Detectar si DevTools está abierto
-setInterval(function () {
+/*setInterval(function () {
   const anchoDiferencia = window.outerWidth - window.innerWidth;
   const altoDiferencia = window.outerHeight - window.innerHeight;
 
@@ -37,5 +37,6 @@ setInterval(function () {
         <h2>Inspección detectada 🚫</h2>
       </div>
     `;
-  }
+  }*/
+
 }, 1000);
