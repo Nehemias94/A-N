@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 btnNo.addEventListener('click', confirmarNoAsistencia);
 
 // ⛔ Validar fecha límite
-if (fechaLimiteAlcanzada()) {
+/*if (fechaLimiteAlcanzada()) {
 
   btn.disabled = true;
   btnNo.disabled = true;
@@ -127,7 +127,26 @@ if (fechaLimiteAlcanzada()) {
   );
 
   return;
-}
+}*/
+
+  if (fechaLimiteAlcanzada()) {
+
+    btn.disabled = true;
+    btnNo.disabled = true;
+  
+    btn.style.background = "#888";
+    btnNo.style.background = "#888";
+  
+    contenedor.style.display = "none";
+  
+    showMessage("⏰ La fecha límite para confirmar asistencia ya finalizó.");
+  
+    await mostrarModalMensaje(
+      "⏰ La fecha límite para confirmar asistencia ya finalizó."
+    );
+  
+    // ⚠ NO usar return aquí
+  }
 
   // 🔎 Obtener ID desde HASH (#) o ?id=
 function obtenerID() {
@@ -693,6 +712,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
