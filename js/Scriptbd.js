@@ -8,6 +8,8 @@
 let invitadoID = null;
 const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
 const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
+//const FECHA_LIMITE_CONFIRMACION = new Date("2026-03-15T23:59:59");
+const FECHA_LIMITE_CONFIRMACION = new Date("2026-03-15T23:59:59-06:00");
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   console.warn('Supabase URL/KEY no configurados.');
@@ -51,6 +53,11 @@ const btnNo = document.getElementById('btnNoConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
 const msjeMesa = document.getElementById('msjeMesa');
 const numMesa = document.getElementById('numMesa');
+
+function fechaLimiteAlcanzada() {
+  const ahora = new Date();
+  return ahora > FECHA_LIMITE_CONFIRMACION;
+}
 
 /* =========================
    FUNCIONES DE MENSAJES
@@ -101,6 +108,26 @@ async function mostrarErrorSupabase(error, status = null) {
 document.addEventListener("DOMContentLoaded", async () => {
   btn.addEventListener('click', confirmarAsistencia);
 btnNo.addEventListener('click', confirmarNoAsistencia);
+
+// ⛔ Validar fecha límite
+if (fechaLimiteAlcanzada()) {
+
+  btn.disabled = true;
+  btnNo.disabled = true;
+
+  btn.style.background = "#888";
+  btnNo.style.background = "#888";
+
+  contenedor.style.display = "none";
+
+  showMessage("⏰ La fecha límite para confirmar asistencia ya finalizó.");
+
+  await mostrarModalMensaje(
+    "⏰ La fecha límite para confirmar asistencia ya finalizó. Si necesitas ayuda comunícate con los novios."
+  );
+
+  return;
+}
 
   // 🔎 Obtener ID desde HASH (#) o ?id=
 function obtenerID() {
@@ -378,6 +405,13 @@ function mostrarModalMensajeError(mensaje) {
 
 async function confirmarAsistencia() {
 
+  if (fechaLimiteAlcanzada()) {
+    await mostrarModalMensaje(
+      "⏰ Lo sentimos, la fecha límite para confirmar asistencia ya finalizó."
+    );
+    return;
+  }
+
   const seguro = await mostrarModal(
     "¿Deseas confirmar tu asistencia?"
   );
@@ -554,6 +588,13 @@ input.addEventListener('keydown', (e) => {
 
 async function confirmarNoAsistencia() {
 
+  if (fechaLimiteAlcanzada()) {
+    await mostrarModalMensaje(
+      "⏰ La fecha límite para confirmar asistencia ya finalizó."
+    );
+    return;
+  }
+
   const seguro = await mostrarModal(
     "¿Deseas confirmar que NO asistirás?"
   );
@@ -652,6 +693,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
