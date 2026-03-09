@@ -9,7 +9,7 @@ let invitadoID = null;
 const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
 const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
 //const FECHA_LIMITE_CONFIRMACION = new Date("2026-03-15T23:59:59");
-const FECHA_LIMITE_CONFIRMACION = new Date("2026-03-15T23:59:59-06:00");
+const FECHA_LIMITE_CONFIRMACION = new Date("2026-03-8T23:59:59-06:00");
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   console.warn('Supabase URL/KEY no configurados.');
@@ -693,6 +693,7 @@ async function confirmarNoAsistencia() {
     }
   }
 }
+
 
 
 
