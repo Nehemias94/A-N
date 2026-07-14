@@ -5,6 +5,7 @@
   - Muestra status HTTP
   - Log completo en consola
 */
+// descomentar linea 151 hasta 164 para volver avilar la validacion del ID
 let invitadoID = null;
 const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
 const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
@@ -218,9 +219,9 @@ invitadoID = obtenerID();
     }*/
 
     if (error) {
-      /*await mostrarModalMensajeError(
+      await mostrarModalMensajeError(
         "❌ Este enlace no es válido o ya no está disponible."
-      );*/
+      );
       return;
     }
 
