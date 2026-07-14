@@ -149,17 +149,24 @@ btnNo.addEventListener('click', confirmarNoAsistencia);
   }
 
   // 🔎 Obtener ID desde HASH (#) o ?id=
-function obtenerID() {
+/*function obtenerID() {
   // 1️⃣ Primero intentar con #
   const hashID = window.location.hash.substring(1);
 
   if (hashID) {
     return hashID;
   }
+  
 
   // 2️⃣ Si no hay hash, intentar con ?id=
   const params = new URLSearchParams(window.location.search);
   return params.get("id");
+}*/
+
+// 🔎 Obtener ID (Quemado para pruebas)
+function obtenerID() {
+  // Reemplaza este texto por el ID real que quieras probar en tu base de datos
+  return "INV1234-abcdef01-abcd-abcd-abcd-abcdef012345"; 
 }
 
 invitadoID = obtenerID();
