@@ -218,9 +218,9 @@ invitadoID = obtenerID();
     }*/
 
     if (error) {
-      await mostrarModalMensajeError(
+      /*await mostrarModalMensajeError(
         "❌ Este enlace no es válido o ya no está disponible."
-      );
+      );*/
       return;
     }
 
