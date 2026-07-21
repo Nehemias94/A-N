@@ -140,11 +140,13 @@ btnNo.addEventListener('click', confirmarNoAsistencia);
   
     contenedor.style.display = "none";
   
-    showMessage("⏰ La fecha límite para confirmar asistencia ya finalizó.");
+    //DESCOMENTAR ESTA PARTE
+    //showMessage("⏰ La fecha límite para confirmar asistencia ya finalizó.");
   
-    await mostrarModalMensaje(
-      "⏰ La fecha límite para confirmar asistencia ya finalizó."
-    );
+    //DESCOMENTAR ESTA PARTE
+    //await mostrarModalMensaje(
+    //  "⏰ La fecha límite para confirmar asistencia ya finalizó."
+    //);
   
     // ⚠ NO usar return aquí
   }
@@ -432,13 +434,13 @@ function mostrarModalMensajeError(mensaje) {
 //btnNo.addEventListener('click', confirmarNoAsistencia);
 
 async function confirmarAsistencia() {
-
-  if (fechaLimiteAlcanzada()) {
-    await mostrarModalMensaje(
-      "⏰ Lo sentimos, la fecha límite para confirmar asistencia ya finalizó."
-    );
-    return;
-  }
+//DESCOMENTAR ESTA PARTE
+  //if (fechaLimiteAlcanzada()) {
+  //  await mostrarModalMensaje(
+  //    "⏰ Lo sentimos, la fecha límite para confirmar asistencia ya finalizó."
+  //  );
+  //  return;
+  //}
 
   const seguro = await mostrarModal(
     "¿Deseas confirmar tu asistencia?"
