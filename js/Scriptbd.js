@@ -307,10 +307,11 @@ invitadoID = obtenerID();
       { type: 'error' }
     );*/
 
-    await mostrarModalMensaje(
+    //DESCOMENTAR ESTA PARTE
+    /*await mostrarModalMensaje(
         `❌ Error inesperado: ${err.message || 'No se pudo conectar al servidor.'}`,
       { type: 'error' }
-    );
+    );*/
   }
 });
 
@@ -589,16 +590,17 @@ async function confirmarAsistencia() {
         tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!.`
     );
   } catch (err) {
-    console.error("ERROR INESPERADO:", err);
+    //console.error("ERROR INESPERADO:", err); //DESCOMENTAR ESTA PARTE
    /* showMessage(
       `Error inesperado: ${err.message || 'Error de conexión.'}`,
       { type: 'error' }
     );*/
 
-    await mostrarModalMensaje(
+    //DESCOMENTAR ESTA PARTE
+    /*await mostrarModalMensaje(
       `❌ Error inesperado: ${err.message || 'Error de conexión.'}`,
       { type: 'error' }
-    );
+    );*/
     btn.textContent = originalText;
     btn.disabled = false;
   } finally {
@@ -710,7 +712,8 @@ async function confirmarNoAsistencia() {
     btn.disabled = true;
     btn.style.display = "none";
 
-  } catch (err) {
+  //DESCOMENTAR ESTA PARTE
+    /*} catch (err) {
     console.error("ERROR INESPERADO:", err);
     showMessage(
       `Error inesperado: ${err.message || 'Error de conexión.'}`,
@@ -724,7 +727,7 @@ async function confirmarNoAsistencia() {
       btnNo.textContent = originalText;
       btnNo.disabled = false;
     }
-  }
+  }*/
 }
 
 
