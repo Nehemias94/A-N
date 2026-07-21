@@ -241,7 +241,7 @@ invitadoID = obtenerID();
 
     //nombreSpan.textContent = data.nombre || 'invitado;
     //nombreSpan.textContent = data.nombre; //DESCOMENTAR ESTA PARTE
-    nombreSpan.textContent = 'Nehemias Zepeda';
+    nombreSpan.textContent =  `Nehemias Zepeda`;
 
     //if (data.regalo === true) {//DESCOMENTAR
       //mensajeRegalo.style.display = 'block';
@@ -569,11 +569,12 @@ async function confirmarAsistencia() {
     contenedor.style.display = "none";
 
         // 🎀 Mostrar número de mesa
-    if (invitado.numero_mesa) {
-      numMesa.textContent = `🪑 Tu mesa asignada es la número ${invitado.numero_mesa}`;
+    //if (invitado.numero_mesa) {//DESCOMENTAR
+      //numMesa.textContent = `🪑 Tu mesa asignada es la número ${invitado.numero_mesa}`;//DESCOMENTAR
+    numMesa.textContent = `🪑 Tu mesa asignada es la número 3`;
       msjeMesa.style.display = 'block';
       msjeMesa.removeAttribute('aria-hidden');
-    }
+    //}
 
 
     btnNo.textContent = originalText;
