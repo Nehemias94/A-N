@@ -243,9 +243,9 @@ invitadoID = obtenerID();
     //nombreSpan.textContent = data.nombre; //DESCOMENTAR ESTA PARTE
     nombreSpan.textContent = 'Nehemias Zepeda';
 
-    if (data.regalo === true) {
+    //if (data.regalo === true) {//DESCOMENTAR
       mensajeRegalo.style.display = 'block';
-    }
+    //}
 
     // 🪑 Mostrar mesa SOLO si ya confirmó
     //if (data.confirmado === true && data.numero_mesa) {//DESCOMENTAR
