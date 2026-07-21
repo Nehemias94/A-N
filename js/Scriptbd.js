@@ -175,10 +175,11 @@ invitadoID = obtenerID();
   //const params = new URLSearchParams(window.location.search);  
   //invitadoID = params.get("id");
 
-    if (!invitadoID) {
-      await mostrarModalMensajeError("❌ Enlace inválido. Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.");
-      return;
-    }
+  //DESCOMENTAR ESTA PARTE  
+  //if (!invitadoID) {
+    //  await mostrarModalMensajeError("❌ Enlace inválido. Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.");
+    //  return;
+    //}
 
   const regexCodigo = /^INV\d{4}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
