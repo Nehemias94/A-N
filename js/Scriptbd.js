@@ -221,12 +221,13 @@ invitadoID = obtenerID();
       return;
     }*/
 
-    if (error) {
-      await mostrarModalMensajeError(
-        "❌ Este enlace no es válido o ya no está disponible."
-      );
-      return;
-    }
+    //DESCOMENTAR ESTA PARTE
+    //if (error) {
+    //  await mostrarModalMensajeError(
+    //    "❌ Este enlace no es válido o ya no está disponible."
+    //  );
+    //  return;
+    //}
 
     if (!data) {
       //showMessage('Invitado no encontrado.', { type: 'error' });
