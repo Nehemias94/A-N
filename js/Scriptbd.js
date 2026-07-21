@@ -178,10 +178,10 @@ invitadoID = obtenerID();
   //invitadoID = params.get("id");
 
   //DESCOMENTAR ESTA PARTE  
-  //if (!invitadoID) {
-    //  await mostrarModalMensajeError("❌ Enlace inválido. Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.");
-    //  return;
-    //}
+  /*if (!invitadoID) {
+      await mostrarModalMensajeError("❌ Enlace inválido. Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.");
+      return;
+    }*/
 
   const regexCodigo = /^INV\d{4}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -222,20 +222,21 @@ invitadoID = obtenerID();
     }*/
 
     //DESCOMENTAR ESTA PARTE
-    //if (error) {
-    //  await mostrarModalMensajeError(
-    //    "❌ Este enlace no es válido o ya no está disponible."
-    //  );
-    //  return;
-    //}
+    /*if (error) {
+      await mostrarModalMensajeError(
+        "❌ Este enlace no es válido o ya no está disponible."
+      );
+      return;
+    }*/
 
-    if (!data) {
+    //DESCOMENTAR ESTA PARTE
+    /*if (!data) {
       //showMessage('Invitado no encontrado.', { type: 'error' });
         await mostrarModalMensajeError(
              '❌ Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.'
         );
       return;
-    }
+    }*/
 
     //nombreSpan.textContent = data.nombre || 'invitado;
     nombreSpan.textContent = data.nombre;
