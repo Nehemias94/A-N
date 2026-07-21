@@ -244,7 +244,7 @@ invitadoID = obtenerID();
     nombreSpan.textContent = 'Nehemias Zepeda';
 
     //if (data.regalo === true) {//DESCOMENTAR
-      mensajeRegalo.style.display = 'block';
+      //mensajeRegalo.style.display = 'block';
     //}
 
     // 🪑 Mostrar mesa SOLO si ya confirmó
