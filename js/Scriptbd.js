@@ -240,20 +240,21 @@ invitadoID = obtenerID();
     }*/
 
     //nombreSpan.textContent = data.nombre || 'invitado;
-    nombreSpan.textContent = data.nombre;
+    //nombreSpan.textContent = data.nombre; //DESCOMENTAR ESTA PARTE
+    nombreSpan.textContent = 'Nehemias Zepeda';
 
     if (data.regalo === true) {
       mensajeRegalo.style.display = 'block';
     }
 
     // 🪑 Mostrar mesa SOLO si ya confirmó
-    if (data.confirmado === true && data.numero_mesa) {
+    //if (data.confirmado === true && data.numero_mesa) {//DESCOMENTAR
       numMesa.textContent = `🪑 Tu mesa asignada es la número ${data.numero_mesa}`;
       msjeMesa.style.display = 'block';
       msjeMesa.removeAttribute('aria-hidden');
-    } else {
-      msjeMesa.style.display = 'none';
-    }
+    //} else { //DESCOMENTAR
+    //  msjeMesa.style.display = 'none';
+    //}
 
 
     if (data.numero_invitados === 1 || data.confirmado === true) {
