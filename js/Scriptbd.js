@@ -1,124 +1,218 @@
 /*
-  Mejoras principales en JS:
-  - No usar innerHTML para insertar el nombre (XSS). Usar textContent.
-  - Validaciones en cliente (max, min).
-  - Deshabilitar botón durante petición y evitar envíos múltiples.
-  - Manejo de errores y mensajes de loading.
-  - Separación clara de lógica y mensajes mostrados.
-  - Nota de seguridad: nunca subir service_role key al cliente. USE RLS y políticas en Supabase.
+  Manejo avanzado de errores:
+  - Muestra error.message, code y details
+  - Detecta falta de internet
+  - Muestra status HTTP
+  - Log completo en consola
+
+  Notas de seguridad:
+  - Se usa textContent en vez de innerHTML para insertar datos del invitado (evita XSS).
+  - Nunca subir la service_role key al cliente: solo la anon key + RLS en Supabase.
 */
 
-/* Lee la configuración desde meta tags — así no queda hardcodeado en el script visible en el HTML si prefieres inyectarlo desde el servidor. */
+/* =========================================================
+   🧪 MODO DE PRUEBA
+   -----------------------------------------------------------
+   MODO_PRUEBA = true  -> usa datosMuestra, NO consulta ni
+                          escribe nada en Supabase. Los botones
+                          "Confirmar" / "No podré asistir"
+                          simulan la confirmación solo en pantalla.
+   MODO_PRUEBA = false -> comportamiento real contra Supabase.
+========================================================= */
+const MODO_PRUEBA = true;
+
+// Datos de muestra que se usan cuando MODO_PRUEBA = true
+const datosMuestra = {
+  codigo: "INV1234-abcdef01-abcd-abcd-abcd-abcdef012345",
+  nombre: "Nehemías Zepeda",
+  numero_invitados: 3,
+  numero_invitados_confirmados: null,
+  numero_mesa: 5,
+  confirmado: null // null = aún no responde | true = confirmó | false = no asistirá
+};
+
+let invitadoID = null;
 const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
 const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
+const FECHA_LIMITE_CONFIRMACION = new Date("2026-12-31T23:59:59-06:00");
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.warn('Supabase URL/KEY no configurados. Reemplaza meta tags con valores seguros para producción.');
+  console.warn('Supabase URL/KEY no configurados.');
 }
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-/* Utilidades */
-const params = new URLSearchParams(window.location.search);
-const invitadoID = params.get("id");
-
-/* Referencias DOM */
 const nombreSpan = document.getElementById('nombreInvitado');
 const mensajeRegalo = document.getElementById('mensajeRegalo');
 const contenedor = document.getElementById('contenedorInvitados');
 const contador = document.getElementById('contadorInvitados');
 const input = document.getElementById('inputInvitados');
 const btn = document.getElementById('btnConfirmar');
+const btnNo = document.getElementById('btnNoConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
-const mesa = document.getElementById('numeroMesa');
+const msjeMesa = document.getElementById('msjeMesa');
+const numMesa = document.getElementById('numMesa');
 
-/* Mensajes: ahora aceptamos { type: 'error' } para mostrar en rojo y usar aria-live="assertive" */
-function showMessage(text, opts = {}) {
-  contenedorMensaje.style.display = 'block';
-  if (opts.type === 'error') {
-    contenedorMensaje.style.color = 'var(--error)';
-    contenedorMensaje.setAttribute('aria-live', 'assertive');
-  } else {
-    contenedorMensaje.style.color = opts.color || 'var(--cafe-dark)';
-    contenedorMensaje.setAttribute('aria-live', 'polite');
-  }
-  contenedorMensaje.textContent = text;
+function fechaLimiteAlcanzada() {
+  const ahora = new Date();
+  return ahora > FECHA_LIMITE_CONFIRMACION;
 }
 
-function showHTMLMessage(html, opts = {}) {
-  contenedorMensaje.style.display = 'block';
-  if (opts.type === 'error') {
-    contenedorMensaje.style.color = 'var(--error)';
-    contenedorMensaje.setAttribute('aria-live', 'assertive');
-  } else {
-    contenedorMensaje.style.color = opts.color || 'var(--cafe-dark)';
-    contenedorMensaje.setAttribute('aria-live', 'polite');
-  }
-  contenedorMensaje.innerHTML = html;
-}
+/* =========================
+   FUNCIONES DE MENSAJES
+========================= */
 
+// Escapa texto para uso seguro si en algún punto se necesita insertar HTML
 function escapeHtml(s) {
   const d = document.createElement('div');
   d.textContent = s;
   return d.innerHTML;
 }
 
+// Mensaje de texto plano (uso normal, evita XSS con textContent)
+function showMessage(text, opts = {}) {
+  contenedorMensaje.style.display = 'block';
+
+  if (opts.type === 'error') {
+    contenedorMensaje.style.color = 'var(--error)';
+    contenedorMensaje.setAttribute('aria-live', 'assertive');
+  } else {
+    contenedorMensaje.style.color = opts.color || 'var(--cafe-dark)';
+    contenedorMensaje.setAttribute('aria-live', 'polite');
+  }
+
+  contenedorMensaje.textContent = text;
+}
+
+// Variante con HTML controlado (solo usar con contenido propio, nunca con datos crudos del usuario)
+function showHTMLMessage(html, opts = {}) {
+  contenedorMensaje.style.display = 'block';
+
+  if (opts.type === 'error') {
+    contenedorMensaje.style.color = 'var(--error)';
+    contenedorMensaje.setAttribute('aria-live', 'assertive');
+  } else {
+    contenedorMensaje.style.color = opts.color || 'var(--cafe-dark)';
+    contenedorMensaje.setAttribute('aria-live', 'polite');
+  }
+
+  contenedorMensaje.innerHTML = html;
+}
+
+async function mostrarErrorSupabase(error, status = null) {
+  console.error("===== ERROR SUPABASE =====");
+  console.error("Status:", status);
+  console.error("Error completo:", error);
+
+  let mensaje = "Ocurrió un error.";
+
+  if (!navigator.onLine) {
+    mensaje = "No tienes conexión a internet.";
+  } else if (error) {
+    mensaje = `
+    Error: ${error.message || 'Error desconocido'}
+    ${error.code ? `Código: ${error.code}` : ''}
+    ${error.details ? `Detalle: ${error.details}` : ''}
+    ${status ? `HTTP: ${status}` : ''}
+    `;
+  }
+
+  showMessage(mensaje, { type: 'error' });
+  await mostrarModalMensaje('❌' + mensaje);
+}
+
+/* =========================
+   CARGA INICIAL
+========================= */
+
 document.addEventListener("DOMContentLoaded", async () => {
-  if (!invitadoID) {
-    // Si no hay id, dejamos la página genérica.
-    return;
+  btn.addEventListener('click', confirmarAsistencia);
+  btnNo.addEventListener('click', confirmarNoAsistencia);
+
+  // ⛔ Validar fecha límite
+  if (fechaLimiteAlcanzada()) {
+    btn.disabled = true;
+    btnNo.disabled = true;
+
+    btn.style.background = "#888";
+    btnNo.style.background = "#888";
+
+    contenedor.style.display = "none";
+    // ⚠ NO usar return aquí (se deja seguir cargando el resto de datos)
+  }
+
+  // 🔎 Obtener ID (en modo prueba no se usa, pero se deja listo para producción)
+  function obtenerID() {
+    const hashID = window.location.hash.substring(1);
+    if (hashID) return hashID;
+
+    const params = new URLSearchParams(window.location.search);
+    return params.get("id");
+  }
+
+  invitadoID = MODO_PRUEBA ? datosMuestra.codigo : obtenerID();
+
+  if (!MODO_PRUEBA) {
+    if (!invitadoID) {
+      await mostrarModalMensajeError("❌ Enlace inválido. Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.");
+      return;
+    }
+
+    const regexCodigo = /^INV\d{4}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!regexCodigo.test(invitadoID)) {
+      await mostrarModalMensajeError("❌ Este enlace no es válido o está incompleto.");
+      return;
+    }
+
+    if (!navigator.onLine) {
+      await mostrarModalMensajeError('❌ No tienes conexión a internet. Recargue la página o intente más tarde.');
+      return;
+    }
   }
 
   try {
-    // mejor usar try/catch por si falla la conexión
-    const { data, error } = await db
-      .from("invitados")
-      .select("*")
-      .eq("codigo", invitadoID)
-      .single();
+    let data;
 
-    if (error) {
-      console.error(error);
-      showMessage('No se pudo obtener la información del invitado.', { type: 'error' });
-      return;
-    }
-    if (!data) {
-      showMessage('Invitado no encontrado.', { type: 'error' });
-      return;
-    }
-
-    // Usar textContent en vez de innerHTML para evitar inyección
-    nombreSpan.textContent = data.nombre || 'invitado';
-
-    // Mostrar regalo si corresponde
-    if (data.regalo === true) {
-      mensajeRegalo.style.display = 'block';
-      mensajeRegalo.setAttribute('aria-hidden', 'false');
+    if (MODO_PRUEBA) {
+      console.log("🧪 MODO_PRUEBA activo: usando datos de muestra, no se consulta Supabase.");
+      data = { ...datosMuestra };
     } else {
-      mensajeRegalo.style.display = 'none';
+      const { data: fetchedData, error, status } = await db
+        .from("invitados")
+        .select("*")
+        .eq("codigo", invitadoID)
+        .single();
+
+      if (error) {
+        await mostrarModalMensajeError("❌ Este enlace no es válido o ya no está disponible.");
+        return;
+      }
+
+      if (!fetchedData) {
+        await mostrarModalMensajeError('❌ Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.');
+        return;
+      }
+
+      data = fetchedData;
     }
 
-   	// Mostrar Numero de mesa si corresponde
-    if (data.Numero_mesa > 0) {
-      mesa.style.display = 'block';
-      mesa.setAttribute('aria-hidden', 'false');
-    } else {
-      mesa.style.display = 'none';
-    }
+    // ✅ textContent, nunca innerHTML, para datos que vienen de la base de datos
+    nombreSpan.textContent = data.nombre;
+    mensajeRegalo.style.display = 'block';
 
-    // Si no puede traer invitados, ocultamos el input
+    // 🪑 Mostrar mesa
+    numMesa.textContent = `🪑 Tu mesa asignada es la número ${data.numero_mesa}`;
+    msjeMesa.style.display = 'block';
+    msjeMesa.removeAttribute('aria-hidden');
+
     if (data.numero_invitados === 1 || data.confirmado === true) {
       contenedor.style.display = 'none';
     }
 
-    // Mostrar contador si tiene invitados
-    if (data.numero_invitados > 1) {
+    if (data.numero_invitados > 1 && data.confirmado !== true) {
       contador.textContent = `Máximo invitados permitidos: ${data.numero_invitados}.`;
-      // Establecemos el max en el input para ayudar a la validación
       input.setAttribute('max', String(data.numero_invitados));
-      input.value = data.numero_invitados === 1 ? '1' : '';
-      input.placeholder = `Máx ${data.numero_invitados}`;
     }
 
     if (data.confirmado === true) {
@@ -127,63 +221,290 @@ document.addEventListener("DOMContentLoaded", async () => {
       btn.disabled = true;
 
       const confirmados = data.numero_invitados_confirmados || 1;
-      //showMessage(`Hola ${data.nombre}, gracias por confirmar. Has confirmado ${confirmados} invitado(s).`);
-      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎  Has confirmado ${confirmados} invitado(s). ¡Te Esperamos!`);
+      const numeromesa = data.numero_mesa || 1;
+
+      showMessage(
+        `Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado ${confirmados} invitado(s). tu mesa asignada es la número ${numeromesa} ¡Te Esperamos!`
+      );
+
+      btnNo.disabled = true;
+      btnNo.style.display = "none";
+    }
+
+    if (data.confirmado === false) {
+      btnNo.textContent = "Has confirmado que no asistirás. ✔";
+      btnNo.style.background = "#888";
+      btnNo.disabled = true;
+
+      contenedor.style.display = "none";
+
+      showMessage(`Hola ${data.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`);
+
+      btn.disabled = true;
+      btn.style.display = "none";
     }
 
   } catch (err) {
-    console.error(err);
-    showMessage('Error al conectar con la base de datos.', { type: 'error' });
+    console.error("ERROR GENERAL:", err);
+    await mostrarModalMensajeError(`❌ Error inesperado: ${err.message || 'No se pudo conectar al servidor.'}`);
   }
 });
 
-/* Confirmar asistencia: validaciones y actualización */
-btn.addEventListener('click', confirmarAsistencia);
+/* =========================
+   MODAL LOGICA
+========================= */
+
+const modal = document.getElementById('modalConfirmacion');
+const modalTexto = document.getElementById('modalTexto');
+const modalAceptar = document.getElementById('modalAceptar');
+const modalCancelar = document.getElementById('modalCancelar');
+const spinner = document.getElementById('spinner');
+const btnTexto = document.getElementById('btnTexto');
+
+function mostrarModal(mensaje) {
+  return new Promise((resolve) => {
+
+    modalTexto.textContent = mensaje;
+    modal.style.display = 'flex';
+
+    function cerrar(valor) {
+      modal.style.display = 'none';
+      modalAceptar.classList.remove('loading');
+      spinner.style.display = 'none';
+      btnTexto.textContent = 'Confirmar';
+      modalAceptar.disabled = false;
+
+      modalAceptar.removeEventListener('click', aceptar);
+      modalCancelar.removeEventListener('click', cancelar);
+
+      resolve(valor);
+    }
+
+    async function aceptar() {
+      modalAceptar.classList.add('loading');
+      spinner.style.display = 'inline-block';
+      btnTexto.textContent = 'Guardando...';
+      modalAceptar.disabled = true;
+
+      try {
+        // Pequeña espera simulada para que se vea el spinner (también en modo prueba)
+        await new Promise(resolve => setTimeout(resolve, 800));
+        cerrar(true);
+      } catch (error) {
+        console.error(error);
+        cerrar(false);
+      }
+    }
+
+    function cancelar() {
+      cerrar(false);
+    }
+
+    modalAceptar.addEventListener('click', aceptar);
+    modalCancelar.addEventListener('click', cancelar);
+
+    document.addEventListener('keydown', function escListener(e) {
+      if (e.key === 'Escape') {
+        document.removeEventListener('keydown', escListener);
+        cerrar(false);
+      }
+    });
+
+  });
+}
+
+/* Modal mensaje informativo */
+
+const modalMensaje = document.getElementById('modalMessage');
+const modalTextoMensaje = document.getElementById('modalTextoMensaje');
+const modalCerrarMensaje = document.getElementById('modalCerrarMensaje');
+
+function mostrarModalMensaje(mensaje) {
+  return new Promise((resolve) => {
+
+    modalTextoMensaje.textContent = mensaje;
+    modalMensaje.style.display = 'flex';
+
+    function cerrar() {
+      modalMensaje.style.display = 'none';
+      modalCerrarMensaje.removeEventListener('click', cerrar);
+      resolve(true);
+    }
+
+    modalCerrarMensaje.addEventListener('click', cerrar);
+
+    document.addEventListener('keydown', function escListener(e) {
+      if (e.key === 'Escape') {
+        document.removeEventListener('keydown', escListener);
+        cerrar();
+      }
+    });
+
+  });
+}
+
+/* Modal mensaje de error */
+
+const modalMensajeError = document.getElementById('modalMessageError');
+const modalTextoMensajeError = document.getElementById('modalTextoMensajeError');
+
+function mostrarModalMensajeError(mensaje) {
+  return new Promise((resolve) => {
+    modalTextoMensajeError.textContent = mensaje;
+    modalMensajeError.style.display = 'flex';
+    resolve(true);
+  });
+}
+
+/* =========================
+   CONFIRMAR ASISTENCIA
+========================= */
 
 async function confirmarAsistencia() {
-  // Bloqueo UI
+
+  if (fechaLimiteAlcanzada()) {
+    await mostrarModalMensaje("⏰ Lo sentimos, la fecha límite para confirmar asistencia ya finalizó.");
+    return;
+  }
+
+  const seguro = await mostrarModal("¿Deseas confirmar tu asistencia?");
+  if (!seguro) return;
+
   btn.disabled = true;
   const originalText = btn.textContent;
   btn.textContent = 'Guardando...';
 
   try {
-    if (!invitadoID) {
-      showMessage('No se encontró el ID del invitado.', { type: 'error' });
+
+    if (!MODO_PRUEBA && !navigator.onLine) {
+      await mostrarModalMensaje('No tienes conexión a internet.');
+      btn.textContent = originalText;
+      btn.disabled = false;
       return;
     }
 
-    const { data: invitado, error: fetchErr } = await db
+    /* =========================================================
+       🧪 RAMA MODO PRUEBA: todo se simula en memoria/pantalla,
+       no se consulta ni se escribe en Supabase.
+    ========================================================= */
+    if (MODO_PRUEBA) {
+
+      if (datosMuestra.confirmado === true) {
+        await mostrarModalMensaje('Ya habías confirmado antes 🤎');
+        return;
+      }
+
+      let cantidadConfirmada = 1;
+
+      if (datosMuestra.numero_invitados > 1) {
+        cantidadConfirmada = parseInt(input.value, 10);
+
+        if (!cantidadConfirmada || cantidadConfirmada < 1) {
+          await mostrarModalMensaje('❌ Debe ingresar cuántos asistirán.');
+          btn.textContent = originalText;
+          btn.disabled = false;
+          return;
+        }
+
+        if (cantidadConfirmada > datosMuestra.numero_invitados) {
+          btn.textContent = originalText;
+          btn.disabled = false;
+          await mostrarModalMensaje(`❌ Solo puedes confirmar hasta ${datosMuestra.numero_invitados} invitado(s).`);
+          return;
+        }
+      }
+
+      // Actualiza el objeto en memoria (simulación)
+      datosMuestra.confirmado = true;
+      datosMuestra.numero_invitados_confirmados = cantidadConfirmada;
+
+      btn.textContent = "Confirmado ✔";
+      btn.style.background = "#888";
+      btn.disabled = true;
+
+      contenedor.style.display = "none";
+
+      numMesa.textContent = `🪑 Tu mesa asignada es la número ${datosMuestra.numero_mesa}`;
+      msjeMesa.style.display = 'block';
+      msjeMesa.removeAttribute('aria-hidden');
+
+      btnNo.disabled = true;
+      btnNo.style.display = "none";
+
+      showMessage(
+        `Hola ${datosMuestra.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). ¡Te Esperamos!`
+      );
+
+      await mostrarModalMensaje(
+        `🎉 Gracias por confirmar tu asistencia 🤎. Has confirmado ${cantidadConfirmada} invitado(s), tu mesa asignada es la número ${datosMuestra.numero_mesa} ¡Te Esperamos!`
+      );
+
+      return;
+    }
+
+    /* =========================================================
+       RAMA REAL: contra Supabase
+    ========================================================= */
+
+    const { data: invitado, error: fetchErr, status: fetchStatus } = await db
       .from("invitados")
-      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados")
+      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados, numero_mesa")
       .eq("codigo", invitadoID)
       .single();
 
     if (fetchErr) {
-      console.error(fetchErr);
-      showMessage('Error al verificar el estado de la invitación.', { type: 'error' });
+      await mostrarErrorSupabase(fetchErr, fetchStatus);
+      btn.textContent = originalText;
+      btn.disabled = false;
       return;
     }
 
-    if (!invitado || invitado.confirmado) {
-      showMessage('Ya habías confirmado antes 🤎');
+    if (!invitado) {
+      await mostrarModalMensaje('❌ Invitado no encontrado.');
+      btn.textContent = originalText;
+      btn.disabled = false;
+      return;
+    }
+
+    if (invitado.confirmado) {
+      await mostrarModalMensaje('Ya habías confirmado antes 🤎');
+
+      btn.textContent = "Confirmado ✔";
+      btn.style.background = "#888";
+      btn.disabled = true;
+
+      contenedor.style.display = "none";
+
+      btnNo.disabled = true;
+      btnNo.style.display = "none";
+
+      showMessage(
+        `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${invitado.numero_invitados_confirmados} invitado(s). tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!`
+      );
+
       return;
     }
 
     let cantidadConfirmada = 1;
+
     if (invitado.numero_invitados > 1) {
       cantidadConfirmada = parseInt(input.value, 10);
+
       if (!cantidadConfirmada || cantidadConfirmada < 1) {
-        showMessage('Ingresa cuántos asistirán.', { type: 'error' });
+        await mostrarModalMensaje('❌ Debe ingresar cuántos asistirán.');
+        btn.textContent = originalText;
+        btn.disabled = false;
         return;
       }
+
       if (cantidadConfirmada > invitado.numero_invitados) {
-        showMessage(`Solo puedes confirmar hasta ${invitado.numero_invitados} invitado(s).`, { type: 'error' });
+        btn.textContent = originalText;
         btn.disabled = false;
+        await mostrarModalMensaje(`❌ Solo puedes confirmar ${invitado.numero_invitados} invitado(s).`);
         return;
       }
     }
 
-    // Actualizar
     const updatedData = {
       confirmado: true,
       fecha_confirmacion: new Date().toISOString().split("T")[0],
@@ -191,14 +512,17 @@ async function confirmarAsistencia() {
       numero_invitados_confirmados: cantidadConfirmada
     };
 
-    const { error } = await db
+    const { error: updateErr, status: updateStatus } = await db
       .from("invitados")
       .update(updatedData)
-      .eq("codigo", invitadoID);
+      .eq("codigo", invitadoID)
+      .or("confirmado.is.null,confirmado.eq.false")
+      .select();
 
-    if (error) {
-      console.error(error);
-      showMessage('No se pudo guardar la confirmación.', { type: 'error' });
+    if (updateErr) {
+      await mostrarErrorSupabase(updateErr, updateStatus);
+      btn.textContent = originalText;
+      btn.disabled = false;
       return;
     }
 
@@ -206,23 +530,29 @@ async function confirmarAsistencia() {
     btn.style.background = "#888";
     btn.disabled = true;
 
-    // Ocultar input si aplica
-    if (invitado.numero_invitados === 1 || cantidadConfirmada >= 1) {
-      contenedor.style.display = "none";
-    }
+    contenedor.style.display = "none";
 
-    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎  Has confirmado ${cantidadConfirmada} invitado(s). ¡Te Esperamos!`);
+    numMesa.textContent = `🪑 Tu mesa asignada es la número ${invitado.numero_mesa}`;
+    msjeMesa.style.display = 'block';
+    msjeMesa.removeAttribute('aria-hidden');
 
-    // Actualizar contador accesible
-    if (invitado.numero_invitados > 1) {
-      contador.textContent = `Máximo de invitados permitidos: ${invitado.numero_invitados}. Ya confirmados: ${cantidadConfirmada}`;
-    }
+    btnNo.disabled = true;
+    btnNo.style.display = "none";
+
+    showMessage(
+      `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado ${cantidadConfirmada} invitado(s). ¡Te Esperamos!`
+    );
+
+    await mostrarModalMensaje(
+      `🎉 Gracias por confirmar tu asistencia 🤎. Has confirmado ${cantidadConfirmada} invitado(s), tu mesa asignada es la número ${invitado.numero_mesa} ¡Te Esperamos!`
+    );
 
   } catch (err) {
-    console.error(err);
-    showMessage('Ocurrió un error inesperado. Intenta nuevamente más tarde.', { type: 'error' });
+    console.error("ERROR INESPERADO:", err);
+    await mostrarModalMensaje(`❌ Error inesperado: ${err.message || 'Error de conexión.'}`);
+    btn.textContent = originalText;
+    btn.disabled = false;
   } finally {
-    // restaurar estado si quedó habilitado por error
     if (!btn.disabled) {
       btn.textContent = originalText;
       btn.disabled = false;
@@ -230,10 +560,144 @@ async function confirmarAsistencia() {
   }
 }
 
-/* Mejora UX: permitir enviar con Enter cuando el input está enfocado */
+/* Enviar con Enter */
 input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     e.preventDefault();
     btn.click();
   }
 });
+
+/* =========================
+   NO ASISTIRÁ
+========================= */
+
+async function confirmarNoAsistencia() {
+
+  if (fechaLimiteAlcanzada()) {
+    await mostrarModalMensaje("⏰ La fecha límite para confirmar asistencia ya finalizó.");
+    return;
+  }
+
+  const seguro = await mostrarModal("¿Deseas confirmar que NO asistirás?");
+  if (!seguro) return;
+
+  btnNo.disabled = true;
+  const originalText = btnNo.textContent;
+  btnNo.textContent = 'Guardando...';
+
+  try {
+
+    if (!MODO_PRUEBA && !navigator.onLine) {
+      await mostrarModalMensaje('❌ No tienes conexión a internet.');
+      btnNo.textContent = originalText;
+      btnNo.disabled = false;
+      return;
+    }
+
+    /* =========================================================
+       🧪 RAMA MODO PRUEBA
+    ========================================================= */
+    if (MODO_PRUEBA) {
+
+      if (datosMuestra.confirmado === false) {
+        showMessage('Has confirmado que no asistirás 🤎');
+        return;
+      }
+
+      datosMuestra.confirmado = false;
+
+      btnNo.textContent = "Has confirmado que no asistirás. ✔";
+      btnNo.style.background = "#888";
+      btnNo.disabled = true;
+
+      contenedor.style.display = "none";
+
+      showMessage(`Hola ${datosMuestra.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`);
+
+      await mostrarModalMensaje(
+        `Hola ${datosMuestra.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`
+      );
+
+      btn.disabled = true;
+      btn.style.display = "none";
+
+      return;
+    }
+
+    /* =========================================================
+       RAMA REAL: contra Supabase
+    ========================================================= */
+
+    const { data: invitado, error: fetchErr, status: fetchStatus } = await db
+      .from("invitados")
+      .select("confirmado, nombre, numero_invitados, numero_invitados_confirmados, numero_mesa")
+      .eq("codigo", invitadoID)
+      .single();
+
+    if (fetchErr) {
+      await mostrarErrorSupabase(fetchErr, fetchStatus);
+      btnNo.textContent = originalText;
+      btnNo.disabled = false;
+      return;
+    }
+
+    if (!invitado) {
+      showMessage('Invitado no encontrado.', { type: 'error' });
+      btnNo.textContent = originalText;
+      btnNo.disabled = false;
+      return;
+    }
+
+    if (invitado.confirmado === false) {
+      showMessage('Has confirmado que no asistirás 🤎');
+      return;
+    }
+
+    const updatedData = {
+      confirmado: false,
+      fecha_confirmacion: new Date().toISOString().split("T")[0],
+      hora_confirmacion: new Date().toLocaleTimeString("es-ES", { hour12: false })
+    };
+
+    const { error: updateErr, status: updateStatus } = await db
+      .from("invitados")
+      .update(updatedData)
+      .eq("codigo", invitadoID)
+      .or("confirmado.is.null,confirmado.eq.false")
+      .select();
+
+    if (updateErr) {
+      await mostrarErrorSupabase(updateErr, updateStatus);
+      btnNo.textContent = originalText;
+      btnNo.disabled = false;
+      return;
+    }
+
+    btnNo.textContent = "Has confirmado que no asistirás. ✔";
+    btnNo.style.background = "#888";
+    btnNo.disabled = true;
+
+    contenedor.style.display = "none";
+
+    showMessage(`Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`);
+
+    await mostrarModalMensaje(
+      `Hola ${invitado.nombre}, gracias por confirmar 🤎 Has confirmado que no asistirás.`
+    );
+
+    btn.disabled = true;
+    btn.style.display = "none";
+
+  } catch (err) {
+    console.error("ERROR INESPERADO:", err);
+    await mostrarModalMensaje(`❌ Error inesperado: ${err.message || 'Error de conexión.'}`);
+    btnNo.textContent = originalText;
+    btnNo.disabled = false;
+  } finally {
+    if (!btnNo.disabled) {
+      btnNo.textContent = originalText;
+      btnNo.disabled = false;
+    }
+  }
+}
