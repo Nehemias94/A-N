@@ -458,7 +458,9 @@ body{
 .countdown span{
   font-size:24px;
   font-weight:700;
-  color:var(--dorado-dark);
+  /*color:var(--dorado-dark);*/
+  color: var(--verde-dark);
+  
 }
 
 .countdown-title{
@@ -560,7 +562,7 @@ body{
   font-size: 17px;
   font-weight: 500;
   text-align: center;
-  color: var(--dorado-dark);
+  color: var(--verde-dark);
   background: rgba(212,175,55,0.12);
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(44,79,69,0.06);
