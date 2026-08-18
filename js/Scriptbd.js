@@ -78,7 +78,7 @@ function showMessage(text, opts = {}) {
     contenedorMensaje.style.color = 'var(--error)';
     contenedorMensaje.setAttribute('aria-live', 'assertive');
   } else {
-    contenedorMensaje.style.color = opts.color || 'var(--cafe-dark)';
+    contenedorMensaje.style.color = opts.color || 'var(--verde-dark)';
     contenedorMensaje.setAttribute('aria-live', 'polite');
   }
 
@@ -93,7 +93,7 @@ function showHTMLMessage(html, opts = {}) {
     contenedorMensaje.style.color = 'var(--error)';
     contenedorMensaje.setAttribute('aria-live', 'assertive');
   } else {
-    contenedorMensaje.style.color = opts.color || 'var(--cafe-dark)';
+    contenedorMensaje.style.color = opts.color || 'var(--verde-dark)';
     contenedorMensaje.setAttribute('aria-live', 'polite');
   }
 
@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (data.numero_invitados > 1 && data.confirmado !== true) {
-      contador.textContent = `Máximo invitados permitidos: ${data.numero_invitados}.`;
+      contador.textContent = `invitación para ${data.numero_invitados} personas.`;
       input.setAttribute('max', String(data.numero_invitados));
     }
 
