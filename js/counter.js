@@ -4,7 +4,25 @@
 
 // 📅 Fecha del evento (28 marzo 2026 - 4:00 PM)
 //const fechaEvento = new Date("March 28, 2026 16:00:00").getTime();
-const fechaEvento = new Date(2026, 12, 28, 19, 0, 0).getTime();
+//const fechaEvento = new Date(2026, 12, 28, 19, 0, 0).getTime();
+// 28 de marzo de 2026, 4:00 p.m. → mes 2 (marzo, porque enero=0), hora 16 (formato 24h)
+
+/*
+0 = enero
+1 = febrero
+2 = marzo
+3 = abril
+4 = mayo
+5 = junio
+6 = julio
+7 = agosto
+8 = septiembre
+9 = octubre
+10 = noviembre
+11 = diciembre
+*/
+
+const fechaEvento = new Date(2026, 2, 28, 16, 0, 0).getTime();
 
 // Elemento donde se mostrará
 const countdownEl = document.getElementById("cuentaRegresiva");
