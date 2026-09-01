@@ -52,7 +52,7 @@ const btn = document.getElementById('btnConfirmar');
 const btnNo = document.getElementById('btnNoConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
 const msjeMesa = document.getElementById('msjeMesa');
-const numMesa = document.getElementById('numMesa');
+/*const numMesa = document.getElementById('numMesa');*/
 
 function fechaLimiteAlcanzada() {
   const ahora = new Date();
@@ -202,9 +202,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     mensajeRegalo.style.display = 'block';
 
     // 🪑 Mostrar mesa
-    numMesa.textContent = `🪑 Tu mesa asignada es la número ${data.numero_mesa}`;
+    /*numMesa.textContent = `🪑 Tu mesa asignada es la número ${data.numero_mesa}`;
     msjeMesa.style.display = 'block';
-    msjeMesa.removeAttribute('aria-hidden');
+    msjeMesa.removeAttribute('aria-hidden');*/
 
     if (data.numero_invitados === 1 || data.confirmado === true) {
       contenedor.style.display = 'none';
@@ -424,9 +424,9 @@ async function confirmarAsistencia() {
 
       contenedor.style.display = "none";
 
-      numMesa.textContent = `🪑 Tu mesa asignada es la número ${datosMuestra.numero_mesa}`;
+     /* numMesa.textContent = `🪑 Tu mesa asignada es la número ${datosMuestra.numero_mesa}`;
       msjeMesa.style.display = 'block';
-      msjeMesa.removeAttribute('aria-hidden');
+      msjeMesa.removeAttribute('aria-hidden');*/
 
       btnNo.disabled = true;
       btnNo.style.display = "none";
@@ -532,9 +532,9 @@ async function confirmarAsistencia() {
 
     contenedor.style.display = "none";
 
-    numMesa.textContent = `🪑 Tu mesa asignada es la número ${invitado.numero_mesa}`;
+    /*numMesa.textContent = `🪑 Tu mesa asignada es la número ${invitado.numero_mesa}`;
     msjeMesa.style.display = 'block';
-    msjeMesa.removeAttribute('aria-hidden');
+    msjeMesa.removeAttribute('aria-hidden');*/
 
     btnNo.disabled = true;
     btnNo.style.display = "none";
