@@ -12,28 +12,6 @@
 html,body{height:100%}
 
 body{
-  padding:20px;
-}
-
-@media (max-width:420px){
-  body{ padding:10px; }
-  .page{ padding:18px; }
-  .note{ font-size:18px; }
-  .input-box{ max-width:200px; }
-  .rsvp{
-    display:block;
-    width:100%;
-    max-width:280px;
-    margin-left:auto;
-    margin-right:auto;
-  }
-}
-
-h1{
-  font-size: clamp(22px, 5vw, 32px);
-}
-
-body{
   font-family: "Cormorant Garamond", serif;
   background:
     radial-gradient(circle at 10% 10%, rgba(63,110,96,0.07), transparent 12%),
@@ -53,7 +31,10 @@ body{
   min-height:100vh;
 }
 
-  
+h1{
+  font-size: clamp(22px, 5vw, 32px);
+}
+
 .page {
   width:100%;
   max-width:var(--max-width);
@@ -206,13 +187,6 @@ body{
   gap:18px;
 }
 
-/* Responsive tweaks */
-@media (max-width:420px){
-  .page{ padding:18px; }
-  .note{ font-size:18px; }
-  .input-box{ max-width:200px; }
-}
-
 .imagen-boda img {
   width: 100%;
   max-width: 340px;
@@ -228,81 +202,6 @@ body{
 
   box-shadow: 0 12px 28px rgba(44,79,69,0.18);
 }
-/*MODAL*/
-/*.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  backdrop-filter: blur(4px);
-}
-
-.modal-contenido {
-  background: #fff;
-  padding: 30px 25px;
-  border-radius: 18px;
-  width: 90%;
-  max-width: 420px;
-  text-align: center;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-  animation: fadeIn 0.25s ease-in-out;
-  font-family: 'Georgia', serif;
-}
-
-#modalTexto {
-  font-size: 18px;
-  line-height: 1.6;
-  color: var(--text);
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-}
-
-.modal-botones {
-  margin-top: 25px;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-
-.btn-principal {
-  padding: 10px 18px;
-  background: linear-gradient(135deg, var(--cafe), var(--cafe-dark));
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-principal:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-}
-
-.btn-secundario {
-  padding: 10px 18px;
-  background: #f2f2f2;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-secundario:hover {
-  background: #e6e6e6;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}*/
 
 /* =========================
    MODAL CONFIRMACION
@@ -415,21 +314,6 @@ body{
   from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
 }
-/*MENSAJE CONFIRMACION*/
-#mensajeConfirmacion{
-  margin-top:26px;
-  font-size:20px;
-  font-weight:600;
-  text-align:center;
-  color:var(--verde-dark);
-  letter-spacing:0.4px;
-  background:rgba(212,175,55,0.10);
-  padding:16px 18px;
-  border-radius:14px;
-  box-shadow:0 4px 12px rgba(44,79,69,0.08);
-  display:none;
-  animation: fadeIn .6s ease;
-}
 
 /* Spinner */
 .spinner {
@@ -480,9 +364,7 @@ body{
 .countdown span{
   font-size:24px;
   font-weight:700;
-  /*color:var(--dorado-dark);*/
   color: var(--verde-dark);
-  
 }
 
 .countdown-title{
@@ -492,6 +374,7 @@ body{
 .countdown-numbers{
   margin-top:4px;
 }
+
 /* =========================
    BOTONES UBICACIÓN
 ========================= */
@@ -503,27 +386,6 @@ body{
   gap:12px;
   flex-wrap:wrap;
 }
-
-/*.map-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  
-  width:180px;          /* 🔥 mismo ancho fijo */
-  /*height:48px;          /* 🔥 misma altura fija */
-  
-  /*border-radius:28px;
-  text-decoration:none;
-  font-weight:600;
-  font-size:16px;
-  font-family: "Cormorant Garamond", serif;
-
-  background: linear-gradient(180deg,var(--cafe),var(--cafe-dark));
-  color:white;
-
-  box-shadow: 0 8px 18px rgba(168,130,86,0.25);
-  transition: all .2s ease;
-}*/
 
 .map-btn{
   letter-spacing:0.5px;
@@ -562,21 +424,6 @@ body{
   box-shadow: 0 14px 28px rgba(212,175,55,0.45);
 }
 
-/* 📱 En pantallas pequeñas se ponen uno debajo del otro */
-@media (max-width:480px){
-
-  .map-links{
-    flex-direction:column;
-    align-items:center;
-  }
-
-  .map-btn{
-    width:210px;
-    margin:10px 0; /* 👈 separación real arriba y abajo */
-  }
-
-}
-
 #fechaLimiteConfirmacion{
   margin: 18px auto;
   padding: 12px 18px;
@@ -588,4 +435,42 @@ body{
   background: rgba(63,110,96,0.08);/*Fondo verde difuminado*/
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(44,79,69,0.06);
+}
+
+/* =========================================================
+   📱 RESPONSIVE / MOBILE
+   -----------------------------------------------------------
+   Todas las media queries van AL FINAL del archivo a propósito:
+   en CSS, cuando dos reglas tienen la misma especificidad, gana
+   la que aparece más abajo. Si una regla mobile queda antes que
+   su equivalente "de escritorio", la de escritorio la pisa y el
+   ajuste mobile nunca se aplica. Por eso todo el bloque responsive
+   se agrupa aquí, después de todas las reglas base.
+========================================================= */
+
+@media (max-width:480px){
+  .map-links{
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .map-btn{
+    width:210px;
+    margin:10px 0; /* separación real arriba y abajo */
+  }
+}
+
+@media (max-width:420px){
+  body{ padding:10px; }
+  .page{ padding:18px; }
+  .note{ font-size:18px; }
+  .input-box{ max-width:200px; }
+
+  .rsvp{
+    display:block;
+    width:100%;
+    max-width:280px;
+    margin-left:auto;
+    margin-right:auto;
+  }
 }
