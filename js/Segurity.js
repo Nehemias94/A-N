@@ -4,11 +4,11 @@ document.addEventListener("contextmenu", function (e) {
 });
 
 // 🚫 Bloquear teclas de inspección
-document.addEventListener("keydown", function (e) {
+/*document.addEventListener("keydown", function (e) {
   // F12
   if (e.key === "F12") {
     e.preventDefault();
-  }
+  }*/
 
   // Ctrl + Shift + I
   if (e.ctrlKey && e.shiftKey && e.key === "I") {
