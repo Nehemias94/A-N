@@ -24,6 +24,32 @@ const CONFIG = {
   permitirVariosInvitados: true,  // Input de "¿Cuántos asistirán?"
 };
 /*========================================================= */
+
+XSS).
+  - Nunca subir la service_role key al cliente: solo la anon key + RLS en Supabase.
+*/
+
+/* =========================================================
+   🧪 MODO DE PRUEBA
+   -----------------------------------------------------------
+   MODO_PRUEBA = true  -> usa datosMuestra, NO consulta ni
+                          escribe nada en Supabase. Los botones
+                          "Confirmar" / "No podré asistir"
+                          simulan la confirmación solo en pantalla.
+   MODO_PRUEBA = false -> comportamiento real contra Supabase.
+========================================================= */
+const MODO_PRUEBA = false;
+
+// Datos de muestra que se usan cuando MODO_PRUEBA = true
+const datosMuestra = {
+  codigo: "INV1234-abcdef01-abcd-abcd-abcd-abcdef012345",
+  nombre: "Nehemías Zepeda",
+  numero_invitados: 3,
+  numero_invitados_confirmados: null,
+  numero_mesa: 5,
+  confirmado: null // null = aún no responde | true = confirmó | false = no asistirá
+};
+
 let invitadoID = null;
 const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
 const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
