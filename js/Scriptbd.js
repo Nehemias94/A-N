@@ -11,13 +11,18 @@
 */
 
 /* =========================================================
-   🧪 MODO DE PRUEBA
+   ⚙️ CONFIGURACIÓN DE SECCIONES OPCIONALES
    -----------------------------------------------------------
-   MODO_PRUEBA = true  -> usa datosMuestra, NO consulta ni
-                          escribe nada en Supabase. Los botones
-                          "Confirmar" / "No podré asistir"
-                          simulan la confirmación solo en pantalla.
-   MODO_PRUEBA = false -> comportamiento real contra Supabase.
+   Cambia estos valores a true/false para mostrar u ocultar
+   cada sección, sin tener que comentar HTML manualmente.
+========================================================= */
+const CONFIG = {
+  mostrarNumeroMesa: true,        // Muestra el bloque "🪑 Tu mesa asignada..."
+  mostrarMensajeRegalo: true,     // Bloque del versículo (Eclesiastés)
+  mostrarMensajeSobreRegalo: true,// Bloque "El mejor regalo es..."
+  mostrarCuentaRegresiva: true,   // Countdown de la boda
+  permitirVariosInvitados: true,  // Input de "¿Cuántos asistirán?"
+};
 ========================================================= */
 const MODO_PRUEBA = false;
 
