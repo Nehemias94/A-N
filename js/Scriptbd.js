@@ -45,7 +45,7 @@ const btn = document.getElementById('btnConfirmar');
 const btnNo = document.getElementById('btnNoConfirmar');
 const contenedorMensaje = document.getElementById('mensajeConfirmacion');
 const msjeMesa = document.getElementById('msjeMesa');
-/*const numMesa = document.getElementById('numMesa');*/
+const numMesa = document.getElementById('numMesa');
 
 function fechaLimiteAlcanzada() {
   const ahora = new Date();
