@@ -37,6 +37,6 @@ document.addEventListener("keydown", function (e) {
         <h2>Inspección detectada 🚫</h2>
       </div>
     `;
-  }*/
+  }
 
-}, 1000);
+}, 1000);*/
