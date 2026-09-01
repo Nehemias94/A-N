@@ -12,28 +12,37 @@
 
 /* =========================================================
    ⚙️ CONFIGURACIÓN DE SECCIONES OPCIONALES
+   -----------------------------------------------------------
+   Cambia estos valores a true/false para mostrar u ocultar
+   cada sección, sin tener que comentar HTML manualmente.
 ========================================================= */
 const CONFIG = {
-  mostrarNumeroMesa: false,
-  mostrarMensajeRegalo: true,
-  mostrarMensajeSobreRegalo: true,
-  mostrarCuentaRegresiva: true,
-  permitirVariosInvitados: true,
+  mostrarNumeroMesa: true,        // Muestra el bloque "🪑 Tu mesa asignada..."
+  mostrarMensajeRegalo: true,     // Bloque del versículo (Eclesiastés)
+  mostrarMensajeSobreRegalo: true,// Bloque "El mejor regalo es..."
+  mostrarCuentaRegresiva: true,   // Countdown de la boda
+  permitirVariosInvitados: true,  // Input de "¿Cuántos asistirán?"
 };
 
 /* =========================================================
    🧪 MODO DE PRUEBA
+   -----------------------------------------------------------
+   MODO_PRUEBA = true  -> usa datosMuestra, NO consulta ni
+                          escribe nada en Supabase. Los botones
+                          "Confirmar" / "No podré asistir"
+                          simulan la confirmación solo en pantalla.
    MODO_PRUEBA = false -> comportamiento real contra Supabase.
 ========================================================= */
 const MODO_PRUEBA = false;
 
+// Datos de muestra que se usan cuando MODO_PRUEBA = true
 const datosMuestra = {
   codigo: "INV1234-abcdef01-abcd-abcd-abcd-abcdef012345",
   nombre: "Nehemías Zepeda",
   numero_invitados: 3,
   numero_invitados_confirmados: null,
   numero_mesa: 5,
-  confirmado: null
+  confirmado: null // null = aún no responde | true = confirmó | false = no asistirá
 };
 
 let invitadoID = null;
@@ -72,9 +81,30 @@ function aplicarConfiguracion() {
   const cuentaRegresivaEl = document.getElementById('cuentaRegresiva');
 
   if (msjeMesaEl) msjeMesaEl.style.display = CONFIG.mostrarNumeroMesa ? '' : 'none';
-  if (mensajeRegaloEl) mensajeRegaloEl.style.display = CONFIG.mostrarMensajeRegalo ? '' : 'none';
-  if (mensajeSobreRegaloEl) mensajeSobreRegaloEl.style.display = CONFIG.mostrarMensajeSobreRegalo ? '' : 'none';
+
+  if (mensajeRegaloEl) {
+    mensajeRegaloEl.style.display = CONFIG.mostrarMensajeRegalo ? 'block' : 'none';
+    if (CONFIG.mostrarMensajeRegalo) mensajeRegaloEl.removeAttribute('aria-hidden');
+  }
+
+  if (mensajeSobreRegaloEl) {
+    mensajeSobreRegaloEl.style.display = CONFIG.mostrarMensajeSobreRegalo ? 'block' : 'none';
+    if (CONFIG.mostrarMensajeSobreRegalo) mensajeSobreRegaloEl.removeAttribute('aria-hidden');
+  }
+
   if (cuentaRegresivaEl) cuentaRegresivaEl.style.display = CONFIG.mostrarCuentaRegresiva ? '' : 'none';
+}
+
+/* =========================
+   🔄 LOADER INICIAL
+========================= */
+
+// Oculta el overlay de "Cargando tu invitación..." con una transición suave.
+// Se llama en TODOS los puntos donde termina la carga inicial (éxito o error),
+// para que nunca se quede tapando la pantalla indefinidamente.
+function ocultarLoader() {
+  const loader = document.getElementById('pageLoader');
+  if (loader) loader.classList.add('oculto');
 }
 
 /* =========================
@@ -174,17 +204,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (!MODO_PRUEBA) {
     if (!invitadoID) {
+      ocultarLoader();
       await mostrarModalMensajeError("❌ Enlace inválido. Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.");
       return;
     }
 
     const regexCodigo = /^INV\d{4}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!regexCodigo.test(invitadoID)) {
+      ocultarLoader();
       await mostrarModalMensajeError("❌ Este enlace no es válido o está incompleto.");
       return;
     }
 
     if (!navigator.onLine) {
+      ocultarLoader();
       await mostrarModalMensajeError('❌ No tienes conexión a internet. Recargue la página o intente más tarde.');
       return;
     }
@@ -204,11 +237,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         .single();
 
       if (error) {
+        ocultarLoader();
         await mostrarModalMensajeError("❌ Este enlace no es válido o ya no está disponible.");
         return;
       }
 
       if (!fetchedData) {
+        ocultarLoader();
         await mostrarModalMensajeError('❌ Este enlace no es válido o ya no está disponible. Por favor, solicita una nueva invitación.');
         return;
       }
@@ -221,10 +256,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     mensajeRegalo.style.display = 'block';
 
     // 🪑 Mostrar mesa
-    /*numMesa.textContent = `🪑 Tu mesa asignada es la número ${data.numero_mesa}`;
-    msjeMesa.style.display = 'block';
-    msjeMesa.removeAttribute('aria-hidden');*/
-
     if (CONFIG.mostrarNumeroMesa && numMesa) {
       numMesa.textContent = `🪑 Tu mesa asignada es la número ${data.numero_mesa}`;
       msjeMesa.style.display = 'block';
@@ -269,8 +300,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       btn.style.display = "none";
     }
 
+    // ✅ Todo cargó correctamente: ocultamos el loader
+    ocultarLoader();
+
   } catch (err) {
     console.error("ERROR GENERAL:", err);
+    ocultarLoader();
     await mostrarModalMensajeError(`❌ Error inesperado: ${err.message || 'No se pudo conectar al servidor.'}`);
   }
 });
@@ -449,7 +484,7 @@ async function confirmarAsistencia() {
 
       contenedor.style.display = "none";
 
-     numMesa.textContent = `🪑 Tu mesa asignada es la número ${datosMuestra.numero_mesa}`;
+      numMesa.textContent = `🪑 Tu mesa asignada es la número ${datosMuestra.numero_mesa}`;
       msjeMesa.style.display = 'block';
       msjeMesa.removeAttribute('aria-hidden');
 
