@@ -14,7 +14,7 @@
    ⚙️ CONFIGURACIÓN DE SECCIONES OPCIONALES
 ========================================================= */
 const CONFIG = {
-  mostrarNumeroMesa: true,
+  mostrarNumeroMesa: false,
   mostrarMensajeRegalo: true,
   mostrarMensajeSobreRegalo: true,
   mostrarCuentaRegresiva: true,
