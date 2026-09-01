@@ -24,18 +24,6 @@ const CONFIG = {
   permitirVariosInvitados: true,  // Input de "¿Cuántos asistirán?"
 };
 ========================================================= */
-const MODO_PRUEBA = false;
-
-// Datos de muestra que se usan cuando MODO_PRUEBA = true
-const datosMuestra = {
-  codigo: "INV1234-abcdef01-abcd-abcd-abcd-abcdef012345",
-  nombre: "Nehemías Zepeda",
-  numero_invitados: 3,
-  numero_invitados_confirmados: null,
-  numero_mesa: 5,
-  confirmado: null // null = aún no responde | true = confirmó | false = no asistirá
-};
-
 let invitadoID = null;
 const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
 const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
@@ -62,6 +50,19 @@ const msjeMesa = document.getElementById('msjeMesa');
 function fechaLimiteAlcanzada() {
   const ahora = new Date();
   return ahora > FECHA_LIMITE_CONFIRMACION;
+}
+
+function aplicarConfiguracion() {
+  const msjeMesaEl = document.getElementById('msjeMesa');
+  const mensajeRegaloEl = document.getElementById('mensajeRegalo');
+  const mensajeSobreRegaloEl = document.getElementById('mensajeSobreRegalo');
+  const contenedorInvitadosEl = document.getElementById('contenedorInvitados');
+  const cuentaRegresivaEl = document.getElementById('cuentaRegresiva');
+
+  if (msjeMesaEl) msjeMesaEl.style.display = CONFIG.mostrarNumeroMesa ? '' : 'none';
+  if (mensajeRegaloEl) mensajeRegaloEl.style.display = CONFIG.mostrarMensajeRegalo ? '' : 'none';
+  if (mensajeSobreRegaloEl) mensajeSobreRegaloEl.style.display = CONFIG.mostrarMensajeSobreRegalo ? '' : 'none';
+  if (cuentaRegresivaEl) cuentaRegresivaEl.style.display = CONFIG.mostrarCuentaRegresiva ? '' : 'none';
 }
 
 /* =========================
@@ -132,6 +133,7 @@ async function mostrarErrorSupabase(error, status = null) {
 ========================= */
 
 document.addEventListener("DOMContentLoaded", async () => {
+  aplicarConfiguracion(); // 👈 primero aplica la configuración
   btn.addEventListener('click', confirmarAsistencia);
   btnNo.addEventListener('click', confirmarNoAsistencia);
 
@@ -210,6 +212,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     /*numMesa.textContent = `🪑 Tu mesa asignada es la número ${data.numero_mesa}`;
     msjeMesa.style.display = 'block';
     msjeMesa.removeAttribute('aria-hidden');*/
+
+    if (CONFIG.mostrarNumeroMesa && numMesa) {
+      numMesa.textContent = `🪑 Tu mesa asignada es la número ${data.numero_mesa}`;
+      msjeMesa.style.display = 'block';
+      msjeMesa.removeAttribute('aria-hidden');
+    }
 
     if (data.numero_invitados === 1 || data.confirmado === true) {
       contenedor.style.display = 'none';
@@ -429,9 +437,9 @@ async function confirmarAsistencia() {
 
       contenedor.style.display = "none";
 
-     /* numMesa.textContent = `🪑 Tu mesa asignada es la número ${datosMuestra.numero_mesa}`;
+     numMesa.textContent = `🪑 Tu mesa asignada es la número ${datosMuestra.numero_mesa}`;
       msjeMesa.style.display = 'block';
-      msjeMesa.removeAttribute('aria-hidden');*/
+      msjeMesa.removeAttribute('aria-hidden');
 
       btnNo.disabled = true;
       btnNo.style.display = "none";
@@ -537,9 +545,9 @@ async function confirmarAsistencia() {
 
     contenedor.style.display = "none";
 
-    /*numMesa.textContent = `🪑 Tu mesa asignada es la número ${invitado.numero_mesa}`;
+    numMesa.textContent = `🪑 Tu mesa asignada es la número ${invitado.numero_mesa}`;
     msjeMesa.style.display = 'block';
-    msjeMesa.removeAttribute('aria-hidden');*/
+    msjeMesa.removeAttribute('aria-hidden');
 
     btnNo.disabled = true;
     btnNo.style.display = "none";
