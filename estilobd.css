@@ -592,15 +592,18 @@ h1{
    se agrupa aquí, después de todas las reglas base.
 ========================================================= */
 
-@media (max-width:480px){
-  .map-links{
-    flex-direction:column;
-    align-items:center;
-  }
+@media (max-width:420px){
+  body{ padding:10px; }
+  .page{ padding:18px; }
+  .note{ font-size:18px; }
+  .input-box{ max-width:200px; }
 
-  .map-btn{
-    width:210px;
-    margin:10px 0; /* separación real arriba y abajo */
+  .rsvp{
+    display:block;
+    width:100%;
+    max-width:280px;
+    margin-left:auto;
+    margin-right:auto;
   }
 }
 
@@ -609,6 +612,14 @@ h1{
   .page{ padding:18px; }
   .note{ font-size:18px; }
   .input-box{ max-width:200px; }
+
+  .mapa-embebido iframe{
+    height: 180px;
+  }
+
+  .galeria-slide img{
+    height: 260px;
+  }
 
   .rsvp{
     display:block;
