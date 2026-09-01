@@ -20,7 +20,7 @@
 <meta property="og:url" content="https://nehemias94.github.io/A-N/bd.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
- <link rel="stylesheet" href="estilobd.css">
+ <link rel="stylesheet" href="estilobd.css?v=2">
  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
@@ -119,11 +119,11 @@
            box-shadow: 0 4px 10px rgba(44,79,69,0.08);"
            class="note"
            aria-hidden="true">
-      
-         <span id="numMesa" style="font-style:italic;"></span> 
-        </div>
+
+         <span id="numMesa" style="font-style:italic;"></span>
       </div>
 
+       <!-- 📖 Mensaje versículo -->
        <div id="mensajeRegalo" aria-hidden="true">
         <div style="
           margin: 18px auto;
@@ -131,6 +131,7 @@
           background: rgba(63,110,96,0.08);
           border-radius: 10px;
           max-width: 360px;
+          width: 100%;
           font-size: 20px;
           font-weight: 600;
           color: var(--verde-dark);
@@ -146,14 +147,15 @@
         <img src="td.jpeg" alt="Anillos de boda con mascota">
       </div>
 
-        <!-- 🎁 MENSAJE DE REGALO -->
-      <div id="mensajeRegalo" aria-hidden="true">
+        <!-- 🎁 MENSAJE DE REGALO (id corregido: ya no duplica "mensajeRegalo") -->
+      <div id="mensajeSobreRegalo" aria-hidden="true">
         <div style="
           margin: 18px auto;
           padding: 14px 20px;
           background: rgba(63,110,96,0.08);
           border-radius: 10px;
           max-width: 360px;
+          width: 100%;
           font-size: 20px;
           font-weight: 600;
           color: var(--verde-dark);
@@ -251,8 +253,5 @@
 <script src="js/Scriptbd.js"></script>
  <script src="js/Segurity.js"></script>
   <script src="js/counter.js"></script>
- <script>
-  document.addEventListener('contextmenu', event => event.preventDefault());
-</script>
 </body>
 </html>
