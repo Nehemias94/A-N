@@ -17,7 +17,7 @@
    cada sección, sin tener que comentar HTML manualmente.
 ========================================================= */
 const CONFIG = {
-  mostrarNumeroMesa: true,        // Muestra el bloque "🪑 Tu mesa asignada..."
+  mostrarNumeroMesa: false,        // Muestra el bloque "🪑 Tu mesa asignada..."
   mostrarMensajeRegalo: true,     // Bloque del versículo (Eclesiastés)
   mostrarMensajeSobreRegalo: true,// Bloque "El mejor regalo es..."
   mostrarCuentaRegresiva: true,   // Countdown de la boda
