@@ -12,6 +12,13 @@
 html,body{height:100%}
 
 body{
+  padding:20px;
+}
+@media (max-width:420px){
+  body{ padding:10px; }
+}
+
+body{
   font-family: "Cormorant Garamond", serif;
   background:
     radial-gradient(circle at 10% 10%, rgba(63,110,96,0.07), transparent 12%),
