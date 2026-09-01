@@ -23,7 +23,7 @@ const CONFIG = {
   mostrarCuentaRegresiva: true,   // Countdown de la boda
   permitirVariosInvitados: true,  // Input de "¿Cuántos asistirán?"
 };
-========================================================= */
+/*========================================================= */
 let invitadoID = null;
 const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
 const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon-key"]')?.content || '';
